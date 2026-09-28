@@ -21,7 +21,20 @@ import {
   faBolt,
   faSmog,
   faCloudSun,
-  faXmark
+  faXmark,
+  faSearch,
+  faArrowUpRightFromSquare,
+  faCode,
+  faDatabase,
+  faChevronDown,
+  faExpand,
+  faLocationCrosshairs,
+  faFilePdf,
+  faVideo,
+  faPalette,
+  faWorm,
+  faChevronRight,
+  faArrowLeft
 } from '@fortawesome/free-solid-svg-icons'
 
 import { faGoogle, faGithub } from '@fortawesome/free-brands-svg-icons'
@@ -51,5 +64,18 @@ export {
   faSnowflake,
   faBolt,
   faSmog,
-  faCloudSun
+  faCloudSun,
+  faSearch,
+  faArrowUpRightFromSquare,
+  faCode,
+  faDatabase,
+  faChevronDown,
+  faExpand,
+  faLocationCrosshairs,
+  faFilePdf,
+  faVideo,
+  faPalette,
+  faWorm,
+  faChevronRight,
+  faArrowLeft
 }

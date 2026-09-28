@@ -33,14 +33,23 @@
 [data-theme="autumn"] .custom_select_trigger,
 [data-theme="autumn"] .custom_select_native,
 [data-theme="autumn"] .release_card,
-[data-theme="autumn"] .progress_card,
-[data-theme="autumn"] .navbar_expandedSearchBar {
+[data-theme="autumn"] .progress_card {
     background: rgba(255, 243, 224, 0.85) !important;
     backdrop-filter: blur(10px) !important;
     -webkit-backdrop-filter: blur(10px) !important;
     border: none !important;
     box-shadow: 0 4px 15px rgba(104, 44, 22, 0.2) !important;
     border-radius: 16px !important;
+    color: #5d2906 !important;
+}
+
+[data-theme="autumn"] .navbar_expandedSearchBar {
+    background: rgba(255, 243, 224, 0.85) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    border: none !important;
+    box-shadow: 0 4px 15px rgba(104, 44, 22, 0.2) !important;
+    border-radius: 1000px !important;
     color: #5d2906 !important;
 }
 

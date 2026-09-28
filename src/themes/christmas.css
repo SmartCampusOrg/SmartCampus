@@ -74,8 +74,12 @@
 }
 
 [data-theme="christmas"] .navbar_button--active {
-    background: transparent !important;
-    box-shadow: none !important;
+    background-color: rgba(255, 255, 255, 0.15) !important;
+    box-shadow: inset 0 0 10px rgba(255,255,255,0.2) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    border-radius: 1000px !important;
 }
 
 [data-theme="christmas"] .navbar_activeIndicator {
@@ -87,12 +91,19 @@
 [data-theme="christmas"] .custom_select_trigger,
 [data-theme="christmas"] .custom_select_native,
 [data-theme="christmas"] .release_card,
-[data-theme="christmas"] .progress_card,
-[data-theme="christmas"] .navbar_expandedSearchBar {
+[data-theme="christmas"] .progress_card {
     background: #ffffff !important;
     border: 2px solid #e0f0ff !important;
     box-shadow: 0 5px 15px rgba(0, 100, 150, 0.05), inset 0 2px 5px rgba(255,255,255,1) !important;
     border-radius: 16px !important;
+    color: #01579b !important;
+}
+
+[data-theme="christmas"] .navbar_expandedSearchBar {
+    background: #ffffff !important;
+    border: 2px solid #e0f0ff !important;
+    box-shadow: 0 5px 15px rgba(0, 100, 150, 0.05), inset 0 2px 5px rgba(255,255,255,1) !important;
+    border-radius: 1000px !important;
     color: #01579b !important;
 }
 

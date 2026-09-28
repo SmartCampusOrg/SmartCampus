@@ -7,6 +7,7 @@ import ToggleSwitch from "@components/ToggleSwitch/ToggleSwitch.jsx";
 import WeatherWidget from '@features/WeatherWidget';
 import bannerImg from '@icons/../img/pansim_banner.webp';
 import './Panel.css';
+import NewPanel from '@/features/NewPanel/NewPanel.jsx';
 
 function Panel() {
   const { user } = useAuth();
@@ -15,6 +16,11 @@ function Panel() {
 
   const isExperimentalEnabled = localStorage.getItem('isExperimentalEnabled') === 'true';
   const showWeather = isExperimentalEnabled && localStorage.getItem('expWeatherWidget') === 'true';
+  const showNewPanel = isExperimentalEnabled && localStorage.getItem('expNewPanel') === 'true';
+
+  if (showNewPanel) {
+    return <NewPanel />;
+  }
 
   return (
     <div className="panel_dashboard">

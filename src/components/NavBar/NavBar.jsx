@@ -53,7 +53,9 @@ function NavBar() {
   // Odblokowano przewijanie tła podczas otwartego menu zgodnie z prośbą.
 
   const updateIndicator = () => {
-    const activeElement = navRefs.current[location.pathname];
+    const activePath = Object.keys(navRefs.current).find(path => location.pathname.toLowerCase().startsWith(path.toLowerCase()));
+    const activeElement = activePath ? navRefs.current[activePath] : null;
+    
     if (activeElement) {
       setIndicatorStyle(prev => {
         if (prev.left === activeElement.offsetLeft && prev.width === activeElement.offsetWidth && prev.opacity === 1) return prev;

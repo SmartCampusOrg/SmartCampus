@@ -34,10 +34,12 @@ function Ustawienia() {
   const [isExperimentalEnabled, setIsExperimentalEnabled] = useState(() => localStorage.getItem('isExperimentalEnabled') === 'true');
   const [expWeatherWidget, setExpWeatherWidget] = useState(() => localStorage.getItem('expWeatherWidget') === 'true');
   const [expMoreThemes, setExpMoreThemes] = useState(() => localStorage.getItem('expMoreThemes') === 'true');
+  const [expNewPanel, setExpNewPanel] = useState(() => localStorage.getItem('expNewPanel') === 'true');
 
   useEffect(() => { localStorage.setItem('isExperimentalEnabled', isExperimentalEnabled); }, [isExperimentalEnabled]);
   useEffect(() => { localStorage.setItem('expWeatherWidget', expWeatherWidget); }, [expWeatherWidget]);
   useEffect(() => { localStorage.setItem('expMoreThemes', expMoreThemes); }, [expMoreThemes]);
+  useEffect(() => { localStorage.setItem('expNewPanel', expNewPanel); }, [expNewPanel]);
 
   const [latestRelease, setLatestRelease] = useState(null);
   const [isLoadingRelease, setIsLoadingRelease] = useState(true);
@@ -110,9 +112,22 @@ function Ustawienia() {
         <div className="profilePictureAndBaner">
           <div className="profilePictureWrapper">
             {highResPhotoUrl ? (
-              <img src={highResPhotoUrl} alt="Awatar" className='profilePicture' />
+              <img
+                src={highResPhotoUrl}
+                alt="Awatar"
+                className='profilePicture'
+                referrerPolicy="no-referrer"
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.displayName || '')}&background=183447&color=fff&size=400`;
+                }}
+              />
             ) : (
-              <div className='profilePicture'></div>
+              <img
+                src={`https://ui-avatars.com/api/?name=${encodeURIComponent(user?.displayName || '')}&background=183447&color=fff&size=400`}
+                alt="Awatar"
+                className='profilePicture'
+              />
             )}
           </div>
         </div>
@@ -312,6 +327,18 @@ function Ustawienia() {
                 <div 
                   className={`toggle_switch ${expMoreThemes ? 'active' : ''}`}
                   onClick={() => setExpMoreThemes(!expMoreThemes)}
+                  style={{ transform: 'scale(0.85)' }}
+                ></div>
+              </div>
+
+              <div className="settings_row" style={{ padding: '0', backgroundColor: 'transparent', boxShadow: 'none', minHeight: 'unset', marginTop: '15px' }}>
+                <div className="settings_row_info">
+                  <h4 style={{ fontSize: '15px' }}>Nowy Panel (V2)</h4>
+                  <p style={{ fontSize: '12px' }}>Testowy widok panelu bazujący na nowym designie (Ciemny Motyw).</p>
+                </div>
+                <div 
+                  className={`toggle_switch ${expNewPanel ? 'active' : ''}`}
+                  onClick={() => setExpNewPanel(!expNewPanel)}
                   style={{ transform: 'scale(0.85)' }}
                 ></div>
               </div>
