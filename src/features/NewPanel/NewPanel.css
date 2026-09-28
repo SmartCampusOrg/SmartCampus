@@ -1,11 +1,11 @@
 /* Font and Base Variables */
 .new_panel_dashboard {
-  --color-bg: #11100F;
-  --color-card: #201F1E;
-  --color-accent: #D7D1B0;
-  --color-text: #FFFFFF;
-  --color-text-muted: rgba(255, 255, 255, 0.6);
-  --color-border: rgba(255, 255, 255, 0.05);
+  --color-bg: light-dark(white, #141414);
+  --color-card: light-dark(#ffffff, #201F1E);
+  --color-accent: light-dark(#114e8c, #D7D1B0);
+  --color-text: light-dark(#183447, #FFFFFF);
+  --color-text-muted: light-dark(rgba(24, 52, 71, 0.6), rgba(255, 255, 255, 0.6));
+  --color-border: light-dark(rgba(24, 52, 71, 0.1), rgba(255, 255, 255, 0.05));
 
   font-family: 'Space Grotesk', sans-serif;
   background-color: var(--color-bg);
@@ -70,80 +70,80 @@
   color: var(--color-text);
 }
 
-/* Class Items */
-.new_panel_class_item {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 16px;
-  padding: 16px;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid transparent;
-  transition: all 0.3s ease;
-}
-
-.new_panel_class_item.active {
-  background: rgba(215, 209, 176, 0.05);
-  /* very faint accent bg */
-  border-color: rgba(215, 209, 176, 0.2);
-}
-
-.new_panel_class_icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.1);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: var(--color-text);
-  font-size: 16px;
-}
-
-.new_panel_class_item.active .new_panel_class_icon {
-  background: var(--color-accent);
-  color: var(--color-bg);
-}
-
-.new_panel_class_info {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.class_name {
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.class_details {
-  font-size: 12px;
-  color: var(--color-text-muted);
-}
-
-.new_panel_class_time {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+/* Class Items (Figma Design) */
+.today_plan_btn {
+  background-color: #0b508f;
+  color: white;
+  border: none;
+  border-radius: 100px;
+  padding: 8px 16px;
   font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.2s;
+  font-family: inherit;
+}
+.today_plan_btn:hover {
+  background-color: #083c6b;
+}
+
+.today_class_item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 20px 24px;
+  border-radius: 32px;
+  background-color: light-dark(#e8ebef, #24313d);
+  color: light-dark(#183447, #ffffff);
+  margin-bottom: 12px;
+}
+
+.today_class_item.active {
+  background-color: #1c3647; /* Głęboki granatowy */
+  color: white;
+}
+
+.today_class_title {
+  font-size: 16px;
   font-weight: 500;
 }
 
-.time_end {
-  color: var(--color-text-muted);
-  font-size: 11px;
+.today_class_teacher {
+  font-size: 13px;
+  color: light-dark(#4a6274, #9caebf);
+}
+.today_class_item.active .today_class_teacher {
+  color: rgba(255, 255, 255, 0.7);
 }
 
-.class_badge {
-  width: 100%;
-  padding-top: 8px;
-  margin-top: 4px;
-  border-top: 1px solid var(--color-border);
-  font-size: 12px;
-  color: var(--color-text-muted);
-  text-align: right;
+.today_class_bottom_row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 8px;
+}
+
+.today_class_time {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.today_class_badge {
+  background-color: white;
+  color: #183447;
+  padding: 4px 12px;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+}
+
+.today_class_item:not(.active) .today_class_badge {
+  background-color: light-dark(white, #2a3c4a);
+  color: light-dark(#183447, #e0e5eb);
 }
 
 /* Grade Items */

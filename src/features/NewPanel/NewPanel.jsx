@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import './NewPanel.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as Icons from '@icons/icons';
-import { faBuilding, faBed, faBriefcaseMedical, faBus, faPlus, faMinus, faCompress, faXmark, faFilter, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
+import { faBuilding, faBed, faBriefcaseMedical, faBus, faPlus, faMinus, faCompress, faXmark, faFilter, faTriangleExclamation, faBookOpen, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer, Marker, Popup, Polygon, useMap } from 'react-leaflet';
 import L from 'leaflet';
@@ -357,8 +357,47 @@ function NewPanel() {
       {/* Left Sidebar */}
       <div className="new_panel_sidebar">
 
-        {/* Classes Card */}
-        <div className="new_panel_card" style={{ visibility: 'hidden' }}>
+        {/* Classes Card (Figma Design) */}
+        <div className="new_panel_card" style={{ padding: '0', background: 'transparent', border: 'none', gap: '0' }}>
+          <div className="new_panel_card_header" style={{ alignItems: 'center', marginBottom: '16px' }}>
+            <h3 style={{ fontSize: '18px', fontWeight: '500', color: 'var(--color-text)' }}>Dzisiejsze zajęcia</h3>
+            <button className="today_plan_btn">Plan lekcji <FontAwesomeIcon icon={faChevronRight} style={{marginLeft: '6px', fontSize: '10px'}}/></button>
+          </div>
+
+          <div className="today_class_item active">
+            <div className="today_class_title">Nazwa Przedmiotu • Sala</div>
+            <div className="today_class_teacher">Imię Nazwisko</div>
+            <div className="today_class_bottom_row">
+              <div className="today_class_time">9:30 - 11:00</div>
+              <div className="today_class_badge">
+                <FontAwesomeIcon icon={faBookOpen} style={{marginRight: '6px', fontSize: '12px'}}/> Wykład
+              </div>
+            </div>
+          </div>
+          
+          <h4 style={{ fontSize: '15px', margin: '8px 0 16px 0', color: 'var(--color-text)', fontWeight: 500 }}>Następnie</h4>
+          
+          <div className="today_class_item">
+            <div className="today_class_title">Nazwa Przedmiotu • Sala</div>
+            <div className="today_class_teacher">Imię Nazwisko</div>
+            <div className="today_class_bottom_row">
+              <div className="today_class_time">9:30 - 11:00</div>
+              <div className="today_class_badge">
+                <FontAwesomeIcon icon={faBookOpen} style={{marginRight: '6px', fontSize: '12px'}}/> Wykład
+              </div>
+            </div>
+          </div>
+          
+          <div className="today_class_item">
+            <div className="today_class_title">Nazwa Przedmiotu • Sala</div>
+            <div className="today_class_teacher">Imię Nazwisko</div>
+            <div className="today_class_bottom_row">
+              <div className="today_class_time">9:30 - 11:00</div>
+              <div className="today_class_badge">
+                <FontAwesomeIcon icon={faBookOpen} style={{marginRight: '6px', fontSize: '12px'}}/> Wykład
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Grades Card */}
