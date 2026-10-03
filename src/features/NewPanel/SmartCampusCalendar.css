@@ -1,0 +1,447 @@
+.custom-calendar-container {
+  background-color: var(--color-card);
+  border-radius: 24px;
+  padding: 24px;
+  border: 1px solid var(--color-border);
+  font-family: 'Poppins', sans-serif;
+  color: var(--color-text);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* HEADER */
+.cal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.cal-header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cal-subtitle {
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.cal-title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.cal-subtext {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cal-academic-year {
+  background-color: light-dark(#e2e4e7, #283145);
+  color: var(--color-text);
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.cal-header-right {
+  display: flex;
+  align-items: flex-start;
+}
+
+.cal-month-selector {
+  background-color: #2b455b;
+  color: white;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  padding: 6px 12px;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.cal-month-selector .icon-btn {
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 2px 4px;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+.cal-month-selector .icon-btn:hover {
+  opacity: 1;
+}
+
+/* WEEKDAYS */
+.cal-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  justify-items: center;
+  margin-top: 8px;
+}
+
+.cal-weekday {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: light-dark(#f0f2f5, #24313d);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.cal-weekday.active {
+  background-color: #283145;
+  color: white;
+}
+
+/* GRID */
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  row-gap: 12px;
+  justify-items: center;
+}
+
+.cal-month-pill {
+  width: 100%;
+  height: 44px;
+  background-color: light-dark(#e2e4e7, #24313d);
+  border-radius: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.cal-month-pill:hover {
+  background-color: light-dark(#d1d4d8, #30404f);
+}
+.cal-month-pill.disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+.cal-month-pill.disabled:hover {
+  background-color: light-dark(#e2e4e7, #24313d);
+}
+
+.cal-day {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: light-dark(#f0f2f5, #1f2a36);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.cal-day:hover {
+  transform: scale(1.05);
+}
+
+.cal-day.selected {
+  background-color: transparent;
+  border: 1.5px solid #283145;
+}
+
+.cal-day.today {
+  background-color: #2b4c6b;
+  color: white;
+  box-shadow: 0 4px 12px rgba(43, 76, 107, 0.4);
+}
+
+.cal-day-dot {
+  width: 4px;
+  height: 4px;
+  background-color: currentColor;
+  border-radius: 50%;
+  position: absolute;
+  bottom: 8px;
+}
+
+/* EVENTS SECTION */
+.cal-events-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.cal-events-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cal-events-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.cal-events-badge {
+  background-color: #283145;
+  color: white;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.cal-events-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cal-no-events {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  text-align: center;
+  padding: 12px;
+}
+
+.cal-event-card {
+  display: flex;
+  align-items: center;
+  background-color: light-dark(#f0f2f5, #24313d);
+  border-radius: 12px;
+  overflow: hidden;
+  padding-right: 16px;
+}
+
+.cal-event-accent {
+  width: 6px;
+  align-self: stretch;
+  background-color: #283145;
+  border-radius: 6px;
+  margin: 8px 0 8px 8px;
+}
+
+.cal-event-content {
+  flex-grow: 1;
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cal-event-title {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.cal-event-details {
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+.cal-event-delete {
+  background: transparent;
+  border: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+.cal-event-delete:hover {
+  background: rgba(255, 0, 0, 0.1);
+  color: #ef4444;
+}
+
+.cal-add-btn {
+  background-color: #1c3647;
+  border: none;
+  color: #ffffff;
+  border-radius: 100px;
+  padding: 14px 24px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cal-add-btn:hover {
+  background-color: #2b4c6b;
+}
+
+/* APPLE STYLE MODAL */
+.cal-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.cal-modal {
+  background-color: var(--color-card);
+  border-radius: 24px;
+  width: 90%;
+  max-width: 380px;
+  padding: 24px;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--color-border);
+  animation: scaleUp 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  color: var(--color-text);
+  font-family: inherit;
+}
+
+@keyframes scaleUp {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.cal-modal-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cal-modal-header h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.cal-modal-date {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.cal-modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cal-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cal-input-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.cal-input-group input {
+  background-color: light-dark(#f0f2f5, #24313d);
+  border: 1px solid transparent;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  color: var(--color-text);
+  font-family: inherit;
+  outline: none;
+  transition: all 0.2s;
+  box-sizing: border-box;
+}
+
+.cal-input-group input:focus {
+  border-color: #2b4c6b;
+  background-color: light-dark(#ffffff, #1f2a36);
+}
+
+.cal-modal-footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.cal-modal-footer button {
+  padding: 10px 20px;
+  border-radius: 100px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.cal-btn-cancel {
+  background-color: transparent;
+  color: var(--color-text-muted);
+}
+.cal-btn-cancel:hover {
+  background-color: light-dark(#f0f2f5, #24313d);
+  color: var(--color-text);
+}
+
+.cal-btn-save {
+  background-color: #1c3647;
+  color: white;
+  box-shadow: 0 4px 12px rgba(28, 54, 71, 0.2);
+}
+.cal-btn-save:hover:not(:disabled) {
+  background-color: #2b4c6b;
+  transform: translateY(-1px);
+}
+.cal-btn-save:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.cal-btn-delete {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+.cal-btn-delete:hover {
+  background-color: #ef4444;
+  color: white;
+}

@@ -7,7 +7,7 @@ import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer, Marker, Popup, Polygon, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import { useThemeContext } from '../../context/ThemeContext';
-
+import SmartCampusCalendar from './SmartCampusCalendar';
 const getIconHtml = (faIcon, bgColor, color) => {
   const [width, height, , , svgPath] = faIcon.icon;
   const svg = `<svg viewBox="0 0 ${width} ${height}" width="16" height="16" fill="currentColor"><path d="${svgPath}"></path></svg>`;
@@ -66,10 +66,10 @@ function MapController({ city }) {
       map.flyTo(ciechanowCenter, 15, { duration: 1.5 });
     } else {
       map.setMaxBounds([
-        [53.096, 20.371], // Ciasne ramy dla Mławy, żeby nie uciekać daleko
+        [53.096, 20.371],
         [53.116, 20.411]
       ]);
-      map.flyTo(mlawaCenter, 17, { duration: 1.5 }); // Zwiększone przybliżenie domyślne dla Mławy z 16 na 17
+      map.flyTo(mlawaCenter, 17, { duration: 1.5 });
     }
   }, [city, map]);
   return null;
@@ -89,9 +89,8 @@ function MapPopupZoomHandler({ city }) {
     };
 
     const onPopupClose = () => {
-      const center = city === 'Ciechanów' ? ciechanowCenter : mlawaCenter;
-      const zoom = city === 'Ciechanów' ? 15 : 17;
-      map.flyTo(center, zoom, { duration: 0.5 });
+      // Nie wracamy do domyślnego przybliżenia po zamknięciu dymka, zostajemy na klikniętym budynku
+      // (zgodnie z życzeniem usunięto irytujące oddalanie przy zamykaniu popupu)
     };
 
     map.on('popupopen', onPopupOpen);
@@ -356,6 +355,9 @@ function NewPanel() {
 
       {/* Left Sidebar */}
       <div className="new_panel_sidebar">
+        
+        {/* Kalendarz */}
+        <SmartCampusCalendar isDark={isDark} />
 
         {/* Classes Card (Figma Design) */}
         <div className="new_panel_card" style={{ padding: '0', background: 'transparent', border: 'none', gap: '0' }}>
@@ -581,6 +583,9 @@ function NewPanel() {
                     position={m.pos}
                     icon={markerIcons(m.icon)}
                     eventHandlers={{
+                      click: () => {
+                        setSelectedMarker(m);
+                      },
                       mouseover: () => setActiveBuilding(m.id),
                       mouseout: () => setActiveBuilding(null)
                     }}

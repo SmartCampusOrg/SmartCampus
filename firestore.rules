@@ -1,0 +1,18 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Zabezpieczenie dla kalendarza: Tylko zalogowany użytkownik (którego uid zgadza się z userId dokumentu) może czytać i pisać
+    match /calendar_events/{eventId} {
+      allow read, write: if request.auth != null && request.auth.uid == resource.data.userId;
+      // Podczas tworzenia (kiedy document jeszcze nie istnieje w bazie) sprawdzamy przesłane dane (request.resource)
+      allow create: if request.auth != null && request.auth.uid == request.resource.data.userId;
+    }
+
+    // Dodaj inne istniejące reguły, jeśli miałeś jakieś poniżej.
+    // Domyślne zablokowanie wszystkiego innego, by nie było wycieku danych.
+    match /{document=**} {
+      allow read, write: if false; 
+    }
+  }
+}

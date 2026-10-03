@@ -7,7 +7,7 @@
   --color-text-muted: light-dark(rgba(24, 52, 71, 0.6), rgba(255, 255, 255, 0.6));
   --color-border: light-dark(rgba(24, 52, 71, 0.1), rgba(255, 255, 255, 0.05));
 
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Poppins', sans-serif;
   background-color: var(--color-bg);
   color: var(--color-text);
   min-height: calc(100vh - 80px);
@@ -15,11 +15,12 @@
   display: flex;
   gap: 24px;
   box-sizing: border-box;
+  align-items: flex-start; /* Zapobiega rozciąganiu kolumn do tej samej wysokości */
 }
 
 /* Layout */
 .new_panel_sidebar {
-  width: 320px;
+  width: 400px; /* Dodatkowo poszerzone by kalendarz miał oddech */
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -189,15 +190,13 @@
 
 /* Map Area */
 .new_panel_map_container {
-  flex-grow: 1;
+  height: calc(100vh - 180px); /* Sztywna wysokość mapy względem okna */
+  min-height: 500px;
   position: relative;
   z-index: 1;
-  /* Wymusza nowy stacking context, by dzieci z z-index:1000 nie wychodziły ponad header aplikacji */
   background-color: #E3E8E1;
-  /* Lighter base for the map itself to contrast with dark ui */
   border-radius: 24px;
   overflow: hidden;
-  min-height: 400px;
 }
 
 .new_panel_map_visual {
