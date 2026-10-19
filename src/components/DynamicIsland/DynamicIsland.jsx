@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as Icons from '@icons/icons';
+import { useSchedule } from '@/hooks/useSchedule.js';
 import { 
-  STORAGE_KEY, 
   PROFILE_KEY, 
   TEACHER_KEY, 
   MODE_KEY, 
@@ -71,16 +71,11 @@ const MarqueeText = ({ text, className, speed = 25 }) => {
 
 const DynamicIsland = () => {
   const navigate = useNavigate();
+  const { allLessons } = useSchedule();
   const [activeData, setActiveData] = useState(null);
 
-  const checkSchedule = () => {
+  const checkSchedule = useCallback(() => {
     try {
-      const scheduleRaw = localStorage.getItem(STORAGE_KEY);
-      if (!scheduleRaw) {
-        setActiveData(null);
-        return;
-      }
-      const allLessons = JSON.parse(scheduleRaw);
       if (!Array.isArray(allLessons) || allLessons.length === 0) {
         setActiveData(null);
         return;
@@ -97,7 +92,7 @@ const DynamicIsland = () => {
       console.warn('DynamicIsland schedule check error:', e);
       setActiveData(null);
     }
-  };
+  }, [allLessons]);
 
   useEffect(() => {
     checkSchedule();
@@ -111,7 +106,7 @@ const DynamicIsland = () => {
       clearInterval(interval);
       window.removeEventListener('storage', checkSchedule);
     };
-  }, []);
+  }, [checkSchedule]);
 
   if (!activeData || !activeData.lesson) {
     return null;

@@ -1,5 +1,4 @@
 import React from 'react';
-import './OProjekcie.css';
 import LandingNavBar from '@components/LandingNavBar/LandingNavBar';
 
 function OProjekcie() {

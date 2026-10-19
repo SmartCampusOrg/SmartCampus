@@ -1,5 +1,5 @@
 import React from 'react';
-import feedPlaceholderImg from '@/assets/img/Mezczyzna_ze_smartfonem_feed.png';
+import feedPlaceholderImg from '@/assets/img/Mezczyzna_ze_smartfonem_feed.webp';
 import './Feed.css';
 
 function Feed() {

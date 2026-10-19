@@ -1,5 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBookOpen } from '@/assets/icons/icons.js';
 import { getLessonTypeConfig } from './lessonTypesConfig.js';
 import './Lekcja.css';
 
@@ -13,7 +14,7 @@ const Lekcja = ({ lesson, status = 'future', progressPercent = 0 }) => {
             <p className="lesson_card_teacher">—</p>
           </div>
           <span className="lesson_card_badge">
-            <BookIcon />
+            <FontAwesomeIcon icon={faBookOpen} style={{ fontSize: '11px', flexShrink: 0 }} />
             <span>Wykład</span>
           </span>
         </div>

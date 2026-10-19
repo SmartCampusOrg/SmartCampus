@@ -1,5 +1,5 @@
 import React from 'react';
-import elearningPlaceholderImg from '@/assets/img/Mezczyzna_przy_biurku_e-learning.png';
+import elearningPlaceholderImg from '@/assets/img/Mezczyzna_przy_biurku_e-learning.webp';
 import './elearning.css';
 
 function Elearning() {

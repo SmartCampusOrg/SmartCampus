@@ -1,5 +1,4 @@
 import React from 'react';
-import './NaszZespol.css';
 import LandingNavBar from '@components/LandingNavBar/LandingNavBar';
 
 function NaszZespol() {

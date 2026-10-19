@@ -5,7 +5,9 @@ import {
   AUTO_FETCH_KEY, 
   LAST_FETCH_DATE_KEY, 
   SHOW_TERM_DATES_KEY,
-  getScheduleData, 
+  getScheduleData,
+  getScheduleDataAsync,
+  clearScheduleData,
   fetchAndCleanSchedule,
   resolveWydzialForKierunek
 } from '@/services/scheduleService.js';
@@ -24,6 +26,19 @@ export const ScheduleProvider = ({ children }) => {
     return localStorage.getItem(SHOW_TERM_DATES_KEY) === 'true';
   });
   const [isFetching, setIsFetching] = useState(false);
+
+  // Asynchroniczne ładowanie pełnego planu z bazy IndexedDB przy starcie
+  useEffect(() => {
+    let isMounted = true;
+    getScheduleDataAsync().then(lessons => {
+      if (isMounted && Array.isArray(lessons) && lessons.length > 0) {
+        setAllLessons(lessons);
+      }
+    }).catch(err => {
+      console.warn("Błąd ładowania z IndexedDB:", err);
+    });
+    return () => { isMounted = false; };
+  }, []);
 
   // Zmiana ustawienia automatycznego pobierania przy każdym wejściu
   const setAutoFetchOnOpen = useCallback((valOrFn) => {
@@ -100,12 +115,10 @@ export const ScheduleProvider = ({ children }) => {
     }
   }, []);
 
-  // Czyszczenie pamięci podręcznej planu
-  const clearScheduleCache = useCallback(() => {
+  // Czyszczenie pamięci podręcznej planu z IndexedDB i localStorage
+  const clearScheduleCache = useCallback(async () => {
     try {
-      localStorage.removeItem(STORAGE_KEY);
-      localStorage.removeItem(LAST_UPDATE_KEY);
-      localStorage.removeItem(LAST_FETCH_DATE_KEY);
+      await clearScheduleData();
     } catch (e) {}
     setAllLessons([]);
     setLastUpdateTime("");
@@ -132,7 +145,7 @@ export const ScheduleProvider = ({ children }) => {
 
   // Synchronizacja dwukierunkowa ze zdarzeniami localStorage oraz CustomEvent w obrębie tej samej i innych kart
   useEffect(() => {
-    const syncFromStorage = () => {
+    const syncFromStorage = async () => {
       try {
         const autoFetch = localStorage.getItem(AUTO_FETCH_KEY) === 'true';
         setAutoFetchOnOpenState(autoFetch);
@@ -140,8 +153,10 @@ export const ScheduleProvider = ({ children }) => {
         setShowTermDatesState(termDates);
         const updateTime = localStorage.getItem(LAST_UPDATE_KEY) || "";
         setLastUpdateTime(updateTime);
-        const lessons = getScheduleData();
-        setAllLessons(lessons);
+        const lessons = await getScheduleDataAsync();
+        if (Array.isArray(lessons) && lessons.length > 0) {
+          setAllLessons(lessons);
+        }
       } catch (e) {}
     };
 
@@ -159,8 +174,9 @@ export const ScheduleProvider = ({ children }) => {
           if (e.detail.lessons && Array.isArray(e.detail.lessons) && e.detail.lessons.length > 0) {
             setAllLessons(e.detail.lessons);
           } else {
-            const lessons = getScheduleData();
-            setAllLessons(lessons);
+            getScheduleDataAsync().then(lessons => {
+              if (lessons) setAllLessons(lessons);
+            });
           }
         }
       } else {

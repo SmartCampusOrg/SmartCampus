@@ -1,6 +1,7 @@
 /**
  * Serwis obsługujący plan zajęć, pobieranie danych z API uczelni oraz profil studenta/dydaktyka
  */
+import { getScheduleFromDb, saveScheduleToDb, clearScheduleFromDb } from './scheduleDb.js';
 
 export const STORAGE_KEY = 'smart_campus_schedule_data';
 export const PROFILE_KEY = 'smart_campus_user_profile';
@@ -235,27 +236,57 @@ export const resolveWydzialForKierunek = (kierunek, fallback = 'Wydział Inżyni
   return fallback;
 };
 
-// Bezpieczne pobieranie zapisanego planu z localStorage
+// Wzbogaca i standaryzuje pola planu
+export const enrichScheduleLessons = (lessons) => {
+  if (!Array.isArray(lessons)) return [];
+  return lessons.map(item => {
+    const normalizedWydzial = normalizeWydzialName(item.wydzial);
+    const wydzial = (item.kierunek && resolveWydzialForKierunek(item.kierunek, '')) 
+      || normalizedWydzial 
+      || "Wydział Inżynierii i Ekonomii";
+    return {
+      ...item,
+      wydzial,
+      specjalnosc: item.specjalnosc || "",
+      dydaktyk: item.dydaktyk ? cleanTeacherName(item.dydaktyk) : ""
+    };
+  });
+};
+
+// Asynchroniczne pobieranie planu z bazy IndexedDB z automatyczną migracją z localStorage
+export const getScheduleDataAsync = async () => {
+  try {
+    const dbData = await getScheduleFromDb();
+    if (dbData && Array.isArray(dbData) && dbData.length > 0) {
+      return enrichScheduleLessons(dbData);
+    }
+
+    // Automatyczna migracja ze starego localStorage (jeśli istnieje)
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        await saveScheduleToDb(parsed);
+        // Zwolnij cenne miejsce w localStorage (5MB)
+        localStorage.removeItem(STORAGE_KEY);
+        return enrichScheduleLessons(parsed);
+      }
+    }
+  } catch (e) {
+    console.warn("Błąd odczytu planu z IndexedDB:", e);
+  }
+  return [];
+};
+
+// Synchroniczny fallback dla pobierania planu
 export const getScheduleData = () => {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return [];
     const parsed = JSON.parse(raw);
     if (!Array.isArray(parsed)) return [];
-    return parsed.map(item => {
-      const normalizedWydzial = normalizeWydzialName(item.wydzial);
-      const wydzial = (item.kierunek && resolveWydzialForKierunek(item.kierunek, '')) 
-        || normalizedWydzial 
-        || "Wydział Inżynierii i Ekonomii";
-      return {
-        ...item,
-        wydzial,
-        specjalnosc: item.specjalnosc || "",
-        dydaktyk: item.dydaktyk ? cleanTeacherName(item.dydaktyk) : ""
-      };
-    });
+    return enrichScheduleLessons(parsed);
   } catch (e) {
-    console.error("Błąd odczytu planu z localStorage:", e);
     return [];
   }
 };
@@ -384,10 +415,13 @@ export const fetchAndCleanSchedule = async () => {
       forma: item.forma,
       rokAkademicki: item.rokAkademicki
     }));
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(compactForStorage));
-    localStorage.setItem(LAST_UPDATE_KEY, new Date().toISOString());
+    await saveScheduleToDb(compactForStorage);
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+      localStorage.setItem(LAST_UPDATE_KEY, new Date().toISOString());
+    } catch (e) {}
   } catch (storageErr) {
-    console.warn("Limit pamięci localStorage:", storageErr);
+    console.warn("Błąd zapisu planu do bazy:", storageErr);
   }
 
   return deduplicatedCleaned;
@@ -518,4 +552,17 @@ export const getCurrentOrUpcomingLesson = (allLessons, profile, mode = 'student'
 
   return null;
 };
+
+// Całkowite czyszczenie zapisanego planu z bazy IndexedDB i localStorage
+export const clearScheduleData = async () => {
+  try {
+    await clearScheduleFromDb();
+    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(LAST_UPDATE_KEY);
+    localStorage.removeItem(LAST_FETCH_DATE_KEY);
+  } catch (e) {
+    console.warn("Błąd czyszczenia danych planu:", e);
+  }
+};
+
 

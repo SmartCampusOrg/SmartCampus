@@ -8,8 +8,8 @@ import { isLectureLesson, isExerciseOrLabLesson, getLessonTypeConfig } from "./l
 import LoadingSpinner from "@/components/LoadingSpinner/LoadingSpinner.jsx";
 import ToggleSwitch from "@/components/ToggleSwitch/ToggleSwitch.jsx";
 import CustomSelect from "@/components/CustomSelect/CustomSelect.jsx";
-import noLessonsImg from "@/assets/img/no_lessons_relax.png";
-import lupaImg from "@/assets/img/Lupa.png";
+import noLessonsImg from "@/assets/img/no_lessons_relax.webp";
+import lupaImg from "@/assets/img/Lupa.webp";
 import { collection, addDoc, onSnapshot, query, where, deleteDoc, doc } from 'firebase/firestore';
 import { db } from '@/services/firebase.js';
 import { useAuth } from '@/context/AuthContext.jsx';
