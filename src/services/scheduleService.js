@@ -296,6 +296,9 @@ export const fetchAndCleanSchedule = async () => {
     try {
       const url = `/api/harmonogram/zajecia?_dc=${Date.now()}&idGrupa=0&idNauczyciel=0&idJednostkaPanelJednostka=${id}&dataOd=${encodeURIComponent(dataOd)}&dataDo=${encodeURIComponent(dataDo)}&widok=JEDNOSTKA&authUzytkownikId=0&page=1&start=0&limit=100000`;
       const res = await fetch(url);
+      if (!res.ok) {
+        throw new Error(`Błąd HTTP ${res.status} (${res.statusText})`);
+      }
       const data = await res.json();
       if (data.status === "SUCCESS" && Array.isArray(data.result)) {
         const correctedData = data.result.map(item => {

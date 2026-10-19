@@ -1,1 +1,5 @@
+# Proxy harmonogramu uczelni do oficjalnego API PANS
+/api/harmonogram/*  https://wu.pansim.edu.pl/wsrest/rest/phz/harmonogram/:splat  200!
+
+# SPA fallback
 /*    /index.html   200
