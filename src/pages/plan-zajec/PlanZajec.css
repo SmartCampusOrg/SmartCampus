@@ -1,0 +1,3253 @@
+/* PlanZajec.css - Zgodny z panelem i prototypem Figma Smart Campus */
+
+.figma_plan_page {
+  width: 100%;
+  min-height: calc(100vh - 80px);
+  background-color: #F6F6F6;
+  background-color: light-dark(#F6F6F6, transparent);
+  padding: 20px 20px 20px 20px;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+  color: #183447;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 1. GÓRNY PASEK: TYTUŁ, PRZEŁĄCZNIK TRYBU (STUDENT / DYDAKTYK) ORAZ PILL WYBORU GRUPY */
+.figma_plan_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.figma_plan_title_block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.figma_plan_title {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: #183447;
+  letter-spacing: -0.5px;
+}
+
+.figma_plan_subtitle {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 500;
+  color: #2d3e50;
+}
+
+.figma_plan_title_row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.figma_beta_badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  background-color: #183447;
+  color: #ffffff;
+  border: none;
+  line-height: 1.2;
+  user-select: none;
+  box-shadow: 0 1px 2px rgba(24, 52, 71, 0.2);
+}
+
+.figma_plan_source_caption {
+  margin: 6px 0 0 0;
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1.45;
+  color: #183447;
+  background-color: rgba(24, 52, 71, 0.07);
+  border: 1px solid rgba(24, 52, 71, 0.14);
+  font-family: 'Poppins', sans-serif;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.figma_plan_source_caption strong {
+  font-weight: 700;
+  color: #183447;
+}
+
+.figma_source_caption_sep {
+  opacity: 0.45;
+  user-select: none;
+}
+
+.plan_sync_disclaimer_footnote {
+  margin: 10px 0 0 0;
+  padding-top: 10px;
+  border-top: 1px solid light-dark(rgba(0, 0, 0, 0.06), rgba(255, 255, 255, 0.08));
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: light-dark(#64748B, #94A3B8);
+  font-family: 'Poppins', sans-serif;
+}
+
+[data-theme='dark'] .figma_beta_badge {
+  background-color: #2b3e52;
+  color: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+
+[data-theme='dark'] .figma_plan_source_caption {
+  color: #F1F5F9;
+  background-color: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+[data-theme='dark'] .figma_plan_source_caption strong {
+  color: #FFFFFF;
+}
+
+[data-theme='dark'] .plan_sync_disclaimer_footnote {
+  color: #94A3B8;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.figma_plan_header_actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* PRZEŁĄCZNIK STUDENT / DYDAKTYK (IDENTYCZNY JAK NA MAPIE CIECHANÓW / MŁAWA) */
+.plan_mode_toggle {
+  position: relative;
+  height: 44px;
+  width: 210px;
+  flex-shrink: 0;
+  border-radius: 22px;
+  box-sizing: border-box;
+  box-shadow: none;
+  overflow: hidden;
+  background: light-dark(rgba(255, 255, 255, 0.8), rgba(32, 31, 30, 0.7));
+  color: light-dark(#11100F, #FFFFFF);
+  border: 1px solid light-dark(rgba(0, 0, 0, 0.08), rgba(255, 255, 255, 0.1));
+}
+
+.plan_mode_toggle_bg {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+  right: 50%;
+  border-radius: 19px;
+  background: light-dark(#183447, rgba(255, 255, 255, 0.2));
+  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.plan_mode_toggle_bg.right {
+  left: 50%;
+  right: 3px;
+}
+
+.plan_mode_toggle_btn {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+  opacity: 0.6;
+  transition: opacity 0.3s, color 0.3s;
+}
+
+.plan_mode_toggle_btn:first-of-type {
+  left: 0;
+}
+
+.plan_mode_toggle_btn:last-of-type {
+  right: 0;
+}
+
+.plan_mode_toggle_btn.active {
+  opacity: 1;
+  color: #ffffff;
+}
+
+/* PRZYCISK WYBORU GRUPY (PRAWY GÓRNY RÓG W FIGMIE) */
+.figma_group_pill_btn {
+  height: 44px;
+  box-sizing: border-box;
+  background-color: #183447;
+  color: #ffffff;
+  border: none;
+  border-radius: 22px;
+  padding: 0 22px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: 'Poppins', sans-serif;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.figma_group_pill_btn:hover {
+  background-color: #1f425b;
+}
+
+.figma_group_pill_btn .chevron_icon {
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.figma_group_pill_btn.open .chevron_icon {
+  transform: rotate(180deg);
+}
+
+/* POLE WYSZUKIWANIA DYDAKTYKA (DLA TRYBU DYDAKTYK) */
+.figma_teacher_search_wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.figma_teacher_search_bar {
+  height: 44px;
+  box-sizing: border-box;
+  background-color: light-dark(#D5DEE7, rgba(255, 255, 255, 0.12));
+  border-radius: 22px;
+  padding: 0 14px 0 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  width: auto;
+  min-width: 200px;
+  max-width: min(540px, 92vw);
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  border: none;
+}
+
+.figma_teacher_search_bar:focus-within {
+  background-color: light-dark(#c8d5e2, rgba(255, 255, 255, 0.18));
+}
+
+.figma_teacher_search_icon {
+  color: light-dark(#183447, #ffffff);
+  flex-shrink: 0;
+}
+
+.figma_teacher_input_grid {
+  display: inline-grid;
+  align-items: center;
+  position: relative;
+  min-width: 120px;
+}
+
+.figma_teacher_input_measure {
+  grid-area: 1 / 1;
+  visibility: hidden;
+  white-space: pre;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  padding-right: 4px;
+  pointer-events: none;
+}
+
+.figma_teacher_search_input {
+  grid-area: 1 / 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: light-dark(#183447, #ffffff);
+  width: 100%;
+  padding: 0;
+  white-space: nowrap;
+}
+
+.figma_teacher_search_input::placeholder {
+  color: light-dark(#183447, rgba(255, 255, 255, 0.7));
+  opacity: 0.85;
+  font-weight: 500;
+}
+
+.figma_teacher_search_clear_btn {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: light-dark(#183447, #ffffff);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: background-color 0.15s ease;
+  opacity: 0.7;
+}
+
+.figma_teacher_search_clear_btn:hover {
+  background-color: light-dark(rgba(24, 52, 71, 0.12), rgba(255, 255, 255, 0.2));
+  opacity: 1;
+}
+
+/* LISTA ROZWIJANA PODPOWIEDZI DYDAKTYKÓW */
+.figma_teacher_dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 100%;
+  width: max-content;
+  max-width: min(540px, 92vw);
+  max-height: 280px;
+  background-color: light-dark(rgba(255, 255, 255, 0.88), rgba(24, 38, 52, 0.92));
+  backdrop-filter: blur(35px) saturate(180%);
+  -webkit-backdrop-filter: blur(35px) saturate(180%);
+  border: none;
+  border-radius: 20px;
+  padding: 8px;
+  box-sizing: border-box;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.14), 0 4px 12px rgba(0, 0, 0, 0.06);
+  z-index: 1000;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  animation: planSyncPopIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.figma_teacher_dropdown_item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: none;
+  background: transparent;
+  color: light-dark(#183447, #f1f5f9);
+  font-family: 'Poppins', sans-serif;
+  font-size: 13.5px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.figma_teacher_dropdown_icon {
+  font-size: 14px;
+  color: light-dark(#183447, #93c5fd);
+  flex-shrink: 0;
+  width: 16px;
+  text-align: center;
+}
+
+.figma_teacher_dropdown_item.selected .figma_teacher_dropdown_icon {
+  color: #ffffff;
+}
+
+.figma_teacher_dropdown_item:hover {
+  background-color: light-dark(rgba(24, 52, 71, 0.08), rgba(255, 255, 255, 0.12));
+}
+
+.figma_teacher_dropdown_item.selected {
+  background-color: #183447;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.figma_teacher_dropdown_empty {
+  padding: 16px 14px;
+  font-size: 13px;
+  color: light-dark(#64748b, #94a3b8);
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* 2. PASEK NAWIGACJI: Tydzień | < Dni > Dzisiaj | Wybór grupy */
+.figma_nav_bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.figma_nav_left_group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.figma_nav_days_group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.figma_nav_arrow_btn {
+  width: 44px;
+  height: 44px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  border: none;
+  background-color: #183447;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+  padding: 0;
+  box-shadow: none;
+  flex-shrink: 0;
+}
+
+.figma_nav_arrow_btn:hover:not(:disabled) {
+  background-color: #1f425b;
+}
+
+.figma_nav_arrow_btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  background-color: #183447;
+  color: #ffffff;
+}
+
+.figma_today_btn {
+  height: 44px;
+  box-sizing: border-box;
+  background-color: #183447;
+  color: #ffffff;
+  border: none;
+  border-radius: 22px;
+  padding: 0 20px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+  user-select: none;
+  box-shadow: none;
+  flex-shrink: 0;
+}
+
+.figma_today_btn:hover {
+  background-color: #1f425b;
+}
+
+/* DROPDOWN TYGODNIA / ZJAZDU Z WYKORZYSTANIEM CustomSelect */
+.figma_week_custom_select.custom_select_wrapper {
+  position: relative;
+  width: auto;
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.figma_week_custom_select .custom_select_trigger,
+.figma_week_custom_select .custom_select_native {
+  height: 44px;
+  box-sizing: border-box;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border: none;
+  border-radius: 22px;
+  padding: 0 38px 0 20px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  color: light-dark(#183447, #f1f5f9);
+  background-color: light-dark(#ffffff, rgba(255, 255, 255, 0.15));
+  cursor: pointer;
+  box-shadow: none;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.figma_week_custom_select .custom_select_trigger:hover,
+.figma_week_custom_select .custom_select_native:hover {
+  background-color: light-dark(#f8fafc, rgba(255, 255, 255, 0.22));
+}
+
+.figma_week_custom_select .custom_select_icon {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: light-dark(#183447, #f1f5f9);
+  font-size: 11px;
+  opacity: 0.9;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.figma_week_custom_select.open .custom_select_icon {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.figma_week_custom_select .custom_select_dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  min-width: 100%;
+  width: max-content;
+  max-width: 320px;
+  max-height: 280px;
+  background-color: light-dark(rgba(255, 255, 255, 0.88), rgba(24, 38, 52, 0.92));
+  backdrop-filter: blur(35px) saturate(180%);
+  -webkit-backdrop-filter: blur(35px) saturate(180%);
+  border: none;
+  border-radius: 20px;
+  padding: 8px;
+  box-sizing: border-box;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.14), 0 4px 12px rgba(0, 0, 0, 0.06);
+  z-index: 1000;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  animation: planSyncPopIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.figma_week_custom_select .custom_select_option {
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: light-dark(#183447, #f1f5f9);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.figma_week_custom_select .custom_select_option:hover {
+  background-color: light-dark(rgba(24, 52, 71, 0.08), rgba(255, 255, 255, 0.12));
+}
+
+.figma_week_custom_select .custom_select_option.selected {
+  background-color: #183447;
+  color: #ffffff;
+}
+
+/* PRZYCISKI DNI TYGODNIA: Pon Wt Śr Czw PT Sb Ndz */
+.figma_days_row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.figma_day_bubble {
+  min-width: 44px;
+  height: 44px;
+  box-sizing: border-box;
+  padding: 0 10px;
+  border-radius: 22px;
+  border: none;
+  background-color: #F2F2F2;
+  color: #718292;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+  position: relative;
+  box-shadow: none;
+}
+
+/* Dni, w których SĄ zajęcia - tło białe */
+.figma_day_bubble.has_lessons {
+  background-color: #ffffff;
+  color: #183447;
+  font-weight: 600;
+}
+
+/* Dni, w których NIE MA zajęć - tło #F2F2F2 */
+.figma_day_bubble.no_lessons {
+  background-color: #F2F2F2;
+  color: #718292;
+  font-weight: 500;
+}
+
+.figma_day_bubble:hover:not(.active_day) {
+  filter: brightness(0.96);
+}
+
+/* Aktywny / zaznaczony dzień tygodnia - tło #183447, biały tekst, BEZ CIENIA */
+.figma_day_bubble.active_day {
+  background-color: #183447 !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  box-shadow: none !important;
+}
+
+/* 3. SEKCJA KART ZAJĘĆ */
+.figma_lessons_section {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.figma_lessons_grid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: stretch;
+}
+
+/* Pusty stan - "Brak zajęć w tym dniu!" */
+.figma_no_lessons_state {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+  animation: figmaFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.figma_no_lessons_img {
+  width: 100%;
+  max-width: 380px;
+  height: auto;
+  max-height: min(290px, 35vh);
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+}
+
+.figma_no_lessons_title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #183447;
+  margin: 18px 0 6px 0;
+  letter-spacing: -0.3px;
+}
+
+.figma_no_lessons_desc {
+  font-size: 15px;
+  font-weight: 500;
+  color: #6d7d8c;
+  margin: 0;
+}
+
+@keyframes figmaFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* NAGŁÓWKI SEKCJI: Plan zajęć & Wydarzenia z kalendarza */
+.figma_schedule_section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.figma_section_heading_bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+  margin-top: 4px;
+}
+
+.figma_section_heading_left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.figma_section_title {
+  font-size: 20px;
+  font-weight: 700;
+  font-family: 'Poppins', sans-serif;
+  color: light-dark(#183447, #f1f5f9);
+  margin: 0;
+  letter-spacing: -0.3px;
+  line-height: 1.25;
+}
+
+.figma_section_badge {
+  background-color: light-dark(#D5DEE7, rgba(255, 255, 255, 0.15));
+  color: light-dark(#183447, #ffffff);
+  font-size: 12px;
+  font-weight: 700;
+  font-family: 'Poppins', sans-serif;
+  padding: 3px 11px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+/* Szybkie pigułki filtrowania typów zajęć (Wszystkie / Wykłady / Ćwiczenia i Lab) */
+.figma_lesson_type_filter_pills {
+  display: inline-flex;
+  align-items: center;
+  background-color: light-dark(#edf2f7, rgba(255, 255, 255, 0.06));
+  padding: 3px;
+  border-radius: 20px;
+  gap: 3px;
+  box-sizing: border-box;
+  border: 1px solid light-dark(transparent, rgba(255, 255, 255, 0.08));
+}
+
+.figma_type_pill {
+  border: none;
+  background: transparent;
+  color: light-dark(#64748b, #94a3b8);
+  font-size: 13px;
+  font-weight: 500;
+  font-family: 'Poppins', sans-serif;
+  padding: 6px 13px;
+  border-radius: 17px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+  user-select: none;
+}
+
+.figma_type_pill:hover:not(.active) {
+  color: light-dark(#183447, #f1f5f9);
+  background-color: light-dark(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.07));
+}
+
+.figma_type_pill.active {
+  background-color: light-dark(#183447, #ffffff);
+  color: light-dark(#ffffff, #0f172a);
+  font-weight: 600;
+  box-shadow: light-dark(0 2px 6px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.35));
+}
+
+.figma_type_pill_count {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 10px;
+  background-color: light-dark(rgba(0, 0, 0, 0.07), rgba(255, 255, 255, 0.12));
+  color: light-dark(#475569, #cbd5e1);
+  line-height: 1.2;
+}
+
+.figma_type_pill.active .figma_type_pill_count {
+  background-color: light-dark(rgba(255, 255, 255, 0.22), rgba(15, 23, 42, 0.12));
+  color: light-dark(#ffffff, #0f172a);
+}
+
+.figma_field_hint_note {
+  font-size: 12px;
+  color: light-dark(#64748b, #94a3b8);
+  margin-top: 6px;
+  display: block;
+  line-height: 1.4;
+  font-weight: 400;
+}
+
+.figma_filter_reset_inline_btn {
+  background: none;
+  border: none;
+  color: #007bff;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  font-family: inherit;
+  text-decoration: underline;
+  margin-left: 4px;
+}
+
+.figma_filter_reset_inline_btn:hover {
+  color: #0056b3;
+}
+
+.figma_add_event_header_btn {
+  height: 38px;
+  border-radius: 19px;
+  border: none;
+  background-color: #183447;
+  color: #ffffff;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 0 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+  box-shadow: none;
+}
+
+.figma_add_event_header_btn:hover {
+  background-color: #1f425b;
+  transform: translateY(-1px);
+}
+
+/* 4. SEKCJA WYDARZEŃ Z KALENDARZA */
+.figma_calendar_events_section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-top: 36px;
+  margin-bottom: 24px;
+}
+
+.figma_events_grid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: stretch;
+}
+
+.figma_event_card {
+  position: relative;
+  overflow: hidden;
+  background-color: light-dark(#ffffff, rgba(255, 255, 255, 0.08));
+  border-radius: 24px;
+  width: 300px;
+  min-width: 280px;
+  max-width: 330px;
+  flex: 1 1 290px;
+  height: 175px;
+  padding: 22px 24px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, background-color 0.2s ease;
+  user-select: none;
+  box-shadow: none;
+  border: none;
+}
+
+.figma_event_card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(24, 52, 71, 0.08);
+}
+
+.figma_event_card_top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.figma_event_card_info {
+  flex: 1;
+  min-width: 0;
+}
+
+.figma_event_card_title {
+  font-size: 15px;
+  font-weight: 700;
+  color: light-dark(#183447, #ffffff);
+  margin: 0 0 6px 0;
+  line-height: 1.35;
+  font-family: 'Poppins', sans-serif;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.figma_event_card_details {
+  font-size: 12px;
+  font-weight: 500;
+  color: light-dark(#6d7d8c, #94a3b8);
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.figma_event_card_badge {
+  background-color: light-dark(#183447, rgba(255, 255, 255, 0.15));
+  color: #ffffff;
+  border-radius: 100px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.figma_event_card_bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.figma_event_card_category {
+  font-size: 12px;
+  font-weight: 600;
+  color: light-dark(#6d7d8c, #94a3b8);
+  font-family: 'Poppins', sans-serif;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.figma_event_card_edit_btn {
+  background: transparent;
+  border: 1px solid light-dark(#d5dee7, rgba(255, 255, 255, 0.2));
+  color: light-dark(#183447, #ffffff);
+  font-size: 11px;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  border-radius: 12px;
+  padding: 4px 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.figma_event_card_edit_btn:hover {
+  background-color: light-dark(rgba(24, 52, 71, 0.08), rgba(255, 255, 255, 0.15));
+}
+
+/* PUSTY STAN WYDARZEŃ (BRAK WYDARZEŃ) */
+.figma_no_events_card {
+  background-color: light-dark(#ffffff, rgba(255, 255, 255, 0.08));
+  border-radius: 24px;
+  padding: 24px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  width: 100%;
+  box-sizing: border-box;
+  flex-wrap: wrap;
+  box-shadow: none;
+}
+
+.figma_no_events_left {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.figma_no_events_icon_wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: light-dark(#D5DEE7, rgba(255, 255, 255, 0.12));
+  color: light-dark(#183447, #ffffff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.figma_no_events_content {
+  display: flex;
+  flex-direction: column;
+}
+
+.figma_no_events_title {
+  font-size: 15px;
+  font-weight: 700;
+  color: light-dark(#183447, #ffffff);
+  margin: 0 0 3px 0;
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: -0.2px;
+}
+
+.figma_no_events_desc {
+  font-size: 13px;
+  font-weight: 500;
+  color: light-dark(#6d7d8c, #94a3b8);
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+.figma_no_events_add_btn {
+  height: 40px;
+  border-radius: 20px;
+  border: none;
+  background-color: #183447;
+  color: #ffffff;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 0 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.figma_no_events_add_btn:hover {
+  background-color: #1f425b;
+  transform: translateY(-1px);
+}
+
+/* MODAL SZCZEGÓŁÓW / EDYCJI WYDARZENIA */
+.plan_event_modal_overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(24, 52, 71, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: planEventModalFadeIn 0.2s ease-out;
+}
+
+@keyframes planEventModalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.plan_event_modal_card {
+  background-color: #ffffff;
+  border-radius: 24px;
+  width: 100%;
+  max-width: 440px;
+  padding: 28px 30px;
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.2);
+  border: none;
+  animation: planEventModalScaleUp 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  color: #183447;
+  font-family: 'Poppins', sans-serif;
+  box-sizing: border-box;
+}
+
+@keyframes planEventModalScaleUp {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.plan_event_modal_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.plan_event_modal_title_group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.plan_event_modal_title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #183447;
+}
+
+.plan_event_modal_date {
+  font-size: 13px;
+  color: #6d7d8c;
+  font-weight: 500;
+}
+
+.plan_event_modal_close_btn {
+  background: #f0f2f5;
+  border: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  color: #64748b;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+  padding: 0;
+}
+
+.plan_event_modal_close_btn:hover {
+  background: #e2e8f0;
+  color: #183447;
+}
+
+.plan_event_modal_body {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.plan_event_field_group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.plan_event_label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #183447;
+}
+
+.plan_event_input {
+  background-color: #f4f6f8;
+  border: 1px solid #e2e8f0;
+  padding: 12px 16px;
+  border-radius: 14px;
+  font-size: 14px;
+  color: #183447;
+  font-family: 'Poppins', sans-serif;
+  outline: none;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.plan_event_input:focus {
+  border-color: #183447;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(24, 52, 71, 0.08);
+}
+
+.plan_event_time_row {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.plan_event_time_input {
+  flex: 1;
+}
+
+.plan_event_all_day_label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #183447;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.plan_event_checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: #183447;
+  cursor: pointer;
+}
+
+.plan_event_modal_footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.plan_event_footer_spacer {
+  flex: 1;
+}
+
+.plan_event_btn_delete {
+  background-color: #fee2e2;
+  color: #dc2626;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+  font-family: 'Poppins', sans-serif;
+}
+
+.plan_event_btn_delete:hover {
+  background-color: #fca5a5;
+  color: #991b1b;
+}
+
+.plan_event_btn_cancel {
+  background-color: transparent;
+  color: #64748b;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 100px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: 'Poppins', sans-serif;
+}
+
+.plan_event_btn_cancel:hover {
+  background-color: #f1f5f9;
+  color: #183447;
+}
+
+.plan_event_btn_save {
+  background-color: #183447;
+  color: #ffffff;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 100px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: 'Poppins', sans-serif;
+  box-shadow: 0 4px 12px rgba(24, 52, 71, 0.2);
+}
+
+.plan_event_btn_save:hover:not(:disabled) {
+  background-color: #1f425b;
+  transform: translateY(-1px);
+}
+
+.plan_event_btn_save:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* 4. MODAL WYBORU PROFILU I FILTRÓW */
+.figma_modal_overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(24, 52, 71, 0.45);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.figma_modal_card {
+  background: #ffffff;
+  border-radius: 24px;
+  width: 100%;
+  max-width: 620px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.2);
+  padding: 30px 34px;
+  box-sizing: border-box;
+  animation: figmaModalFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes figmaModalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.figma_modal_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 22px;
+}
+
+.figma_modal_title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: #183447;
+}
+
+.figma_modal_close_btn {
+  background: #f0f2f5;
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 18px;
+  color: #555;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.figma_modal_close_btn:hover {
+  background: #e4e7ec;
+  color: #000;
+}
+
+.figma_modal_mode_switch {
+  display: flex;
+  background: #f0f3f6;
+  padding: 4px;
+  border-radius: 14px;
+  margin-bottom: 24px;
+  gap: 4px;
+}
+
+.figma_modal_mode_btn {
+  flex: 1;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 500;
+  color: #556575;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.figma_modal_mode_btn.active {
+  background: #183447;
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: none;
+}
+
+.figma_filter_fields_grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.figma_field_group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.figma_field_label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #556575;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.figma_field_select, .figma_field_input {
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: 12px;
+  border: 1.5px solid #dbe1e8;
+  background-color: #ffffff;
+  color: #183447;
+  font-size: 14px;
+  font-family: 'Poppins', sans-serif;
+  outline: none;
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+.figma_field_select:focus, .figma_field_input:focus {
+  border-color: #183447;
+}
+
+.figma_field_select:disabled {
+  background-color: #f7f9fa;
+  color: #a0aec0;
+  border-color: #e2e8f0;
+  cursor: not-allowed;
+}
+
+.figma_modal_save_btn {
+  width: 100%;
+  background-color: #183447;
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  padding: 13px 20px;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.figma_modal_save_btn:hover {
+  background-color: #1f425b;
+}
+
+.figma_modal_admin_toggle {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid #edf2f7;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.figma_admin_toggle_btn {
+  background: none;
+  border: none;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+}
+
+.figma_admin_toggle_btn:hover {
+  color: #183447;
+}
+
+.figma_admin_box {
+  margin-top: 12px;
+  padding: 16px;
+  background-color: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.figma_admin_actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.figma_admin_btn {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  font-size: 12px;
+  font-weight: 500;
+  color: #334155;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.figma_admin_btn:hover {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+}
+
+.figma_admin_btn.danger {
+  color: #e53e3e;
+  border-color: #feb2b2;
+}
+
+.figma_admin_btn.danger:hover {
+  background: #fff5f5;
+  border-color: #fc8181;
+}
+
+/* 5. TRYB CIEMNY (DARK MODE) */
+[data-theme='dark'] .figma_plan_page {
+  background-color: transparent;
+}
+
+[data-theme='dark'] .figma_plan_title {
+  color: #f1f5f9;
+}
+
+[data-theme='dark'] .figma_plan_subtitle {
+  color: #94a3b8;
+}
+
+[data-theme='dark'] .plan_mode_toggle {
+  background: rgba(32, 31, 30, 0.7);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme='dark'] .plan_mode_toggle_bg {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme='dark'] .plan_mode_toggle_btn.active {
+  color: #ffffff;
+}
+
+[data-theme='dark'] .figma_group_pill_btn {
+  background-color: #1e2f42;
+  color: #ffffff;
+  border: 1px solid #2e4560;
+  box-shadow: none;
+}
+
+[data-theme='dark'] .figma_group_pill_btn {
+  background-color: #202e3e;
+  color: #f1f5f9;
+}
+
+[data-theme='dark'] .figma_group_pill_btn:hover {
+  background-color: #2c3f54;
+}
+
+[data-theme='dark'] .figma_nav_arrow_btn {
+  background-color: #202e3e;
+  color: #f1f5f9;
+}
+
+[data-theme='dark'] .figma_nav_arrow_btn:hover:not(:disabled) {
+  background-color: #2c3f54;
+}
+
+[data-theme='dark'] .figma_today_btn {
+  background-color: #202e3e;
+  color: #f1f5f9;
+}
+
+[data-theme='dark'] .figma_today_btn:hover {
+  background-color: #2c3f54;
+}
+
+[data-theme='dark'] .figma_week_select {
+  border-color: #94a3b8;
+  color: #f1f5f9;
+}
+
+[data-theme='dark'] .figma_week_select option {
+  background-color: #192634;
+  color: #f1f5f9;
+}
+
+[data-theme='dark'] .figma_week_select_wrapper .week_chevron_svg {
+  color: #94a3b8;
+}
+
+[data-theme='dark'] .figma_day_bubble {
+  background-color: #16202c;
+  color: #94a3b8;
+}
+
+[data-theme='dark'] .figma_day_bubble.has_lessons {
+  background-color: #202e3e;
+  color: #f1f5f9;
+}
+
+[data-theme='dark'] .figma_day_bubble.no_lessons {
+  background-color: #141c26;
+  color: #64748b;
+}
+
+[data-theme='dark'] .figma_day_bubble:hover:not(.active_day) {
+  background-color: #26374a;
+  color: #f1f5f9;
+}
+
+[data-theme='dark'] .figma_day_bubble.active_day {
+  background-color: #ffffff !important;
+  color: #111a24 !important;
+  box-shadow: none !important;
+}
+
+[data-theme='dark'] .figma_no_lessons_title {
+  color: #f1f5f9;
+}
+
+[data-theme='dark'] .figma_no_lessons_desc {
+  color: #94a3b8;
+}
+
+[data-theme='dark'] .figma_section_title {
+  color: #f1f5f9;
+}
+
+[data-theme='dark'] .figma_section_badge {
+  background-color: rgba(255, 255, 255, 0.12);
+  color: #f1f5f9;
+}
+
+[data-theme='dark'] .figma_lesson_type_filter_pills {
+  background-color: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+[data-theme='dark'] .figma_type_pill {
+  color: #94a3b8;
+}
+
+[data-theme='dark'] .figma_type_pill:hover:not(.active) {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.07);
+}
+
+[data-theme='dark'] .figma_type_pill.active {
+  background-color: #ffffff;
+  color: #0f172a;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+[data-theme='dark'] .figma_type_pill_count {
+  background-color: rgba(255, 255, 255, 0.12);
+  color: #cbd5e1;
+}
+
+[data-theme='dark'] .figma_type_pill.active .figma_type_pill_count {
+  background-color: rgba(15, 23, 42, 0.12);
+  color: #0f172a;
+}
+
+[data-theme='dark'] .figma_add_event_header_btn {
+  background-color: #ffffff;
+  color: #111a24;
+}
+
+[data-theme='dark'] .figma_add_event_header_btn:hover {
+  background-color: #e2e8f0;
+}
+
+[data-theme='dark'] .figma_event_card {
+  background-color: #1a2736;
+}
+
+[data-theme='dark'] .figma_event_card_title {
+  color: #f1f5f9;
+}
+
+[data-theme='dark'] .figma_event_card_details {
+  color: #94a3b8;
+}
+
+[data-theme='dark'] .figma_event_card_badge {
+  background-color: rgba(255, 255, 255, 0.12);
+  color: #f1f5f9;
+}
+
+[data-theme='dark'] .figma_event_card_category {
+  color: #94a3b8;
+}
+
+[data-theme='dark'] .figma_event_card_edit_btn {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #f1f5f9;
+}
+
+[data-theme='dark'] .figma_event_card_edit_btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme='dark'] .figma_no_events_card {
+  background-color: #1a2736;
+}
+
+[data-theme='dark'] .figma_no_events_icon_wrap {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+[data-theme='dark'] .figma_no_events_title {
+  color: #f1f5f9;
+}
+
+[data-theme='dark'] .figma_no_events_desc {
+  color: #94a3b8;
+}
+
+[data-theme='dark'] .figma_no_events_add_btn {
+  background-color: #ffffff;
+  color: #111a24;
+}
+
+[data-theme='dark'] .figma_no_events_add_btn:hover {
+  background-color: #e2e8f0;
+}
+
+/* DARK MODE DLA MODALU WYDARZENIA */
+[data-theme='dark'] .plan_event_modal_card {
+  background-color: #182433;
+  color: #f1f5f9;
+  border: 1px solid #293d52;
+}
+
+[data-theme='dark'] .plan_event_modal_title {
+  color: #f1f5f9;
+}
+
+[data-theme='dark'] .plan_event_modal_date {
+  color: #94a3b8;
+}
+
+[data-theme='dark'] .plan_event_modal_close_btn {
+  background: #253648;
+  color: #cbd5e1;
+}
+
+[data-theme='dark'] .plan_event_modal_close_btn:hover {
+  background: #334a60;
+  color: #ffffff;
+}
+
+[data-theme='dark'] .plan_event_label {
+  color: #cbd5e1;
+}
+
+[data-theme='dark'] .plan_event_input {
+  background-color: #111a24;
+  border-color: #293d52;
+  color: #f1f5f9;
+}
+
+[data-theme='dark'] .plan_event_input:focus {
+  border-color: #3b82f6;
+  background-color: #16202c;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+[data-theme='dark'] .plan_event_all_day_label {
+  color: #cbd5e1;
+}
+
+[data-theme='dark'] .plan_event_btn_cancel {
+  color: #94a3b8;
+}
+
+[data-theme='dark'] .plan_event_btn_cancel:hover {
+  background-color: #243547;
+  color: #ffffff;
+}
+
+[data-theme='dark'] .plan_event_btn_save {
+  background-color: #3b82f6;
+  color: #ffffff;
+}
+
+[data-theme='dark'] .plan_event_btn_save:hover:not(:disabled) {
+  background-color: #2563eb;
+}
+
+[data-theme='dark'] .figma_modal_card {
+  background: #182433;
+  color: #f1f5f9;
+  border: 1px solid #293d52;
+}
+
+[data-theme='dark'] .figma_modal_title {
+  color: #f1f5f9;
+}
+
+[data-theme='dark'] .figma_modal_close_btn {
+  background: #253648;
+  color: #cbd5e1;
+}
+
+[data-theme='dark'] .figma_modal_mode_switch {
+  background: #111a24;
+}
+
+[data-theme='dark'] .figma_modal_mode_btn {
+  color: #94a3b8;
+}
+
+[data-theme='dark'] .figma_modal_mode_btn.active {
+  background: #2b4055;
+  color: #ffffff;
+}
+
+[data-theme='dark'] .figma_field_label {
+  color: #94a3b8;
+}
+
+[data-theme='dark'] .figma_field_select, [data-theme='dark'] .figma_field_input {
+  background-color: #111a24;
+  color: #f1f5f9;
+  border-color: #293d52;
+}
+
+[data-theme='dark'] .figma_field_select:disabled {
+  background-color: #15202d;
+  color: #64748b;
+  border-color: #1e2d3d;
+}
+
+[data-theme='dark'] .figma_modal_save_btn {
+  background-color: #3b82f6;
+}
+
+[data-theme='dark'] .figma_modal_save_btn:hover {
+  background-color: #2563eb;
+}
+
+[data-theme='dark'] .figma_admin_box {
+  background-color: #111a24;
+  border-color: #293d52;
+}
+
+[data-theme='dark'] .figma_admin_btn {
+  background: #1e2c3b;
+  color: #cbd5e1;
+  border-color: #334a60;
+}
+
+/* ========================================================
+   ZĘBATKA I ROZWIJANE OKIENKO SYNCHRONIZACJI (BIAŁE Z BLUREM)
+   ======================================================== */
+
+.plan_sync_popover_anchor {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.plan_sync_gear_btn {
+  height: 44px;
+  width: 44px;
+  border-radius: 50%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #183447;
+  border: none;
+  color: #EFF6FF;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: none;
+  flex-shrink: 0;
+  outline: none;
+  padding: 0;
+}
+
+.plan_sync_gear_btn:hover {
+  background-color: #1f425b;
+}
+
+.plan_sync_gear_btn.active {
+  background-color: #183447;
+  filter: brightness(1.1);
+}
+
+.plan_gear_icon {
+  font-size: 21px;
+  width: 21px;
+  height: 21px;
+  color: #EFF6FF;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.plan_gear_icon.spin,
+.plan_sync_icon.spin {
+  animation: planSyncSpin 0.8s linear infinite;
+}
+
+@keyframes planSyncSpin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* OKIENKO BIAŁE Z BLUREM I CIENIEM (USTAWIENIA PLANU ZAJĘĆ) */
+.plan_sync_popover {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 336px;
+  background-color: light-dark(rgba(255, 255, 255, 0.84), rgba(24, 38, 52, 0.88));
+  backdrop-filter: blur(35px) saturate(180%);
+  -webkit-backdrop-filter: blur(35px) saturate(180%);
+  border: none;
+  border-radius: 24px;
+  padding: 20px;
+  box-sizing: border-box;
+  box-shadow: 0 20px 48px -6px rgba(0, 0, 0, 0.16), 0 8px 18px -4px rgba(0, 0, 0, 0.08);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  font-family: 'Poppins', sans-serif;
+  animation: planSyncPopIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes planSyncPopIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.plan_sync_popover_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.plan_sync_popover_title {
+  font-size: 15px;
+  font-weight: 700;
+  color: light-dark(#183447, #f1f5f9);
+  letter-spacing: -0.3px;
+}
+
+.plan_sync_close_btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  background: light-dark(rgba(0, 0, 0, 0.05), rgba(255, 255, 255, 0.1));
+  color: light-dark(#64748b, #94a3b8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.plan_sync_close_btn:hover {
+  background: light-dark(rgba(0, 0, 0, 0.1), rgba(255, 255, 255, 0.2));
+  color: light-dark(#183447, #ffffff);
+}
+
+.plan_sync_toggle_card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  background: light-dark(rgba(24, 52, 71, 0.04), rgba(255, 255, 255, 0.05));
+  border-radius: 16px;
+}
+
+.plan_sync_toggle_texts {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.plan_sync_toggle_title {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: light-dark(#183447, #f1f5f9);
+  line-height: 1.35;
+}
+
+.plan_sync_toggle_desc {
+  font-size: 11px;
+  color: light-dark(#64748b, #94a3b8);
+  line-height: 1.3;
+}
+
+.plan_sync_toggle_switch_wrap {
+  flex-shrink: 0;
+  transform: scale(0.8);
+  transform-origin: center right;
+}
+
+.plan_sync_info_box {
+  background: light-dark(rgba(24, 52, 71, 0.04), rgba(255, 255, 255, 0.05));
+  border-radius: 16px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.plan_sync_info_row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12.5px;
+  gap: 12px;
+}
+
+.plan_sync_info_label {
+  color: light-dark(#64748b, #94a3b8);
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.plan_sync_info_value {
+  color: light-dark(#183447, #f1f5f9);
+  font-weight: 600;
+  text-align: right;
+  line-height: 1.35;
+}
+
+.plan_sync_info_divider {
+  height: 1px;
+  background: light-dark(rgba(0, 0, 0, 0.06), rgba(255, 255, 255, 0.08));
+}
+
+.plan_sync_popover_actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.plan_sync_popover_btn_primary {
+  height: 42px;
+  border-radius: 21px;
+  background-color: #183447;
+  color: #ffffff;
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.15s ease;
+  box-shadow: 0 4px 12px rgba(24, 52, 71, 0.18);
+  user-select: none;
+}
+
+.plan_sync_popover_btn_primary:hover:not(:disabled) {
+  background-color: #1f425b;
+  box-shadow: 0 6px 16px rgba(24, 52, 71, 0.24);
+  transform: translateY(-1px);
+}
+
+.plan_sync_popover_btn_primary:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.plan_sync_popover_btn_danger {
+  height: 40px;
+  border-radius: 20px;
+  background-color: light-dark(rgba(220, 38, 38, 0.06), rgba(239, 68, 68, 0.12));
+  color: light-dark(#dc2626, #f87171);
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.15s ease;
+  box-shadow: none;
+  user-select: none;
+}
+
+.plan_sync_popover_btn_danger:hover {
+  background-color: light-dark(rgba(220, 38, 38, 0.12), rgba(239, 68, 68, 0.2));
+  color: light-dark(#b91c1c, #fca5a5);
+}
+
+/* ==========================================================================
+   PRZEŁĄCZNIK WIDOKÓW PLANU (KARTY / LISTA / SIATKA)
+   ========================================================================== */
+.plan_view_switcher {
+  display: inline-flex;
+  align-items: center;
+  background: light-dark(rgba(255, 255, 255, 0.8), rgba(32, 31, 30, 0.7));
+  border: 1px solid light-dark(rgba(0, 0, 0, 0.08), rgba(255, 255, 255, 0.1));
+  border-radius: 22px;
+  padding: 3px;
+  height: 44px;
+  box-sizing: border-box;
+  gap: 2px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.plan_view_btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 13px;
+  height: 100%;
+  border-radius: 18px;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: light-dark(#605E5C, #A19F9D);
+  cursor: pointer;
+  transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+}
+
+.plan_view_btn:hover:not(.active) {
+  background: light-dark(rgba(0, 0, 0, 0.04), rgba(255, 255, 255, 0.08));
+  color: light-dark(#183447, #FFFFFF);
+}
+
+.plan_view_btn.active {
+  background: light-dark(#183447, rgba(255, 255, 255, 0.2));
+  color: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.plan_view_btn_icon {
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.plan_view_btn_label {
+  font-size: 13px;
+  letter-spacing: -0.2px;
+}
+
+[data-theme='dark'] .plan_view_switcher {
+  background: rgba(32, 31, 30, 0.7);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme='dark'] .plan_view_btn {
+  color: #A19F9D;
+}
+
+[data-theme='dark'] .plan_view_btn.active {
+  background: rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
+}
+
+/* ==========================================================================
+   WIDOK LISTY TYGODNIOWEJ (AGENDA)
+   ========================================================================== */
+.figma_schedule_list_section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.figma_list_days_container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.figma_list_day_card {
+  background: light-dark(#FFFFFF, #192634);
+  border: 1px solid light-dark(rgba(0, 0, 0, 0.06), rgba(255, 255, 255, 0.07));
+  border-radius: 20px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.figma_list_day_card.is_today {
+  border-color: light-dark(rgba(24, 52, 71, 0.35), rgba(96, 165, 250, 0.4));
+  box-shadow: 0 4px 18px light-dark(rgba(24, 52, 71, 0.06), rgba(0, 0, 0, 0.2));
+  background: light-dark(#FFFFFF, #1e2c3c);
+}
+
+.figma_list_day_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 12px;
+  border-bottom: 1px solid light-dark(rgba(0, 0, 0, 0.06), rgba(255, 255, 255, 0.07));
+}
+
+.figma_list_day_title_group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.figma_list_day_title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: light-dark(#183447, #F1F5F9);
+  letter-spacing: -0.3px;
+}
+
+.figma_list_today_badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 9px;
+  border-radius: 12px;
+  background: light-dark(#183447, #2563EB);
+  color: #FFFFFF;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.figma_list_day_count {
+  font-size: 12px;
+  font-weight: 600;
+  color: light-dark(#605E5C, #94A3B8);
+  background: light-dark(rgba(0, 0, 0, 0.04), rgba(255, 255, 255, 0.06));
+  padding: 3px 10px;
+  border-radius: 12px;
+}
+
+.figma_list_items_group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.figma_list_item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 18px;
+  border-radius: 14px;
+  background: light-dark(#FFFFFF, rgba(255, 255, 255, 0.03));
+  border: 1px solid light-dark(rgba(0, 0, 0, 0.06), rgba(255, 255, 255, 0.06));
+  cursor: default;
+  position: relative;
+  overflow: hidden;
+  user-select: text;
+}
+
+.figma_list_item.state_past {
+  opacity: 0.65;
+  background: light-dark(#F3F3F3, #151d26);
+}
+
+.figma_list_item.state_ongoing {
+  background: light-dark(#EDF5FA, #1f3042);
+  border-color: light-dark(rgba(24, 52, 71, 0.25), rgba(255, 255, 255, 0.15));
+}
+
+.figma_list_item_time_col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 65px;
+  flex-shrink: 0;
+  gap: 2px;
+}
+
+.figma_list_time_start {
+  font-size: 14px;
+  font-weight: 700;
+  color: light-dark(#183447, #F1F5F9);
+}
+
+.figma_list_time_end {
+  font-size: 12px;
+  font-weight: 500;
+  color: light-dark(#605E5C, #94A3B8);
+}
+
+.figma_list_pulse_indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.figma_pulse_dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #10B981;
+  box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  animation: figmaPulse 1.8s infinite cubic-bezier(0.66, 0, 0, 1);
+}
+
+@keyframes figmaPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 7px rgba(16, 185, 129, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+
+.figma_pulse_text {
+  font-size: 10px;
+  font-weight: 700;
+  color: #10B981;
+  text-transform: uppercase;
+}
+
+.figma_list_item_content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.figma_list_item_top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.figma_list_item_title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: light-dark(#183447, #F1F5F9);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.figma_list_item_type_badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  background-color: light-dark(#183447, #2B3E52);
+  color: #FFFFFF;
+  border: none;
+  flex-shrink: 0;
+}
+
+.figma_list_item_meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.figma_list_meta_chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: light-dark(#605E5C, #94A3B8);
+}
+
+.figma_list_meta_icon {
+  font-size: 11px;
+  opacity: 0.8;
+}
+
+.figma_list_meta_chip.group_chip {
+  background: light-dark(rgba(0, 0, 0, 0.05), rgba(255, 255, 255, 0.08));
+  padding: 1px 6px;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.figma_list_empty_day_placeholder {
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: light-dark(rgba(0, 0, 0, 0.02), rgba(255, 255, 255, 0.02));
+  color: light-dark(#605E5C, #94A3B8);
+  font-size: 13px;
+  font-style: italic;
+}
+
+/* ==========================================================================
+   WIDOK SIATKI TYGODNIOWEJ (TIMETABLE GRID)
+   ========================================================================== */
+.figma_schedule_grid_section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.figma_timetable_scroll_wrap {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  background: light-dark(#FFFFFF, #192634);
+  border: 1px solid light-dark(rgba(0, 0, 0, 0.06), rgba(255, 255, 255, 0.08));
+  border-radius: 24px;
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.03);
+}
+
+.figma_timetable_board {
+  min-width: 880px;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 16px 20px 16px;
+  box-sizing: border-box;
+}
+
+/* NAGŁÓWKI: LEWY NAROŻNIK ORAZ 7 KOLUMN DNI */
+.figma_timetable_header_row {
+  display: grid;
+  grid-template-columns: 60px repeat(7, 1fr);
+  gap: 8px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid light-dark(rgba(0, 0, 0, 0.06), rgba(255, 255, 255, 0.08));
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: light-dark(#FFFFFF, #192634);
+}
+
+.figma_timetable_corner_cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  font-size: 11px;
+  font-weight: 600;
+  color: light-dark(#605E5C, #94A3B8);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.figma_timetable_day_header_cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 8px 4px;
+  border-radius: 12px;
+  transition: background-color 0.2s ease;
+}
+
+.figma_timetable_day_header_cell.is_today {
+  background: light-dark(rgba(24, 52, 71, 0.08), rgba(37, 99, 235, 0.18));
+}
+
+.figma_timetable_day_header_name {
+  font-size: 13px;
+  font-weight: 700;
+  color: light-dark(#183447, #F1F5F9);
+  letter-spacing: -0.2px;
+}
+
+.figma_timetable_day_header_sub {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.figma_timetable_day_header_date {
+  font-size: 11px;
+  font-weight: 500;
+  color: light-dark(#605E5C, #94A3B8);
+}
+
+.figma_timetable_today_tag {
+  background: light-dark(#183447, #2563EB);
+  color: #FFFFFF;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.figma_timetable_lessons_count_tag {
+  background: light-dark(rgba(0, 0, 0, 0.06), rgba(255, 255, 255, 0.1));
+  color: light-dark(#183447, #F1F5F9);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 8px;
+}
+
+/* CIAŁO SIATKI */
+.figma_timetable_body {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 8px;
+  position: relative;
+  height: 840px; /* 13 godzin * ~64.6px */
+  margin-top: 8px;
+}
+
+/* KOLUMNA GODZIN PO LEWEJ */
+.figma_timetable_hours_col {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.figma_timetable_hour_slot {
+  display: flex;
+  align-items: flex-start;
+  height: 0;
+  position: relative;
+}
+
+.figma_timetable_hour_label {
+  font-size: 11px;
+  font-weight: 600;
+  color: light-dark(#8A8886, #94A3B8);
+  font-variant-numeric: tabular-nums;
+  transform: translateY(-8px);
+}
+
+/* 7 KOLUMN DNI */
+.figma_timetable_days_grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  height: 100%;
+}
+
+.figma_timetable_grid_lines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.figma_timetable_grid_horizontal_line {
+  width: 100%;
+  height: 1px;
+  background: light-dark(rgba(0, 0, 0, 0.06), rgba(255, 255, 255, 0.06));
+}
+
+.figma_timetable_day_col {
+  position: relative;
+  height: 100%;
+  border-radius: 12px;
+  background: light-dark(rgba(0, 0, 0, 0.015), rgba(255, 255, 255, 0.015));
+  border: 1px solid light-dark(rgba(0, 0, 0, 0.03), rgba(255, 255, 255, 0.03));
+}
+
+.figma_timetable_day_col.is_today {
+  background: light-dark(rgba(24, 52, 71, 0.025), rgba(37, 99, 235, 0.05));
+  border-color: light-dark(rgba(24, 52, 71, 0.12), rgba(37, 99, 235, 0.2));
+}
+
+/* CZERWONA LINIA AKTUALNEGO CZASU */
+.figma_timetable_now_line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #EF4444;
+  z-index: 8;
+  pointer-events: none;
+}
+
+.figma_timetable_now_dot {
+  position: absolute;
+  left: -4px;
+  top: -4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #EF4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.3);
+}
+
+/* KAFELEK ZAJĘĆ W SIATCE */
+.figma_timetable_card {
+  position: absolute;
+  border-radius: 8px;
+  border: 1px solid light-dark(rgba(24, 52, 71, 0.1), rgba(255, 255, 255, 0.08));
+  border-left-width: 3.5px;
+  border-left-style: solid;
+  border-left-color: light-dark(#183447, #4a7596);
+  background-color: light-dark(#FFFFFF, #1e2c3c);
+  padding: 6px 8px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  z-index: 4;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+.figma_timetable_card.card_state_past {
+  opacity: 0.65;
+  background-color: light-dark(#F3F3F3, #151d26);
+  border-left-color: light-dark(#718096, #4a5568);
+}
+
+.figma_timetable_card.card_state_ongoing {
+  background-color: light-dark(#EDF5FA, #233547);
+  border-left-color: light-dark(#183447, #60a5fa);
+}
+
+.figma_timetable_card_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 4px;
+}
+
+.figma_timetable_card_time {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: light-dark(#183447, #F1F5F9);
+  white-space: nowrap;
+}
+
+.figma_timetable_card_type_tag {
+  font-size: 9.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: light-dark(#183447, #93C5FD);
+}
+
+.figma_timetable_card_title {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: light-dark(#183447, #F1F5F9);
+  line-height: 1.25;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 2px 0;
+}
+
+.figma_timetable_card_meta {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  color: light-dark(#605E5C, #94A3B8);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.figma_timetable_card_room {
+  font-weight: 600;
+  color: light-dark(#183447, #E2E8F0);
+}
+
+.figma_timetable_card_teacher {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ==========================================================================
+   MODAL SZCZEGÓŁÓW ZAJĘĆ (LESSON DETAILS MODAL)
+   ========================================================================== */
+.lesson_details_modal_card {
+  max-width: 480px;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.lesson_details_type_pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 500;
+  width: fit-content;
+  background-color: #183447;
+  color: #ffffff;
+  border: none;
+}
+
+[data-theme='dark'] .lesson_details_type_pill {
+  background-color: #2b3e52;
+  color: #ffffff;
+}
+
+.lesson_details_modal_body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: light-dark(#F9FAFB, rgba(255, 255, 255, 0.04));
+  border-radius: 14px;
+  padding: 16px;
+  border: 1px solid light-dark(rgba(0, 0, 0, 0.05), rgba(255, 255, 255, 0.06));
+}
+
+.lesson_details_row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.lesson_details_icon {
+  font-size: 15px;
+  color: light-dark(#183447, #93C5FD);
+  margin-top: 3px;
+  width: 18px;
+  text-align: center;
+}
+
+.lesson_details_texts {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.lesson_details_label {
+  font-size: 12px;
+  font-weight: 500;
+  color: light-dark(#8A8886, #94A3B8);
+}
+
+.lesson_details_val {
+  font-size: 14px;
+  font-weight: 600;
+  color: light-dark(#183447, #F1F5F9);
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 768px) {
+  .figma_plan_page {
+    padding: 20px 16px 40px 16px;
+  }
+
+  .figma_plan_header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .figma_plan_header_actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .plan_view_switcher {
+    order: 1;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .plan_view_btn {
+    flex: 1;
+    justify-content: center;
+    padding: 0 8px;
+  }
+
+  .plan_mode_toggle {
+    order: 2;
+    flex: 1;
+    width: auto;
+  }
+
+  .plan_sync_popover_anchor {
+    order: 3;
+  }
+
+  .figma_group_pill_btn,
+  .figma_teacher_search_wrapper,
+  .figma_teacher_search_bar {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .figma_teacher_search_bar:focus-within {
+    width: 100%;
+  }
+
+  .figma_teacher_dropdown {
+    width: 100%;
+    left: 0;
+    right: 0;
+  }
+
+  .figma_nav_bar {
+    gap: 12px;
+  }
+
+  .figma_nav_left_group {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .figma_nav_days_group {
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 8px;
+  }
+
+  .figma_week_select_wrapper,
+  .figma_week_custom_select.custom_select_wrapper {
+    width: 100%;
+  }
+
+  .figma_week_custom_select .custom_select_trigger,
+  .figma_week_custom_select .custom_select_native {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .figma_week_custom_select .custom_select_dropdown {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .figma_section_heading_bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .figma_lesson_type_filter_pills {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .figma_type_pill {
+    flex: 1;
+    justify-content: center;
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+
+  .figma_lessons_grid,
+  .figma_events_grid {
+    gap: 16px;
+  }
+
+  .figma_lesson_card,
+  .figma_event_card {
+    width: 100%;
+    max-width: 100%;
+    min-width: 100%;
+  }
+
+  .figma_no_events_card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 20px;
+  }
+
+  .figma_no_events_add_btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .figma_modal_card {
+    padding: 20px;
+  }
+
+  .figma_no_lessons_img {
+    max-width: 280px;
+    max-height: 220px;
+  }
+
+  .figma_no_lessons_title {
+    font-size: 22px;
+  }
+
+  .figma_no_lessons_desc {
+    font-size: 14px;
+  }
+
+  .plan_sync_popover {
+    width: min(320px, calc(100vw - 24px));
+    right: 0;
+  }
+
+  /* TIMETABLE STICKY HOURS COLUMN */
+  .figma_timetable_corner_cell {
+    position: sticky;
+    left: 0;
+    z-index: 15;
+    background: light-dark(#FFFFFF, #192634);
+    box-shadow: 2px 0 6px rgba(0, 0, 0, 0.05);
+  }
+
+  .figma_timetable_hours_col {
+    position: sticky;
+    left: 0;
+    z-index: 12;
+    background: light-dark(#FFFFFF, #192634);
+    box-shadow: 2px 0 6px rgba(0, 0, 0, 0.05);
+  }
+}
+
+/* SMARTFONY I WĄSKIE EKRANY (W TYM IPHONE SE 3: 375px) */
+@media (max-width: 480px) {
+  .figma_plan_page {
+    padding: 16px 12px 36px 12px;
+    overflow-x: hidden;
+  }
+
+  .figma_plan_header_actions {
+    gap: 8px;
+  }
+
+  .plan_view_switcher {
+    height: 42px;
+    padding: 2px;
+    border-radius: 16px;
+  }
+
+  .plan_view_btn {
+    padding: 0 4px;
+    font-size: 12px;
+    gap: 4px;
+    border-radius: 12px;
+  }
+
+  .plan_view_btn_icon {
+    font-size: 11.5px;
+  }
+
+  .plan_view_btn_label {
+    font-size: 12px;
+  }
+
+  .plan_mode_toggle {
+    height: 42px;
+    border-radius: 14px;
+  }
+
+  .plan_mode_toggle_btn {
+    font-size: 12.5px;
+    padding: 0 10px;
+  }
+
+  .plan_sync_gear_btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 14px;
+  }
+
+  .plan_sync_popover {
+    width: min(320px, calc(100vw - 24px));
+    right: 0;
+    padding: 14px;
+    border-radius: 18px;
+  }
+
+  /* TYDZIEŃ / ZJAZD I DNI TYGODNIA */
+  .figma_nav_days_group {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 3px;
+    flex-wrap: wrap;
+  }
+
+  .figma_days_row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex: 1;
+    gap: 3px;
+    min-width: 0;
+  }
+
+  .figma_day_bubble {
+    min-width: 32px;
+    width: 34px;
+    height: 36px;
+    padding: 0;
+    font-size: 11px;
+    border-radius: 10px;
+  }
+
+  .figma_nav_arrow_btn {
+    width: 28px;
+    height: 36px;
+    min-width: 28px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+  }
+
+  .figma_today_btn {
+    height: 32px;
+    font-size: 11.5px;
+    padding: 0 12px;
+    width: 100%;
+    margin-top: 6px;
+    justify-content: center;
+  }
+
+  /* SZYBKIE FILTRY */
+  .figma_lesson_type_filter_pills {
+    gap: 4px;
+  }
+
+  .figma_type_pill {
+    padding: 5px 6px;
+    font-size: 11px;
+    gap: 4px;
+  }
+
+  .figma_type_pill_count {
+    font-size: 10px;
+    padding: 1px 4px;
+  }
+
+  /* LIST VIEW */
+  .figma_list_day_card {
+    padding: 12px 10px;
+    border-radius: 16px;
+  }
+
+  .figma_list_day_header {
+    margin-bottom: 10px;
+  }
+
+  .figma_list_day_title {
+    font-size: 13.5px;
+  }
+
+  .figma_list_item {
+    padding: 10px 10px;
+    gap: 10px;
+    border-radius: 12px;
+  }
+
+  .figma_list_item_time_col {
+    min-width: 48px;
+  }
+
+  .figma_list_time_start {
+    font-size: 13px;
+  }
+
+  .figma_list_time_end {
+    font-size: 11px;
+  }
+
+  .figma_list_item_top {
+    gap: 6px;
+    align-items: flex-start;
+  }
+
+  .figma_list_item_title {
+    font-size: 13.5px;
+    white-space: normal;
+    line-height: 1.25;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .figma_list_item_type_badge {
+    padding: 2px 7px;
+    font-size: 10px;
+    gap: 4px;
+  }
+
+  .figma_list_item_meta {
+    gap: 8px;
+    row-gap: 4px;
+  }
+
+  .figma_list_meta_chip {
+    font-size: 11px;
+    gap: 4px;
+  }
+
+  /* TIMETABLE GRID */
+  .figma_timetable_scroll_wrap {
+    border-radius: 16px;
+  }
+
+  .figma_timetable_board {
+    min-width: 760px;
+    padding: 12px 8px;
+  }
+
+  .figma_timetable_header_row {
+    grid-template-columns: 50px repeat(7, 1fr);
+    gap: 4px;
+  }
+
+  .figma_timetable_body {
+    grid-template-columns: 50px 1fr;
+    gap: 4px;
+    height: 740px;
+  }
+
+  .figma_timetable_days_grid {
+    gap: 4px;
+  }
+
+  .figma_timetable_day_header_name {
+    font-size: 11.5px;
+  }
+
+  .figma_timetable_day_header_date {
+    font-size: 9.5px;
+  }
+
+  .figma_timetable_card {
+    padding: 3px 5px;
+  }
+
+  .figma_timetable_card_time {
+    font-size: 9px;
+  }
+
+  .figma_timetable_card_type_tag {
+    font-size: 8.5px;
+  }
+
+  .figma_timetable_card_title {
+    font-size: 10px;
+    line-height: 1.2;
+    -webkit-line-clamp: 2;
+  }
+
+  .figma_timetable_card_room,
+  .figma_timetable_card_teacher {
+    font-size: 9px;
+  }
+
+  /* MODALE */
+  .lesson_details_modal_card {
+    width: calc(100% - 24px);
+    max-height: 85vh;
+    padding: 18px 14px;
+    border-radius: 18px;
+    gap: 14px;
+  }
+
+  .figma_modal_card {
+    padding: 18px 14px;
+    border-radius: 18px;
+    max-height: 88vh;
+  }
+
+  .figma_field_select {
+    font-size: 16px;
+    height: 44px;
+  }
+
+  .figma_no_lessons_img {
+    max-width: 200px;
+    max-height: 160px;
+  }
+
+  .figma_no_lessons_title {
+    font-size: 19px;
+  }
+
+  .figma_no_lessons_desc {
+    font-size: 13px;
+  }
+}

@@ -34,12 +34,34 @@ import {
   faPalette,
   faWorm,
   faChevronRight,
-  faArrowLeft
+  faArrowLeft,
+  faSchool,
+  faChalkboardUser,
+  faBookOpen,
+  faPenToSquare,
+  faFlask,
+  faWrench,
+  faDiagramProject,
+  faDumbbell,
+  faUserGraduate,
+  faPlus,
+  faTrash,
+  faClock,
+  faTableCells,
+  faListUl
 } from '@fortawesome/free-solid-svg-icons'
 
 import { faGoogle, faGithub } from '@fortawesome/free-brands-svg-icons'
 
 export {
+  faChalkboardUser,
+  faSchool,
+  faBookOpen,
+  faPenToSquare,
+  faFlask,
+  faWrench,
+  faDiagramProject,
+  faDumbbell,
   faXmark,
   faUser,
   faSolarPanel,
@@ -77,5 +99,11 @@ export {
   faPalette,
   faWorm,
   faChevronRight,
-  faArrowLeft
+  faArrowLeft,
+  faUserGraduate,
+  faPlus,
+  faTrash,
+  faClock,
+  faTableCells,
+  faListUl
 }

@@ -1,0 +1,292 @@
+/* Lekcja.css - Zgodny z prototypem Figma Smart Campus */
+
+.figma_lesson_card {
+  position: relative;
+  overflow: hidden;
+  background-color: #ffffff;
+  border-radius: 24px;
+  width: 300px;
+  min-width: 280px;
+  max-width: 330px;
+  flex: 1 1 290px;
+  height: 175px;
+  padding: 22px 24px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  user-select: none;
+  cursor: default;
+  box-shadow: none;
+}
+
+/* 1. STAN: PRZESZŁE (zajęcia już się odbyły) - tło #F3F3F3 */
+.figma_lesson_card.card_state_past {
+  background-color: #F3F3F3;
+  opacity: 0.75;
+}
+
+.figma_lesson_card.card_state_past .lesson_card_title {
+  color: #5d6d7b;
+}
+
+.figma_lesson_card.card_state_past .lesson_card_teacher {
+  color: #7d8d9c;
+}
+
+.figma_lesson_card.card_state_past .lesson_card_badge {
+  background-color: #556575;
+  color: #eef2f5;
+}
+
+.figma_lesson_card.card_state_past .lesson_card_location {
+  color: #6d7d8c;
+}
+
+.figma_lesson_card.card_state_past .lesson_card_hours {
+  color: #5d6d7b;
+}
+
+/* 2. STAN: TRWAJĄCE (w trakcie) - tło postępu #D5DEE7 w kafelku */
+.figma_lesson_card.card_state_ongoing {
+  background-color: #ffffff;
+}
+
+.lesson_card_progress_fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  background-color: #D5DEE7;
+  border-top-left-radius: 24px;
+  border-bottom-left-radius: 24px;
+  pointer-events: none;
+  z-index: 1;
+  transition: width 0.4s ease;
+}
+
+.figma_lesson_card.card_state_ongoing .lesson_card_title {
+  color: #183447;
+}
+
+.figma_lesson_card.card_state_ongoing .lesson_card_teacher {
+  color: #3d4f5f;
+}
+
+.figma_lesson_card.card_state_ongoing .lesson_card_badge {
+  background-color: #183447;
+  color: #ffffff;
+}
+
+.figma_lesson_card.card_state_ongoing .lesson_card_location {
+  color: #3d4f5f;
+}
+
+.figma_lesson_card.card_state_ongoing .lesson_card_hours {
+  color: #183447;
+}
+
+/* 3. STAN: PRZYSZŁE (jeszcze się nie odbyły) - czyste białe tło #ffffff */
+.figma_lesson_card.card_state_future {
+  background-color: #ffffff;
+}
+
+.figma_lesson_card.card_state_future .lesson_card_title {
+  color: #183447;
+}
+
+.figma_lesson_card.card_state_future .lesson_card_teacher {
+  color: #4a5a6a;
+}
+
+.figma_lesson_card.card_state_future .lesson_card_badge {
+  background-color: #183447;
+  color: #ffffff;
+}
+
+.figma_lesson_card.card_state_future .lesson_card_location {
+  color: #4a5a6a;
+}
+
+.figma_lesson_card.card_state_future .lesson_card_hours {
+  color: #183447;
+}
+
+/* Elementy wewnątrz kafelka - leżą nad paskiem postępu */
+.lesson_card_top {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.lesson_card_info {
+  flex: 1;
+  min-width: 0;
+}
+
+.lesson_card_title {
+  margin: 0 0 4px 0;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.25;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-family: 'Poppins', sans-serif;
+}
+
+.lesson_card_teacher {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: 'Poppins', sans-serif;
+}
+
+.lesson_card_badge {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #183447;
+  color: #ffffff;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 500;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.lesson_card_bottom {
+  position: relative;
+  z-index: 2;
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.lesson_card_bottom_left {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.lesson_card_location {
+  margin: 0 0 4px 0;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: 'Poppins', sans-serif;
+}
+
+.lesson_card_hours {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: -0.2px;
+}
+
+/* Wsparcie dla trybu ciemnego (Dark mode) */
+[data-theme='dark'] .figma_lesson_card {
+  background-color: #192634;
+}
+
+[data-theme='dark'] .figma_lesson_card.card_state_past {
+  background-color: #131c26;
+  opacity: 0.55;
+}
+
+[data-theme='dark'] .figma_lesson_card.card_state_past .lesson_card_title,
+[data-theme='dark'] .figma_lesson_card.card_state_past .lesson_card_hours {
+  color: #718096;
+}
+
+[data-theme='dark'] .figma_lesson_card.card_state_past .lesson_card_teacher,
+[data-theme='dark'] .figma_lesson_card.card_state_past .lesson_card_location {
+  color: #4a5568;
+}
+
+[data-theme='dark'] .figma_lesson_card.card_state_past .lesson_card_badge {
+  background-color: #243444;
+  color: #a0aec0;
+}
+
+[data-theme='dark'] .figma_lesson_card.card_state_ongoing .lesson_card_progress_fill {
+  background-color: rgba(66, 153, 225, 0.25);
+}
+
+[data-theme='dark'] .figma_lesson_card.card_state_ongoing .lesson_card_title,
+[data-theme='dark'] .figma_lesson_card.card_state_future .lesson_card_title {
+  color: #f1f5f9;
+}
+
+[data-theme='dark'] .figma_lesson_card.card_state_ongoing .lesson_card_teacher,
+[data-theme='dark'] .figma_lesson_card.card_state_future .lesson_card_teacher {
+  color: #94a3b8;
+}
+
+[data-theme='dark'] .figma_lesson_card.card_state_ongoing .lesson_card_badge,
+[data-theme='dark'] .figma_lesson_card.card_state_future .lesson_card_badge {
+  background-color: #2b3e52;
+  color: #ffffff;
+}
+
+[data-theme='dark'] .figma_lesson_card.card_state_ongoing .lesson_card_location,
+[data-theme='dark'] .figma_lesson_card.card_state_future .lesson_card_location {
+  color: #94a3b8;
+}
+
+[data-theme='dark'] .figma_lesson_card.card_state_ongoing .lesson_card_hours,
+[data-theme='dark'] .figma_lesson_card.card_state_future .lesson_card_hours {
+  color: #f1f5f9;
+}
+
+/* RWD DLA EKRANÓW MOBILNYCH (W TYM IPHONE SE 3) */
+@media (max-width: 480px) {
+  .figma_lesson_card {
+    padding: 16px 14px;
+    border-radius: 16px;
+    min-height: 116px;
+  }
+
+  .lesson_card_title {
+    font-size: 14.5px;
+    margin-bottom: 2px;
+  }
+
+  .lesson_card_teacher {
+    font-size: 12.5px;
+  }
+
+  .lesson_card_bottom_left {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .lesson_card_location {
+    font-size: 12px;
+    margin-bottom: 2px;
+  }
+
+  .lesson_card_hours {
+    font-size: 14px;
+  }
+
+  .lesson_card_badge {
+    padding: 3px 8px;
+    font-size: 10.5px;
+    gap: 4px;
+  }
+}

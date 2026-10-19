@@ -363,7 +363,7 @@ function NewPanel() {
         <div className="new_panel_card" style={{ padding: '0', background: 'transparent', border: 'none', gap: '0' }}>
           <div className="new_panel_card_header" style={{ alignItems: 'center', marginBottom: '16px' }}>
             <h3 style={{ fontSize: '18px', fontWeight: '500', color: 'var(--color-text)' }}>Dzisiejsze zajęcia</h3>
-            <button className="today_plan_btn">Plan lekcji <FontAwesomeIcon icon={faChevronRight} style={{marginLeft: '6px', fontSize: '10px'}}/></button>
+            <button className="today_plan_btn">Plan zajęć <FontAwesomeIcon icon={faChevronRight} style={{marginLeft: '6px', fontSize: '10px'}}/></button>
           </div>
 
           <div className="today_class_item active">

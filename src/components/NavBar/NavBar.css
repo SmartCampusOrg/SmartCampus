@@ -20,6 +20,15 @@
     app-region: drag;
 }
 
+.navbar_leftGroup {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    justify-self: start;
+    -webkit-app-region: no-drag;
+    app-region: no-drag;
+}
+
 .navbar_navigationBar {
     box-sizing: border-box;
     display: flex;

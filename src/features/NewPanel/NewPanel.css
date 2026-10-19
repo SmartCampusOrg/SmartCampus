@@ -11,7 +11,7 @@
   background-color: var(--color-bg);
   color: var(--color-text);
   min-height: calc(100vh - 80px);
-  padding: 30px;
+  padding: 30px 20px;
   display: flex;
   gap: 24px;
   box-sizing: border-box;

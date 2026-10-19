@@ -18,7 +18,7 @@ import lekcja from './lekcja.png';
 import building2 from './building2.webp';
 import building3 from './building3.webp';
 import mapImg from './map.png';
-import Lekcja from "../plan-lekcji/Lekcja";
+import Lekcja from "../plan-zajec/Lekcja";
 import { color, scale } from "framer-motion";
 import LogoFull from "../../components/Logo/LogoFull";
 import LandingNavBar from "../../components/LandingNavBar/LandingNavBar";

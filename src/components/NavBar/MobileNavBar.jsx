@@ -83,13 +83,13 @@ function MobileNavBar() {
         <span className="navbar_mobileLabel">Panel</span>
       </NavLink>
       <NavLink
-        ref={el => navRefs.current["/PlanLekcji"] = el}
-        to="/PlanLekcji"
+        ref={el => navRefs.current["/PlanZajec"] = el}
+        to="/PlanZajec"
         onClick={handleVibration}
         className={({ isActive }) => isActive ? "navbar_button--active" : "navbar_button"}
       >
         <FontAwesomeIcon icon={Icons.faCalendarDays} className="navbar_buttonContent_icon" />
-        <span className="navbar_mobileLabel">Plan lekcji</span>
+        <span className="navbar_mobileLabel">Plan zajęć</span>
       </NavLink>
       <NavLink
         ref={el => navRefs.current["/MapaKampusu"] = el}

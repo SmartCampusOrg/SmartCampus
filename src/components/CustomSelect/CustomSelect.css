@@ -40,6 +40,11 @@
     pointer-events: none;
     color: light-dark(#1c2d3a, #ffffff);
     opacity: 0.7;
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.custom_select_wrapper.open .custom_select_icon {
+    transform: translateY(-50%) rotate(180deg);
 }
 
 .theme_select.custom_select_wrapper .custom_select_icon {
@@ -97,6 +102,27 @@
 
 /* Wyśrodkowanie tekstu dla Rok i Semestr (.small_select) tylko wewnątrz listy */
 .small_select .custom_select_option {
+    text-align: center;
+}
+
+/* Stan wyłączony (disabled) */
+.custom_select_wrapper.disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.custom_select_trigger.disabled,
+.custom_select_native:disabled {
+    cursor: not-allowed;
+    background-color: light-dark(#dbe2e8, #2a3744);
+    color: light-dark(#6b7c8d, #6b7c8d);
+}
+
+.custom_select_empty_notice {
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    color: light-dark(#64748b, #94a3b8);
     text-align: center;
 }
 

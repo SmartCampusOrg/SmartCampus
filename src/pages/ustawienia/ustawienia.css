@@ -1,6 +1,7 @@
 .ustawienia_container {
     display: flex;
     justify-content: center;
+    width: 100%;
 }
 
 .settings_content {
@@ -45,7 +46,7 @@
 }
 
 .profilePictureAndBaner {
-    background-color: aqua;
+    background-color: light-dark(#e2e8f0, #183447);
     background-image: url('../landing-page/building.webp');
     background-size: cover;
     background-position: center;
@@ -53,6 +54,7 @@
     margin-bottom: clamp(46px, calc(10vw + 18px), 78px);
     height: clamp(75px, 20vw, 150px);
     position: relative;
+    transition: background-image 0.25s ease-in-out;
 }
 
 
@@ -198,6 +200,8 @@
 .settings_section:nth-of-type(8) { z-index: 13; }
 .settings_section:nth-of-type(9) { z-index: 12; }
 .settings_section:nth-of-type(10) { z-index: 11; }
+.settings_section:nth-of-type(11) { z-index: 10; }
+.settings_section:nth-of-type(12) { z-index: 9; }
 
 .section_title {
     font-size: 16px;
@@ -220,7 +224,13 @@
     display: flex;
     gap: 20px;
     width: 100%;
+    position: relative;
 }
+
+.settings_card .form_row:nth-child(1) { z-index: 5; }
+.settings_card .form_row:nth-child(2) { z-index: 4; }
+.settings_card .form_row:nth-child(3) { z-index: 3; }
+.settings_card .form_row:nth-child(4) { z-index: 2; }
 
 .input_group {
     display: flex;
@@ -504,3 +514,153 @@
 .bug_btn:hover svg {
     animation: crawl 0.8s infinite alternate ease-in-out;
 }
+
+/* ========================================================
+   SEKCJA USTAWIEŃ PLANU ZAJĘĆ
+   ======================================================== */
+.plan_sync_settings_card {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background-color: light-dark(#e8ebef, #24313d);
+    border-radius: 16px;
+    padding: 20px;
+}
+
+.settings_plan_toggle_row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.settings_plan_toggle_wrap {
+    flex-shrink: 0;
+    transform: scale(0.9);
+    transform-origin: center right;
+}
+
+.settings_plan_info_box {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-sizing: border-box;
+    padding: 4px 0;
+}
+
+.settings_plan_info_row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13.5px;
+    gap: 12px;
+}
+
+.settings_plan_info_label {
+    color: light-dark(#4a6274, #9caebf);
+    font-weight: 500;
+    flex-shrink: 0;
+}
+
+.settings_plan_info_value {
+    color: light-dark(#183447, #f1f5f9);
+    font-weight: 600;
+    text-align: right;
+    line-height: 1.35;
+}
+
+.settings_plan_info_divider {
+    height: 1px;
+    background: light-dark(rgba(0, 0, 0, 0.08), rgba(255, 255, 255, 0.08));
+}
+
+.settings_plan_actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 2px;
+}
+
+.settings_plan_btn_primary {
+    height: 44px;
+    padding: 0 24px;
+    border-radius: 100px;
+    background-color: light-dark(#183447, #1e3a51);
+    color: #ffffff;
+    border: none;
+    font-size: 13.5px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(24, 52, 71, 0.18);
+    user-select: none;
+}
+
+.settings_plan_btn_primary:hover:not(:disabled) {
+    background-color: light-dark(#24465e, #294e6b);
+    box-shadow: 0 6px 16px rgba(24, 52, 71, 0.25);
+    transform: translateY(-1px);
+}
+
+.settings_plan_btn_primary:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.settings_plan_btn_danger {
+    height: 44px;
+    padding: 0 24px;
+    border-radius: 100px;
+    background-color: light-dark(rgba(220, 38, 38, 0.08), rgba(239, 68, 68, 0.15));
+    color: light-dark(#dc2626, #f87171);
+    border: none;
+    font-size: 13.5px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.settings_plan_btn_danger:hover:not(:disabled) {
+    background-color: light-dark(rgba(220, 38, 38, 0.16), rgba(239, 68, 68, 0.25));
+    color: light-dark(#b91c1c, #fca5a5);
+    transform: translateY(-1px);
+}
+
+.settings_plan_btn_danger:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.settings_plan_icon.spin {
+    animation: settingsSpin 1s linear infinite;
+}
+
+@keyframes settingsSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@media (max-width: 650px) {
+    .settings_plan_actions {
+        flex-direction: column;
+    }
+    .settings_plan_btn_primary,
+    .settings_plan_btn_danger {
+        width: 100%;
+    }
+}

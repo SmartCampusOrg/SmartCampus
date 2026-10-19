@@ -29,7 +29,7 @@ Aplikacja ma być intuicyjna, szybka i dostosowana do realnych potrzeb studentó
 Smart Campus na tą chwile posiada 5 modułów:
 
 * **Panel** - główny ekran użytkownika z szybkim dostęp do najważniejszych informacji, powiadomień i skrótów do funkcji aplikacji.
-* **Plan lekcji** - przejrzysty harmonogram zajęć z możliwością sprawdzenia godzin i sal.
+* **Plan zajęć** - przejrzysty harmonogram zajęć z możliwością sprawdzenia godzin i sal.
 * **Mapa kampusu** - interaktywna mapa uczelni, która pomaga znaleźć budynki, sale, punkty usługowe i nawigować po terenie kampusu.
 * **E-learning** - sekcja do nauki online, zawierająca materiały dydaktyczne, kursy, zadania i dostęp do platform edukacyjnych.
 * **Feed** - tablica aktualności z ogłoszeniami, wydarzeniami i informacjami od uczelni oraz innych studentów.

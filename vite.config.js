@@ -10,6 +10,15 @@ export default defineConfig({
   define: {
     'import.meta.env.VITE_APP_VERSION': JSON.stringify(packageJson.version),
   },
+  server: {
+    proxy: {
+      '/api/harmonogram': {
+        target: 'https://wu.pansim.edu.pl',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/harmonogram/, '/wsrest/rest/phz/harmonogram')
+      }
+    }
+  },
   plugins: [
     react(), 
     viteCompression({ algorithm: 'brotliCompress' }),
@@ -33,10 +42,10 @@ export default defineConfig({
             icons: [{ src: "/shortcut-panel.png", sizes: "96x96", type: "image/png" }]
           },
           {
-            name: "Plan Lekcji",
+            name: "Plan Zajęć",
             short_name: "Plan",
-            description: "Otwórz plan lekcji",
-            url: "/PlanLekcji",
+            description: "Otwórz plan zajęć",
+            url: "/PlanZajec",
             icons: [{ src: "/shortcut-plan.png", sizes: "96x96", type: "image/png" }]
           },
           {

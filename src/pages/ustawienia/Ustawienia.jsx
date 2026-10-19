@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as Icons from '@icons/icons';
@@ -6,26 +6,56 @@ import { faRightFromBracket, faChevronRight, faWorm, faEnvelope } from '@fortawe
 import { faGoogle, faGithub } from '@fortawesome/free-brands-svg-icons';
 import { useAuth } from "@/context/AuthContext.jsx";
 import { useTheme } from "@hooks/useTheme.js";
+import { useSchedule } from "@/hooks/useSchedule.js";
+import ToggleSwitch from "@/components/ToggleSwitch/ToggleSwitch.jsx";
 import LogoFull from "@/components/Logo/LogoFull.jsx";
 import CustomSelect from "@/components/CustomSelect/CustomSelect.jsx";
 import MainButton from "@/components/Buttons/MainButton/MainButton.jsx";
 import ReactMarkdown from 'react-markdown';
 import packageJson from '../../../package.json';
+import { 
+  PROFILE_KEY, 
+  extractCohort, 
+  getCohortDetails,
+  extractExerciseGroup,
+  saveUserProfile,
+  defaultWydzialy,
+  resolveWydzialForKierunek,
+  normalizeWydzialName,
+  kierunekDoWydzialu
+} from "@/services/scheduleService.js";
 import './ustawienia.css';
+import defaultBanner from '../landing-page/building.webp';
+import wnmBanner from '@/assets/img/wnm.webp';
+import wntBanner from '@/assets/img/wnt.jpg';
 
 function Ustawienia() {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
   const { themeMode, setThemeMode } = useTheme();
+  const { 
+    allLessons, 
+    lastUpdateTime, 
+    formattedLastUpdate, 
+    autoFetchOnOpen, 
+    handleToggleAutoFetch, 
+    showTermDates,
+    handleToggleShowTermDates,
+    isFetching: isFetchingSchedule, 
+    fetchLatestSchedule, 
+    clearScheduleCache 
+  } = useSchedule();
   
   const [cookiesAccepted, setCookiesAccepted] = useState(true);
   const [notificationsAccepted, setNotificationsAccepted] = useState(false);
   
+  // Dane profilu studenta (Konto)
   const [wydzial, setWydzial] = useState("");
   const [kierunek, setKierunek] = useState("");
+  const [forma, setForma] = useState("");
+  const [cohort, setCohort] = useState("");
+  const [specjalnosc, setSpecjalnosc] = useState("");
   const [grupa, setGrupa] = useState("");
-  const [rok, setRok] = useState("");
-  const [semestr, setSemestr] = useState("");
 
   const [milestones, setMilestones] = useState([]);
   const [isLoadingMilestones, setIsLoadingMilestones] = useState(true);
@@ -40,6 +70,263 @@ function Ustawienia() {
   useEffect(() => { localStorage.setItem('expWeatherWidget', expWeatherWidget); }, [expWeatherWidget]);
   useEffect(() => { localStorage.setItem('expMoreThemes', expMoreThemes); }, [expMoreThemes]);
   useEffect(() => { localStorage.setItem('expNewPanel', expNewPanel); }, [expNewPanel]);
+
+  // Odczyt profilu z localStorage na start
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(PROFILE_KEY);
+      if (saved) {
+        const p = JSON.parse(saved);
+        if (p.wydzial) setWydzial(p.wydzial);
+        if (p.kierunek) setKierunek(p.kierunek);
+        if (p.forma) setForma(p.forma);
+        if (p.cohort) setCohort(p.cohort);
+        if (p.specjalnosc) setSpecjalnosc(p.specjalnosc);
+        if (p.grupa) setGrupa(p.grupa);
+      }
+    } catch (e) {}
+  }, []);
+
+  // W tle pobieramy plan tylko przy pierwszym uruchomieniu, jeśli brak danych
+  useEffect(() => {
+    if (allLessons.length === 0 && !localStorage.getItem('smart_campus_schedule_last_update')) {
+      fetchLatestSchedule();
+    }
+  }, []);
+
+  const handleManualFetchSchedule = async () => {
+    try {
+      await fetchLatestSchedule();
+    } catch (e) {
+      alert("Nie udało się pobrać najnowszego planu. Sprawdź połączenie z internetem.");
+    }
+  };
+
+  const handleClearScheduleInSettings = () => {
+    if (window.confirm("Czy na pewno chcesz usunąć zapisany plan z pamięci przeglądarki?")) {
+      clearScheduleCache();
+      alert("Pamięć podręczna planu zajęć została wyczyszczona.");
+    }
+  };
+
+  // Dynamiczne wyliczenie Roku i Semestru
+  const cohortInfo = useMemo(() => {
+    const c = cohort || extractCohort(grupa);
+    return getCohortDetails(c);
+  }, [cohort, grupa]);
+
+  const computedRok = cohortInfo.year;
+  const computedSemestr = cohortInfo.semester;
+
+  // Wyliczenie grupy ćwiczeniowej (zwraca sam numer/oznaczenie np. "1", "2", "3")
+  const computedGrCw = useMemo(() => {
+    return extractExerciseGroup(grupa);
+  }, [grupa]);
+
+  // Dynamiczne wyliczenie banera uczelni w zależności od wydziału
+  const activeBanner = useMemo(() => {
+    const w = (wydzial || resolveWydzialForKierunek(kierunek, '') || '').toLowerCase();
+    if (w.includes('zdrowi') || w.includes('medyczn') || w.includes('wnm')) {
+      return wnmBanner;
+    }
+    if (w.includes('technicz') || w.includes('mław') || w.includes('wnt')) {
+      return wntBanner;
+    }
+    return defaultBanner;
+  }, [wydzial, kierunek]);
+
+  // Zapis do localStorage (z uwzględnieniem późniejszego zapisu w Firebase)
+  useEffect(() => {
+    if (wydzial || kierunek || forma || grupa) {
+      const profile = {
+        wydzial,
+        kierunek,
+        forma,
+        cohort,
+        specjalnosc,
+        grupa,
+        rok: computedRok,
+        semestr: computedSemestr,
+        grupaCwiczeniowa: computedGrCw
+      };
+      saveUserProfile(profile);
+      // NOTE: Po wdrożeniu pełnej synchronizacji z Firebase:
+      // if (user?.uid) { await setDoc(doc(db, "users", user.uid), profile, { merge: true }); }
+    }
+  }, [wydzial, kierunek, forma, cohort, specjalnosc, grupa, computedRok, computedSemestr, computedGrCw]);
+
+  // Pamięć podręczna wyborów dla każdego wydziału (aby przy przełączaniu nie tracić ustawień)
+  const [facultyCache, setFacultyCache] = useState(() => {
+    try {
+      const saved = localStorage.getItem(PROFILE_KEY);
+      if (saved) {
+        const p = JSON.parse(saved);
+        if (p.wydzial) {
+          return {
+            [p.wydzial]: {
+              kierunek: p.kierunek || "",
+              forma: p.forma || "",
+              cohort: p.cohort || "",
+              specjalnosc: p.specjalnosc || "",
+              grupa: p.grupa || ""
+            }
+          };
+        }
+      }
+    } catch (e) {}
+    return {};
+  });
+
+  const handleWydzialChange = (newWydzial) => {
+    if (wydzial && (kierunek || forma || grupa)) {
+      setFacultyCache(prev => ({
+        ...prev,
+        [wydzial]: { kierunek, forma, cohort, specjalnosc, grupa }
+      }));
+    }
+
+    setWydzial(newWydzial);
+
+    const cached = facultyCache[newWydzial];
+    if (cached) {
+      setKierunek(cached.kierunek || "");
+      setForma(cached.forma || "");
+      setCohort(cached.cohort || "");
+      setSpecjalnosc(cached.specjalnosc || "");
+      setGrupa(cached.grupa || "");
+    } else {
+      const belongs = kierunek && (resolveWydzialForKierunek(kierunek, '') === normalizeWydzialName(newWydzial));
+      if (!belongs) {
+        setKierunek("");
+        setForma("");
+        setCohort("");
+        setSpecjalnosc("");
+        setGrupa("");
+      }
+    }
+  };
+
+  const handleKierunekChange = (newKierunek) => {
+    setKierunek(newKierunek);
+    setForma("");
+    setCohort("");
+    setSpecjalnosc("");
+    setGrupa("");
+  };
+
+  const handleFormaChange = (newForma) => {
+    setForma(newForma);
+    setCohort("");
+    setSpecjalnosc("");
+    setGrupa("");
+  };
+
+  // Kaskada opcji filtrów
+  const availableWydzialy = useMemo(() => {
+    if (!allLessons || allLessons.length === 0) return defaultWydzialy;
+    const fromData = [...new Set(allLessons.map(l => normalizeWydzialName(l.wydzial) || resolveWydzialForKierunek(l.kierunek)).filter(Boolean))].sort();
+    return fromData.length > 0 ? fromData : defaultWydzialy;
+  }, [allLessons]);
+
+  const availableKierunki = useMemo(() => {
+    if (!wydzial) return [];
+    const normW = normalizeWydzialName(wydzial);
+    const fromLessons = (allLessons && allLessons.length > 0)
+      ? allLessons
+          .filter(l => (normalizeWydzialName(l.wydzial) || resolveWydzialForKierunek(l.kierunek)) === normW)
+          .map(l => l.kierunek)
+          .filter(Boolean)
+      : [];
+    const fallbackKierunki = Object.entries(kierunekDoWydzialu)
+      .filter(([_, w]) => normalizeWydzialName(w) === normW)
+      .map(([k]) => k);
+    return [...new Set([...fromLessons, ...fallbackKierunki])].sort((a, b) => a.localeCompare(b));
+  }, [allLessons, wydzial]);
+
+  const availableFormy = useMemo(() => {
+    if (!wydzial || !kierunek || !allLessons || allLessons.length === 0) return [];
+    const normW = normalizeWydzialName(wydzial);
+    return [...new Set(
+      allLessons
+        .filter(l => (normalizeWydzialName(l.wydzial) || resolveWydzialForKierunek(l.kierunek)) === normW && l.kierunek === kierunek)
+        .map(l => l.forma)
+        .filter(Boolean)
+    )].sort();
+  }, [allLessons, wydzial, kierunek]);
+
+  const availableCohorts = useMemo(() => {
+    if (!wydzial || !kierunek || !forma || !allLessons || allLessons.length === 0) return [];
+    const normW = normalizeWydzialName(wydzial);
+    const relevant = allLessons.filter(l => 
+      (normalizeWydzialName(l.wydzial) || resolveWydzialForKierunek(l.kierunek)) === normW && 
+      l.kierunek === kierunek && 
+      l.forma === forma
+    );
+    const set = new Set();
+    relevant.forEach(l => {
+      const c = extractCohort(l.grupa);
+      if (c) set.add(c);
+    });
+    return [...set].sort((a, b) => b.localeCompare(a));
+  }, [allLessons, wydzial, kierunek, forma]);
+
+  const availableSpecialities = useMemo(() => {
+    if (!wydzial || !kierunek || !forma || !allLessons || allLessons.length === 0) return [];
+    const normW = normalizeWydzialName(wydzial);
+    return [...new Set(
+      allLessons
+        .filter(l => 
+          (normalizeWydzialName(l.wydzial) || resolveWydzialForKierunek(l.kierunek)) === normW && 
+          l.kierunek === kierunek && 
+          l.forma === forma &&
+          (!cohort || extractCohort(l.grupa) === cohort)
+        )
+        .map(l => l.specjalnosc)
+        .filter(Boolean)
+    )].sort();
+  }, [allLessons, wydzial, kierunek, forma, cohort]);
+
+  const availableGroups = useMemo(() => {
+    if (!wydzial || !kierunek || !forma || !allLessons || allLessons.length === 0) return [];
+    const normW = normalizeWydzialName(wydzial);
+    return [...new Set(
+      allLessons
+        .filter(l => 
+          (normalizeWydzialName(l.wydzial) || resolveWydzialForKierunek(l.kierunek)) === normW && 
+          l.kierunek === kierunek && 
+          l.forma === forma &&
+          (!cohort || extractCohort(l.grupa) === cohort) &&
+          (!specjalnosc || l.specjalnosc === specjalnosc)
+        )
+        .map(l => l.grupa)
+        .filter(Boolean)
+    )].sort();
+  }, [allLessons, wydzial, kierunek, forma, cohort, specjalnosc]);
+
+  // Przygotowanie opcji pod CustomSelect
+  const wydzialOptions = useMemo(() => availableWydzialy.map(w => ({ value: w, label: w })), [availableWydzialy]);
+  const kierunekOptions = useMemo(() => availableKierunki.map(k => ({ value: k, label: k })), [availableKierunki]);
+  const formaOptions = useMemo(() => availableFormy.map(f => ({ 
+    value: f, 
+    label: f === 'stacjonarne' ? 'Stacjonarne' : (f === 'niestacjonarne' ? 'Niestacjonarne' : f) 
+  })), [availableFormy]);
+  
+  const cohortOptions = useMemo(() => [
+    { value: "", label: "-- Wszystkie semestry (opcjonalnie) --" },
+    ...availableCohorts.map(c => {
+      const info = getCohortDetails(c);
+      return { value: c, label: info.label };
+    })
+  ], [availableCohorts]);
+
+  const specjalnoscOptions = useMemo(() => availableSpecialities.map(s => ({ value: s, label: s })), [availableSpecialities]);
+  
+  const grupaOptions = useMemo(() => availableGroups.map(g => {
+    const c = extractCohort(g);
+    const info = getCohortDetails(c);
+    const extra = info.semester ? ` [Semestr ${info.semester} • Rok ${info.year}]` : '';
+    return { value: g, label: `${g}${extra}` };
+  }), [availableGroups]);
 
   const [latestRelease, setLatestRelease] = useState(null);
   const [isLoadingRelease, setIsLoadingRelease] = useState(true);
@@ -109,7 +396,10 @@ function Ustawienia() {
             <FontAwesomeIcon icon={Icons.faArrowLeft} /> Wstecz
           </button>
         </div>
-        <div className="profilePictureAndBaner">
+        <div 
+          className="profilePictureAndBaner"
+          style={{ backgroundImage: `url(${activeBanner})` }}
+        >
           <div className="profilePictureWrapper">
             {highResPhotoUrl ? (
               <img
@@ -144,15 +434,15 @@ function Ustawienia() {
           </div>
           <div className="user_summary_right">
             <div className="user_summary_stat">
-              <span className="stat_value">--</span>
+              <span className="stat_value">{computedRok || "--"}</span>
               <span className="stat_label">Rok</span>
             </div>
             <div className="user_summary_stat">
-              <span className="stat_value">--</span>
+              <span className="stat_value">{computedSemestr || "--"}</span>
               <span className="stat_label">Semestr</span>
             </div>
             <div className="user_summary_stat">
-              <span className="stat_value">--</span>
+              <span className="stat_value">{computedGrCw || "--"}</span>
               <span className="stat_label">Gr. Ćw</span>
             </div>
           </div>
@@ -182,42 +472,82 @@ function Ustawienia() {
               </div>
             </div>
             
-            <div className="form_row dropdowns_row">
-              <CustomSelect
-                className="select_wrapper"
-                value={wydzial}
-                onChange={setWydzial}
-                options={[{ value: "1", label: "Wydział Inżynierii" }, { value: "2", label: "Wydział Zarządzania" }]}
-                placeholder="Wydział"
-              />
-              <CustomSelect
-                className="select_wrapper"
-                value={kierunek}
-                onChange={setKierunek}
-                options={[{ value: "1", label: "Informatyka" }, { value: "2", label: "Zarządzanie" }]}
-                placeholder="Kierunek"
-              />
-              <CustomSelect
-                className="select_wrapper"
-                value={grupa}
-                onChange={setGrupa}
-                options={[{ value: "1", label: "Grupa 1" }, { value: "2", label: "Grupa 2" }]}
-                placeholder="Grupa"
-              />
-              <CustomSelect
-                className="select_wrapper small_select"
-                value={rok}
-                onChange={setRok}
-                options={[{ value: "1", label: "1" }, { value: "2", label: "2" }, { value: "3", label: "3" }, { value: "4", label: "4" }]}
-                placeholder="Rok"
-              />
-              <CustomSelect
-                className="select_wrapper small_select"
-                value={semestr}
-                onChange={setSemestr}
-                options={[{ value: "1", label: "1" }, { value: "2", label: "2" }, { value: "3", label: "3" }, { value: "4", label: "4" }, { value: "5", label: "5" }, { value: "6", label: "6" }, { value: "7", label: "7" }]}
-                placeholder="Semestr"
-              />
+            <div className="form_row">
+              <div className="input_group">
+                <label>1. Wydział</label>
+                <CustomSelect
+                  value={wydzial}
+                  onChange={handleWydzialChange}
+                  options={wydzialOptions}
+                  placeholder="Wybierz wydział"
+                />
+              </div>
+              <div className="input_group">
+                <label>2. Kierunek</label>
+                <CustomSelect
+                  value={kierunek}
+                  onChange={handleKierunekChange}
+                  options={kierunekOptions}
+                  disabled={!wydzial}
+                  placeholder={wydzial ? "Wybierz kierunek" : "Najpierw wybierz wydział"}
+                />
+              </div>
+            </div>
+
+            <div className="form_row">
+              <div className="input_group">
+                <label>3. Forma studiów</label>
+                <CustomSelect
+                  value={forma}
+                  onChange={handleFormaChange}
+                  options={formaOptions}
+                  disabled={!kierunek}
+                  placeholder={kierunek ? "Wybierz formę studiów" : "Najpierw wybierz kierunek"}
+                />
+              </div>
+              <div className="input_group">
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <label>4. Semestr i Rok</label>
+                  <span style={{ fontSize: '11px', color: '#007bff', fontWeight: '600' }}>Opcjonalnie</span>
+                </div>
+                <CustomSelect
+                  value={cohort}
+                  onChange={(val) => {
+                    setCohort(val);
+                    setSpecjalnosc("");
+                    setGrupa("");
+                  }}
+                  options={cohortOptions}
+                  disabled={!forma}
+                  placeholder={forma ? "Wszystkie semestry" : "Najpierw wybierz formę"}
+                />
+              </div>
+            </div>
+
+            <div className="form_row">
+              <div className="input_group">
+                <label>5. Specjalność</label>
+                <CustomSelect
+                  value={specjalnosc}
+                  onChange={(val) => {
+                    setSpecjalnosc(val);
+                    setGrupa("");
+                  }}
+                  options={specjalnoscOptions}
+                  disabled={!forma}
+                  placeholder={forma ? "Wybierz specjalność" : "Najpierw wybierz formę"}
+                />
+              </div>
+              <div className="input_group">
+                <label>6. Grupa</label>
+                <CustomSelect
+                  value={grupa}
+                  onChange={(val) => setGrupa(val)}
+                  options={grupaOptions}
+                  disabled={!forma}
+                  placeholder={forma ? "Wybierz grupę" : "Najpierw wybierz formę"}
+                />
+              </div>
             </div>
 
           </div>
@@ -249,6 +579,88 @@ function Ustawienia() {
                 ]}
                 placeholder="Wybierz motyw"
               />
+            </div>
+          </div>
+        </div>
+
+        {/* Sekcja Plan zajęć */}
+        <div className="settings_section">
+          <h3 className="section_title">Plan zajęć</h3>
+          <div className="settings_card plan_sync_settings_card">
+            <div className="settings_plan_toggle_row">
+              <div className="settings_row_info">
+                <h4>Pobieraj przy każdym wejściu</h4>
+                <p>Wymuszaj pobieranie bazy przy każdym otwarciu (domyślnie: raz dziennie)</p>
+              </div>
+              <div className="settings_plan_toggle_wrap">
+                <ToggleSwitch 
+                  id="settingsAutoFetchScheduleToggle"
+                  defaultState={autoFetchOnOpen}
+                  onToggle={handleToggleAutoFetch}
+                />
+              </div>
+            </div>
+
+            <div className="settings_plan_info_divider" />
+
+            <div className="settings_plan_toggle_row">
+              <div className="settings_row_info">
+                <h4>Pokaż terminy zjazdów i tygodni</h4>
+                <p>Wyświetlaj zakresy dat przy numerach zjazdów i tygodni w planie</p>
+              </div>
+              <div className="settings_plan_toggle_wrap">
+                <ToggleSwitch 
+                  id="settingsShowTermDatesToggle"
+                  defaultState={showTermDates}
+                  onToggle={handleToggleShowTermDates}
+                />
+              </div>
+            </div>
+            
+            <div className="settings_plan_info_divider" />
+
+            <div className="settings_plan_info_box">
+              <div className="settings_plan_info_row">
+                <span className="settings_plan_info_label">Ostatnia aktualizacja:</span>
+                <span className="settings_plan_info_value">{formattedLastUpdate}</span>
+              </div>
+              <div className="settings_plan_info_divider" />
+              <div className="settings_plan_info_row">
+                <span className="settings_plan_info_label">Tryb aktualizacji:</span>
+                <span className="settings_plan_info_value">{autoFetchOnOpen ? "Przy każdym wejściu" : "Raz dziennie (domyślny)"}</span>
+              </div>
+              <div className="settings_plan_info_divider" />
+              <div className="settings_plan_info_row">
+                <span className="settings_plan_info_label">Zapisane zajęcia w pamięci:</span>
+                <span className="settings_plan_info_value">{allLessons.length}</span>
+              </div>
+            </div>
+
+            <div className="settings_plan_actions">
+              <button 
+                type="button"
+                className="settings_plan_btn_primary"
+                onClick={handleManualFetchSchedule}
+                disabled={isFetchingSchedule}
+              >
+                <svg className={`settings_plan_icon ${isFetchingSchedule ? 'spin' : ''}`} width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+                </svg>
+                <span>{isFetchingSchedule ? "Pobieranie z uczelni..." : "Pobierz najnowszy plan"}</span>
+              </button>
+
+              <button 
+                type="button"
+                className="settings_plan_btn_danger"
+                onClick={handleClearScheduleInSettings}
+                disabled={isFetchingSchedule}
+              >
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="3 6 5 6 21 6"></polyline>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                </svg>
+                <span>Usuń z pamięci plan zajęć</span>
+              </button>
             </div>
           </div>
         </div>

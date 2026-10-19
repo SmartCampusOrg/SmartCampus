@@ -9,7 +9,7 @@ const Panel = lazy(() => import('@pages/panel/Panel.jsx'));
 const LandingPage = lazy(() => import('@pages/landing-page/LandingPage.jsx'));
 const LoginPage = lazy(() => import('@pages/login-page/LoginPage.jsx'));
 const Elearning = lazy(() => import('@pages/elearning/Elearning.jsx'));
-const PlanLekcji = lazy(() => import('@pages/plan-lekcji/PlanLekcji.jsx'));
+const PlanZajec = lazy(() => import('@pages/plan-zajec/PlanZajec.jsx'));
 const MapaKampusu = lazy(() => import('@pages/mapa-kampusu/MapaKampusu.jsx'));
 const Feed = lazy(() => import('@pages/feed/Feed.jsx'));
 const Ustawienia = lazy(() => import('@pages/ustawienia/Ustawienia.jsx'));
@@ -38,7 +38,8 @@ const AppRoutes = () => {
           <Route path="/MapaKampusu" element={<ProtectedRoute><MapaKampusu /></ProtectedRoute>} />
           <Route path="/Elearning" element={<ProtectedRoute><Elearning /></ProtectedRoute>} />
           <Route path="/Feed" element={<ProtectedRoute><Feed /></ProtectedRoute>} />
-          <Route path="/PlanLekcji" element={<ProtectedRoute><PlanLekcji /></ProtectedRoute>} />
+          <Route path="/PlanZajec" element={<ProtectedRoute><PlanZajec /></ProtectedRoute>} />
+          <Route path="/PlanLekcji" element={<Navigate to="/PlanZajec" replace />} />
           <Route path="/Ustawienia" element={<ProtectedRoute><Ustawienia /></ProtectedRoute>} />
         </Routes>
       </Suspense>

@@ -2,12 +2,13 @@ import React from 'react';
 import LogoFull from '../Logo/LogoFull';
 import './LoadingSpinner.css';
 
-const LoadingSpinner = () => {
+const LoadingSpinner = ({ text, transparent = false, showLogo = true }) => {
     return (
-        <div className="LoadingSpinner">
+        <div className={`LoadingSpinner ${transparent ? 'transparent' : ''}`}>
             <div className="LoadingSpinner_container">
-                <LogoFull />
+                {showLogo && <LogoFull />}
                 <div className="LoadingSpinner_spinner"></div>
+                {text && <p className="LoadingSpinner_text">{text}</p>}
             </div>
         </div>
     );

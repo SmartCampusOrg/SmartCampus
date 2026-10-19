@@ -1,0 +1,128 @@
+/* DynamicIsland.css - Dynamiczna wyspa trwających/nadchodzących zajęć */
+
+.navbar_dynamic_island {
+  display: inline-flex;
+  align-items: center;
+  height: 54px;
+  max-width: 254px;
+  width: 100%;
+  background-color: #1c3749;
+  /* Dokładnie 20px na lewych rogach oraz 27px (połowa wysokości 54px) na prawych,
+     aby przeglądarka nie przeskalowywała proporcjonalnie 20px w dół (CSS Corner Overlap Reduction) */
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  border-top-right-radius: 27px;
+  border-bottom-right-radius: 27px;
+  overflow: hidden;
+  cursor: pointer;
+  user-select: none;
+  -webkit-app-region: no-drag;
+  app-region: no-drag;
+  flex-shrink: 0;
+  position: relative;
+}
+
+/* Lewa strona - ciemniejszy kolor #1C3749 z zaokrągleniem 20px i ikoną FontAwesome */
+.dynamic_island_icon_section {
+  background-color: #1c3749;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 58px;
+  min-width: 58px;
+  height: 54px;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  flex-shrink: 0;
+  padding-left: 2px;
+  z-index: 1;
+}
+
+.dynamic_island_icon {
+  font-size: 21px;
+  color: #ffffff;
+}
+
+/* Prawa część - sekcja informacyjna z border-radius 27px (100% pastylka dla 54px wysokości) i tłem #0C4E8E */
+.dynamic_island_content_section {
+  background-color: #0c4e8e;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 54px;
+  border-radius: 27px;
+  margin-left: -8px;
+  flex: 1;
+  min-width: 0;
+  padding: 0 18px 0 16px;
+  overflow: hidden;
+  z-index: 2;
+  position: relative;
+}
+
+/* Styl tekstu dydaktyka (górny wiersz) */
+.dynamic_island_teacher {
+  font-family: 'Poppins', sans-serif;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #ffffff;
+  line-height: 1.25;
+}
+
+/* Styl tekstu przedmiotu i sali (dolny wiersz) */
+.dynamic_island_subject {
+  font-family: 'Poppins', sans-serif;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.25;
+  margin-top: 1px;
+}
+
+/* Kontener przewijania tekstu dla długich nazw (Marquee) */
+.dynamic_island_marquee_container {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  white-space: nowrap;
+}
+
+/* Delikatna maska na prawym brzegu gdy tekst wystaje poza obrys */
+.dynamic_island_marquee_container.is_overflowing {
+  mask-image: linear-gradient(to right, #000 0%, #000 calc(100% - 14px), transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, #000 0%, #000 calc(100% - 14px), transparent 100%);
+}
+
+.dynamic_island_marquee_text {
+  display: inline-block;
+  white-space: nowrap;
+  will-change: transform;
+}
+
+/* Animacja płynnego przesuwania tekstu przód-tył z pauzą na obu końcach */
+.dynamic_island_marquee_text.animate_marquee {
+  animation: dynamicIslandScroll var(--scroll-duration, 5s) cubic-bezier(0.42, 0, 0.58, 1) infinite alternate;
+}
+
+@keyframes dynamicIslandScroll {
+  0%, 25% {
+    transform: translateX(0);
+  }
+  75%, 100% {
+    transform: translateX(calc(-1 * var(--scroll-dist, 0px)));
+  }
+}
+
+/* Zatrzymanie animacji po najechaniu myszką */
+.navbar_dynamic_island:hover .dynamic_island_marquee_text.animate_marquee {
+  animation-play-state: paused;
+}
+
+/* Ukrywanie na węższych ekranach (tak samo jak nawigacja desktopowa) */
+@media screen and (max-width: 1050px) {
+  .navbar_dynamic_island {
+    display: none !important;
+  }
+}

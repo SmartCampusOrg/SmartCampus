@@ -29,7 +29,7 @@ export function SearchResultItem({ result, onClick, isActive, isDark }) {
               result.title
             )}
           </div>
-          <div className="navbar_search_resultItem_type">{result.type}</div>
+          {result.type && <div className="navbar_search_resultItem_type">{result.type}</div>}
         </div>
       </div>
       <div className="navbar_search_resultItem_right">

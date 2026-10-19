@@ -85,7 +85,7 @@ function Panel() {
             <FontAwesomeIcon icon={Icons.faLaptopCode} style={{ opacity: 0.7 }} /> Szybki dostęp
           </div>
           <div className="panel_widget_content">
-            <Link to="/PlanLekcji" className="panel_shortcutBtn">
+            <Link to="/PlanZajec" className="panel_shortcutBtn">
               <FontAwesomeIcon icon={Icons.faCalendarDays} className="panel_shortcutBtn_icon" />
               Twój plan zajęć
             </Link>

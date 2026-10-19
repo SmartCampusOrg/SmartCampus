@@ -12,6 +12,7 @@ export default function GlobalSearch({ isOpen, onClose }) {
     searchQuery,
     setSearchQuery,
     config,
+    filteredSections,
     filteredResults,
     navigableItems,
     selectedIndex,
@@ -141,18 +142,31 @@ export default function GlobalSearch({ isOpen, onClose }) {
                       ))}
                     </>
                   ) : (
-                    <div className="navbar_search_resultsList">
-                      {filteredResults.length > 0 ? (
-                        filteredResults.map((result, idx) => {
-                          const isActive = navigableItems[selectedIndex]?.id === result.id;
-                          return (
-                            <SearchResultItem key={result.id} result={result} onClick={handleResultClick} isActive={isActive} isDark={isDark} />
-                          );
-                        })
+                    <>
+                      {filteredSections && filteredSections.length > 0 ? (
+                        filteredSections.map((section, sIdx) => (
+                          <div key={sIdx} className="navbar_search_section">
+                            <div className="navbar_search_sectionTitle">{section.title}</div>
+                            <div className="navbar_search_resultsList">
+                              {section.items.map((result) => {
+                                const isActive = navigableItems[selectedIndex]?.id === result.id;
+                                return (
+                                  <SearchResultItem 
+                                    key={result.id} 
+                                    result={result} 
+                                    onClick={handleResultClick} 
+                                    isActive={isActive} 
+                                    isDark={isDark} 
+                                  />
+                                );
+                              })}
+                            </div>
+                          </div>
+                        ))
                       ) : (
                         <div className="navbar_search_noResults">Brak wyników</div>
                       )}
-                    </div>
+                    </>
                   )}
                 </div>
               </motion.div>

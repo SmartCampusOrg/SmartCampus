@@ -1,0 +1,74 @@
+.campus_placeholder_page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 20px 80px 20px;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+  min-height: calc(100vh - 120px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.campus_placeholder_content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  max-width: 520px;
+  animation: campusPlaceholderFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.campus_placeholder_img {
+  width: 100%;
+  max-width: 380px;
+  height: auto;
+  max-height: min(300px, 38vh);
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+}
+
+.campus_placeholder_title {
+  font-size: 26px;
+  font-weight: 700;
+  color: light-dark(#183447, #f1f5f9);
+  margin: 22px 0 8px 0;
+  letter-spacing: -0.3px;
+}
+
+.campus_placeholder_desc {
+  font-size: 15px;
+  font-weight: 500;
+  color: light-dark(#6d7d8c, #94a3b8);
+  margin: 0;
+  line-height: 1.5;
+}
+
+@keyframes campusPlaceholderFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .campus_placeholder_img {
+    max-width: 290px;
+    max-height: 230px;
+  }
+
+  .campus_placeholder_title {
+    font-size: 22px;
+  }
+
+  .campus_placeholder_desc {
+    font-size: 14px;
+  }
+}

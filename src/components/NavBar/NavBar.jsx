@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import * as Icons from '@icons/icons'
 import './NavBar.css';
 import GlobalSearch from '@features/GlobalSearch/index.jsx';
+import DynamicIsland from '@/components/DynamicIsland/DynamicIsland.jsx';
 
 
 const NavMountListener = ({ onMount }) => {
@@ -152,12 +153,15 @@ function NavBar() {
   return (
     <section className="navbar_section">
 
-      <div className="navbar_logo">
-        <div className="navbar_logo_icon" />
-        <div className="navbar_logo_wrapper">
-          <div className="navbar_logo_wrapper_topText">Smart</div>
-          <div className="navbar_logo_wrapper_bottomText">Campus</div>
-        </div>
+      <div className="navbar_leftGroup">
+        <Link to="/Panel" className="navbar_logo" style={{ textDecoration: 'none', color: 'inherit' }}>
+          <div className="navbar_logo_icon" />
+          <div className="navbar_logo_wrapper">
+            <div className="navbar_logo_wrapper_topText">Smart</div>
+            <div className="navbar_logo_wrapper_bottomText">Campus</div>
+          </div>
+        </Link>
+        <DynamicIsland />
       </div>
 
       <div className="navbar_centerGroup">
@@ -181,13 +185,13 @@ function NavBar() {
                     </div>
                   </NavLink>
                   <NavLink
-                    ref={el => navRefs.current["/PlanLekcji"] = el}
-                    to="/PlanLekcji"
+                    ref={el => navRefs.current["/PlanZajec"] = el}
+                    to="/PlanZajec"
                     className={({ isActive }) => isActive ? "navbar_button--active" : "navbar_button"}
                   >
                     <div className="navbar_buttonContent">
                       <FontAwesomeIcon icon={Icons.faCalendarDays} className="navbar_buttonContent_icon" />
-                      <div className="navbar_buttonContent_text">Plan lekcji</div>
+                      <div className="navbar_buttonContent_text">Plan zajęć</div>
                     </div>
                   </NavLink>
                   <NavLink

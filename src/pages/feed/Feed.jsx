@@ -1,10 +1,21 @@
-import { Link } from "react-router-dom";
-
+import React from 'react';
+import feedPlaceholderImg from '@/assets/img/Mezczyzna_ze_smartfonem_feed.png';
+import './Feed.css';
 
 function Feed() {
   return (
-    <div className="app">
-      <h1>Feed</h1>
+    <div className="campus_placeholder_page">
+      <div className="campus_placeholder_content">
+        <img 
+          src={feedPlaceholderImg} 
+          alt="Aktualności w przygotowaniu" 
+          className="campus_placeholder_img" 
+        />
+        <h2 className="campus_placeholder_title">Pracujemy nad tym!</h2>
+        <p className="campus_placeholder_desc">
+          Sekcja aktualności będzie dostępna już wkrótce. Zaglądaj tu regularnie! 📱
+        </p>
+      </div>
     </div>
   );
 }
