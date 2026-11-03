@@ -44,6 +44,7 @@ function PlanZajec() {
     showTermDates,
     handleToggleShowTermDates,
     isFetching,
+    fetchError,
     fetchLatestSchedule,
     clearScheduleCache
   } = useSchedule();
@@ -269,14 +270,16 @@ function PlanZajec() {
 
     // 1. Jeśli brak w localStorage, automatycznie pobieramy z serwera uczelni
     if (!hasData) {
-      fetchLatestSchedule().finally(() => {
-        setIsLoadingSchedule(false);
-      });
+      fetchLatestSchedule()
+        .catch(() => {})
+        .finally(() => {
+          setIsLoadingSchedule(false);
+        });
     } else {
       setIsLoadingSchedule(false);
       if (isFirstRunToday || shouldFetchEveryOpen) {
         // 2. Automatyczna aktualizacja raz dziennie przy pierwszym uruchomieniu (lub przy każdym wejściu, jeśli włączono w opcjach)
-        fetchLatestSchedule();
+        fetchLatestSchedule().catch(() => {});
       }
     }
   }, []);
@@ -310,8 +313,13 @@ function PlanZajec() {
   const fetchAndCleanData = async () => {
     try {
       await fetchLatestSchedule();
+      alert("Plan zajęć został pomyślnie zaktualizowany!");
     } catch (error) {
       console.error("Błąd podczas pobierania:", error);
+      const msg = error.code === "AUTH_REQUIRED"
+        ? "Wirtualna Uczelnia (PANSIM) wymaga zalogowania (CAS) – dostęp publiczny jest zablokowany. Twoje zapisane zajęcia nie zostały usunięte."
+        : (error.message || "Błąd pobierania planu. Twoje zapisane zajęcia nie zostały usunięte.");
+      alert(msg);
     } finally {
       setIsLoadingSchedule(false);
     }
@@ -1319,6 +1327,22 @@ function PlanZajec() {
                     <span className="plan_sync_info_value">{allLessons.length}</span>
                   </div>
                 </div>
+
+                {fetchError && (
+                  <div style={{
+                    margin: '10px 0 6px',
+                    padding: '8px 10px',
+                    borderRadius: '8px',
+                    backgroundColor: 'rgba(239, 68, 68, 0.08)',
+                    border: '1px solid rgba(239, 68, 68, 0.25)',
+                    color: '#ef4444',
+                    fontSize: '11px',
+                    lineHeight: '1.4'
+                  }}>
+                    <strong style={{ display: 'block', marginBottom: '2px' }}>Uwaga:</strong>
+                    {fetchError}
+                  </div>
+                )}
 
                 <div className="plan_sync_popover_actions">
                   <button 

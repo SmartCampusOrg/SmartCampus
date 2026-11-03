@@ -90,15 +90,19 @@ function Ustawienia() {
   // W tle pobieramy plan tylko przy pierwszym uruchomieniu, jeśli brak danych
   useEffect(() => {
     if (allLessons.length === 0 && !localStorage.getItem('smart_campus_schedule_last_update')) {
-      fetchLatestSchedule();
+      fetchLatestSchedule().catch(() => {});
     }
   }, []);
 
   const handleManualFetchSchedule = async () => {
     try {
       await fetchLatestSchedule();
+      alert("Plan zajęć został pomyślnie zaktualizowany!");
     } catch (e) {
-      alert("Nie udało się pobrać najnowszego planu. Sprawdź połączenie z internetem.");
+      const msg = e.code === "AUTH_REQUIRED"
+        ? "Wirtualna Uczelnia (PANSIM) wymaga aktywnego logowania (CAS) – pobieranie automatyczne jest zablokowane. Dotychczasowe dane zostały zachowane."
+        : "Nie udało się pobrać najnowszego planu z serwerów uczelni. Dotychczasowe dane zostały zachowane.";
+      alert(msg);
     }
   };
 

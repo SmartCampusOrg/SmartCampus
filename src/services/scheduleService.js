@@ -316,6 +316,7 @@ export const fetchAndCleanSchedule = async () => {
   const ids = [221, 222, 224, 225, 226];
 
   let allResults = [];
+  const errors = [];
   const now = new Date();
   const currentYear = now.getFullYear();
   const currentMonth = now.getMonth() + 1;
@@ -323,15 +324,36 @@ export const fetchAndCleanSchedule = async () => {
   const dataOd = `${acadStart}-10-01T00:00:00`;
   const dataDo = `${acadStart + 1}-09-30T00:00:00`;
 
+  let authRequired = false;
+
   for (const id of ids) {
     try {
       const url = `/api/harmonogram/zajecia?_dc=${Date.now()}&idGrupa=0&idNauczyciel=0&idJednostkaPanelJednostka=${id}&dataOd=${encodeURIComponent(dataOd)}&dataDo=${encodeURIComponent(dataDo)}&widok=JEDNOSTKA&authUzytkownikId=0&page=1&start=0&limit=100000`;
       const res = await fetch(url);
+
+      const contentType = res.headers.get("content-type") || "";
+      if (res.url.includes("/cas/login") || contentType.includes("text/html")) {
+        authRequired = true;
+        throw new Error("Wymagana autoryzacja CAS w Wirtualnej Uczelni (zwrócono stronę logowania)");
+      }
+
       if (!res.ok) {
         throw new Error(`Błąd HTTP ${res.status} (${res.statusText})`);
       }
-      const data = await res.json();
-      if (data.status === "SUCCESS" && Array.isArray(data.result)) {
+
+      const text = await res.text();
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (parseErr) {
+        if (text.includes("<!DOCTYPE") || text.includes("<html") || text.includes("cas/login")) {
+          authRequired = true;
+          throw new Error("Wymagana autoryzacja CAS w Wirtualnej Uczelni (zwrócono HTML)");
+        }
+        throw new Error("Nieprawidłowy format odpowiedzi z serwera uczelni");
+      }
+
+      if (data && data.status === "SUCCESS" && Array.isArray(data.result)) {
         const correctedData = data.result.map(item => {
           const rawWydzial = normalizeWydzialName(item.wydzial);
           const poprawnyWydzial = (item.kierunek && resolveWydzialForKierunek(item.kierunek, '')) 
@@ -349,7 +371,21 @@ export const fetchAndCleanSchedule = async () => {
       }
     } catch (err) {
       console.warn(`Błąd pobierania jednostki ${id}:`, err);
+      errors.push(err);
     }
+  }
+
+  // ZABEZPIECZENIE (FAIL-SAFE):
+  // Jeśli żadna jednostka nie została pobrana pomyślnie, NIE WOLNO czyścić ani nadpisywać bazy!
+  if (allResults.length === 0) {
+    if (authRequired) {
+      const err = new Error("Serwer Wirtualnej Uczelni (PANSIM) wymaga aktywnego logowania (sesji CAS). Dostęp publiczny jest zablokowany. Twoje zapisane dane nie zostały zmienione.");
+      err.code = "AUTH_REQUIRED";
+      throw err;
+    }
+    const err = new Error(errors[0]?.message || "Nie udało się pobrać danych harmonogramu z serwerów uczelni. Twoje zapisane dane nie zostały zmienione.");
+    err.code = "FETCH_FAILED";
+    throw err;
   }
 
   // Standaryzacja i czyszczenie zbędnych sufiksów

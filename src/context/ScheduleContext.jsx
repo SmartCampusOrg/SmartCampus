@@ -26,6 +26,7 @@ export const ScheduleProvider = ({ children }) => {
     return localStorage.getItem(SHOW_TERM_DATES_KEY) === 'true';
   });
   const [isFetching, setIsFetching] = useState(false);
+  const [fetchError, setFetchError] = useState(null);
 
   // Asynchroniczne ładowanie pełnego planu z bazy IndexedDB przy starcie
   useEffect(() => {
@@ -83,9 +84,10 @@ export const ScheduleProvider = ({ children }) => {
   // Pobieranie najnowszego planu z serwerów uczelni
   const fetchLatestSchedule = useCallback(async () => {
     setIsFetching(true);
+    setFetchError(null);
     try {
       const cleanedData = await fetchAndCleanSchedule();
-      if (cleanedData && Array.isArray(cleanedData)) {
+      if (cleanedData && Array.isArray(cleanedData) && cleanedData.length > 0) {
         const enriched = cleanedData.map(item => ({
           ...item,
           wydzial: item.wydzial || resolveWydzialForKierunek(item.kierunek),
@@ -106,14 +108,18 @@ export const ScheduleProvider = ({ children }) => {
         }));
         return enriched;
       }
-      return enriched;
+      return allLessons;
     } catch (err) {
       console.error("Błąd podczas pobierania planu:", err);
+      const userMessage = err.code === "AUTH_REQUIRED"
+        ? "Wirtualna Uczelnia (PANSIM) wymaga aktywnego logowania (CAS). Pobieranie automatyczne jest zablokowane. Dotychczasowy plan pozostał nienaruszony."
+        : (err.message || "Błąd pobierania planu. Dotychczasowe dane nie zostały zmienione.");
+      setFetchError(userMessage);
       throw err;
     } finally {
       setIsFetching(false);
     }
-  }, []);
+  }, [allLessons]);
 
   // Czyszczenie pamięci podręcznej planu z IndexedDB i localStorage
   const clearScheduleCache = useCallback(async () => {
@@ -122,6 +128,7 @@ export const ScheduleProvider = ({ children }) => {
     } catch (e) {}
     setAllLessons([]);
     setLastUpdateTime("");
+    setFetchError(null);
     window.dispatchEvent(new CustomEvent('smart_campus_schedule_sync', {
       detail: { key: 'CLEAR_CACHE' }
     }));
@@ -218,6 +225,8 @@ export const ScheduleProvider = ({ children }) => {
     setShowTermDates,
     handleToggleShowTermDates,
     isFetching,
+    fetchError,
+    setFetchError,
     fetchLatestSchedule,
     clearScheduleCache
   }), [
@@ -231,6 +240,7 @@ export const ScheduleProvider = ({ children }) => {
     setShowTermDates,
     handleToggleShowTermDates,
     isFetching,
+    fetchError,
     fetchLatestSchedule,
     clearScheduleCache
   ]);
