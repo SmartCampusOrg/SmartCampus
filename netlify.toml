@@ -2,6 +2,14 @@
   publish = "dist"
   command = "npm run build"
 
+[functions]
+  directory = "netlify/functions"
+
+[[redirects]]
+  from = "/api/wu-sync"
+  to = "/.netlify/functions/wu-sync"
+  status = 200
+
 [[redirects]]
   from = "/api/harmonogram/*"
   to = "https://wu.pansim.edu.pl/wsrest/rest/phz/harmonogram/:splat"

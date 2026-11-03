@@ -9,6 +9,7 @@ import {
   getScheduleDataAsync,
   clearScheduleData,
   fetchAndCleanSchedule,
+  syncScheduleWithCredentials,
   resolveWydzialForKierunek
 } from '@/services/scheduleService.js';
 
@@ -115,6 +116,43 @@ export const ScheduleProvider = ({ children }) => {
         ? "Wirtualna Uczelnia (PANSIM) wymaga aktywnego logowania (CAS). Pobieranie automatyczne jest zablokowane. Dotychczasowy plan pozostał nienaruszony."
         : (err.message || "Błąd pobierania planu. Dotychczasowe dane nie zostały zmienione.");
       setFetchError(userMessage);
+      throw err;
+    } finally {
+      setIsFetching(false);
+    }
+  }, [allLessons]);
+
+  // Synchronizacja z WU przy użyciu danych logowania studenta (CAS)
+  const syncWithCredentials = useCallback(async (username, password) => {
+    setIsFetching(true);
+    setFetchError(null);
+    try {
+      const cleanedData = await syncScheduleWithCredentials(username, password);
+      if (cleanedData && Array.isArray(cleanedData) && cleanedData.length > 0) {
+        const enriched = cleanedData.map(item => ({
+          ...item,
+          wydzial: item.wydzial || resolveWydzialForKierunek(item.kierunek),
+          specjalnosc: item.specjalnosc || ""
+        }));
+        setAllLessons(enriched);
+        const nowIso = new Date().toISOString();
+        const now = new Date();
+        const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+        try {
+          localStorage.setItem(LAST_UPDATE_KEY, nowIso);
+          localStorage.setItem(LAST_FETCH_DATE_KEY, todayStr);
+        } catch (e) {}
+        setLastUpdateTime(nowIso);
+
+        window.dispatchEvent(new CustomEvent('smart_campus_schedule_sync', {
+          detail: { key: STORAGE_KEY, count: enriched.length, lastUpdate: nowIso, lessons: enriched }
+        }));
+        return enriched;
+      }
+      return allLessons;
+    } catch (err) {
+      console.error("Błąd podczas logowania do WU:", err);
+      setFetchError(err.message || "Błąd autoryzacji w Wirtualnej Uczelni");
       throw err;
     } finally {
       setIsFetching(false);
@@ -228,6 +266,7 @@ export const ScheduleProvider = ({ children }) => {
     fetchError,
     setFetchError,
     fetchLatestSchedule,
+    syncWithCredentials,
     clearScheduleCache
   }), [
     allLessons,
@@ -242,6 +281,7 @@ export const ScheduleProvider = ({ children }) => {
     isFetching,
     fetchError,
     fetchLatestSchedule,
+    syncWithCredentials,
     clearScheduleCache
   ]);
 

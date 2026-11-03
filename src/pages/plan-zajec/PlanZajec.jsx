@@ -46,8 +46,43 @@ function PlanZajec() {
     isFetching,
     fetchError,
     fetchLatestSchedule,
+    syncWithCredentials,
     clearScheduleCache
   } = useSchedule();
+
+  // Stan testowego modalu logowania do WU
+  const [isWuAuthModalOpen, setIsWuAuthModalOpen] = useState(false);
+  const [wuUsername, setWuUsername] = useState("");
+  const [wuPassword, setWuPassword] = useState("");
+  const [showWuPassword, setShowWuPassword] = useState(false);
+  const [wuIsLoading, setWuIsLoading] = useState(false);
+  const [wuModalError, setWuModalError] = useState(null);
+  const [wuModalSuccess, setWuModalSuccess] = useState(null);
+
+  const handleWuSyncSubmit = async (e) => {
+    if (e) e.preventDefault();
+    if (!wuUsername.trim() || !wuPassword) {
+      setWuModalError("Wprowadź numer albumu oraz hasło.");
+      return;
+    }
+    setWuIsLoading(true);
+    setWuModalError(null);
+    setWuModalSuccess(null);
+    try {
+      const lessons = await syncWithCredentials(wuUsername, wuPassword);
+      setWuModalSuccess(`Pomyślnie pobrano ${lessons.length} zajęć z Wirtualnej Uczelni!`);
+      setTimeout(() => {
+        setIsWuAuthModalOpen(false);
+        setWuModalSuccess(null);
+        setWuPassword("");
+      }, 1500);
+    } catch (err) {
+      console.error("Błąd logowania do WU:", err);
+      setWuModalError(err.message || "Błąd logowania do Wirtualnej Uczelni.");
+    } finally {
+      setWuIsLoading(false);
+    }
+  };
 
   const [isLoadingSchedule, setIsLoadingSchedule] = useState(() => {
     return !allLessons || allLessons.length === 0;
@@ -1355,7 +1390,38 @@ function PlanZajec() {
                     <svg className={`plan_sync_icon ${isFetching ? 'spin' : ''}`} width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
                     </svg>
-                    <span>{isFetching ? "Pobieranie z uczelni..." : "Pobierz najnowszy plan"}</span>
+                    <span>{isFetching ? "Pobieranie z uczelni..." : "Pobierz najnowszy plan (publiczny)"}</span>
+                  </button>
+
+                  <button 
+                    type="button"
+                    onClick={() => {
+                      setIsWuAuthModalOpen(true);
+                      setIsSyncMenuOpen(false);
+                    }}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                      width: '100%',
+                      padding: '10px 14px',
+                      backgroundColor: '#0f172a',
+                      color: '#38bdf8',
+                      border: '1px solid rgba(56, 189, 248, 0.4)',
+                      borderRadius: '10px',
+                      fontWeight: '600',
+                      fontSize: '13px',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s ease',
+                      boxShadow: '0 2px 6px rgba(0, 0, 0, 0.15)'
+                    }}
+                  >
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                      <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                    <span>Pobierz z WU (Test z logowaniem)</span>
                   </button>
 
                   <button 
@@ -2418,6 +2484,199 @@ function PlanZajec() {
             >
               Zatwierdź i zobacz plan
             </button>
+
+          </div>
+        </div>
+      )}
+
+      {/* 6. MODAL TESTOWEGO LOGOWANIA DO WIRTUALNEJ UCZELNI (WU) */}
+      {isWuAuthModalOpen && (
+        <div className="figma_modal_overlay" onClick={() => !wuIsLoading && setIsWuAuthModalOpen(false)}>
+          <div className="figma_modal_card wu_auth_modal_card" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '440px', width: '92%' }}>
+            <div className="figma_modal_header">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <h2 className="figma_modal_title" style={{ fontSize: '18px' }}>Logowanie do WU</h2>
+                <span style={{ 
+                  fontSize: '10px', 
+                  fontWeight: 700, 
+                  backgroundColor: 'rgba(56, 189, 248, 0.15)', 
+                  color: '#0284c7', 
+                  padding: '2px 8px', 
+                  borderRadius: '12px' 
+                }}>
+                  TEST BETA
+                </span>
+              </div>
+              <button 
+                className="figma_modal_close_btn" 
+                onClick={() => !wuIsLoading && setIsWuAuthModalOpen(false)}
+                title="Zamknij"
+                disabled={wuIsLoading}
+              >
+                ✕
+              </button>
+            </div>
+
+            <p style={{ fontSize: '13px', color: '#64748b', margin: '4px 0 16px', lineHeight: '1.45' }}>
+              Wpisz numer albumu oraz hasło do Wirtualnej Uczelni PANSIM. Funkcja pośrednicząca zaloguje się do systemu uczelni i pobierze plan zajęć.
+            </p>
+
+            {wuModalError && (
+              <div style={{
+                marginBottom: '14px',
+                padding: '10px 12px',
+                borderRadius: '10px',
+                backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                border: '1px solid rgba(239, 68, 68, 0.3)',
+                color: '#dc2626',
+                fontSize: '12.5px',
+                lineHeight: '1.4'
+              }}>
+                <strong>Błąd: </strong>{wuModalError}
+              </div>
+            )}
+
+            {wuModalSuccess && (
+              <div style={{
+                marginBottom: '14px',
+                padding: '10px 12px',
+                borderRadius: '10px',
+                backgroundColor: 'rgba(16, 185, 129, 0.12)',
+                border: '1px solid rgba(16, 185, 129, 0.35)',
+                color: '#059669',
+                fontSize: '12.5px',
+                lineHeight: '1.4'
+              }}>
+                <strong>Sukces! </strong>{wuModalSuccess}
+              </div>
+            )}
+
+            <form onSubmit={handleWuSyncSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              <div>
+                <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#334155', marginBottom: '6px' }}>
+                  Numer albumu / Login:
+                </label>
+                <input 
+                  type="text" 
+                  value={wuUsername} 
+                  onChange={(e) => setWuUsername(e.target.value)}
+                  placeholder="np. 12345"
+                  autoComplete="username"
+                  disabled={wuIsLoading}
+                  style={{
+                    width: '100%',
+                    padding: '10px 12px',
+                    borderRadius: '10px',
+                    border: '1px solid #cbd5e1',
+                    fontSize: '14px',
+                    backgroundColor: '#f8fafc',
+                    boxSizing: 'border-box'
+                  }}
+                />
+              </div>
+
+              <div>
+                <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#334155', marginBottom: '6px' }}>
+                  Hasło do Wirtualnej Uczelni:
+                </label>
+                <div style={{ position: 'relative' }}>
+                  <input 
+                    type={showWuPassword ? "text" : "password"} 
+                    value={wuPassword} 
+                    onChange={(e) => setWuPassword(e.target.value)}
+                    placeholder="Wpisz hasło do WU"
+                    autoComplete="current-password"
+                    disabled={wuIsLoading}
+                    style={{
+                      width: '100%',
+                      padding: '10px 55px 10px 12px',
+                      borderRadius: '10px',
+                      border: '1px solid #cbd5e1',
+                      fontSize: '14px',
+                      backgroundColor: '#f8fafc',
+                      boxSizing: 'border-box'
+                    }}
+                  />
+                  <button 
+                    type="button"
+                    onClick={() => setShowWuPassword(!showWuPassword)}
+                    style={{
+                      position: 'absolute',
+                      right: '10px',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      color: '#64748b',
+                      fontSize: '12px',
+                      fontWeight: 600
+                    }}
+                  >
+                    {showWuPassword ? 'Ukryj' : 'Pokaż'}
+                  </button>
+                </div>
+              </div>
+
+              <div style={{
+                fontSize: '11px',
+                color: '#64748b',
+                backgroundColor: '#f1f5f9',
+                padding: '8px 10px',
+                borderRadius: '8px',
+                lineHeight: '1.4'
+              }}>
+                🔒 Dane logowania są przesyłane bezpośrednio do systemu CAS uczelni wyłącznie w celu jednorazowego pobrania planu i nie są nigdzie trwale zapisywane.
+              </div>
+
+              <div style={{ display: 'flex', gap: '10px', marginTop: '6px' }}>
+                <button 
+                  type="button" 
+                  onClick={() => setIsWuAuthModalOpen(false)}
+                  disabled={wuIsLoading}
+                  style={{
+                    flex: 1,
+                    padding: '11px',
+                    borderRadius: '10px',
+                    border: '1px solid #cbd5e1',
+                    background: '#f8fafc',
+                    color: '#475569',
+                    fontWeight: 600,
+                    fontSize: '13px',
+                    cursor: 'pointer'
+                  }}
+                >
+                  Anuluj
+                </button>
+                <button 
+                  type="submit" 
+                  disabled={wuIsLoading}
+                  style={{
+                    flex: 2,
+                    padding: '11px',
+                    borderRadius: '10px',
+                    border: 'none',
+                    background: wuIsLoading ? '#94a3b8' : '#0284c7',
+                    color: '#ffffff',
+                    fontWeight: 600,
+                    fontSize: '13px',
+                    cursor: wuIsLoading ? 'wait' : 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
+                    boxShadow: '0 2px 6px rgba(2, 132, 199, 0.3)'
+                  }}
+                >
+                  {wuIsLoading && (
+                    <svg className="plan_sync_icon spin" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+                    </svg>
+                  )}
+                  <span>{wuIsLoading ? 'Logowanie i pobieranie...' : 'Zaloguj i pobierz plan'}</span>
+                </button>
+              </div>
+            </form>
 
           </div>
         </div>

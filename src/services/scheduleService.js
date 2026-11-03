@@ -388,9 +388,30 @@ export const fetchAndCleanSchedule = async () => {
     throw err;
   }
 
+  return await processAndSaveSchedule(allResults);
+};
+
+/**
+ * Przetwarza, czyści, deduplikuje i zapisuje pobrany surowy harmonogram do IndexedDB
+ */
+export const processAndSaveSchedule = async (rawLessons) => {
+  if (!Array.isArray(rawLessons) || rawLessons.length === 0) {
+    throw new Error("Brak danych zajęć do zapisania.");
+  }
+
   // Standaryzacja i czyszczenie zbędnych sufiksów
-  const cleanedData = allResults.map(item => {
-    const cleanObj = { ...item };
+  const cleanedData = rawLessons.map(item => {
+    const rawWydzial = normalizeWydzialName(item.wydzial);
+    const poprawnyWydzial = (item.kierunek && resolveWydzialForKierunek(item.kierunek, '')) 
+      || rawWydzial 
+      || "Wydział Inżynierii i Ekonomii";
+
+    const cleanObj = { 
+      ...item,
+      wydzial: poprawnyWydzial,
+      specjalnosc: item.specjalnosc || ""
+    };
+
     if (!cleanObj.forma) {
       const g = (cleanObj.grupa || "").toLowerCase();
       if (g.includes("niestac") || g.includes("zaocz") || g.includes(" ns")) {
@@ -452,15 +473,41 @@ export const fetchAndCleanSchedule = async () => {
       rokAkademicki: item.rokAkademicki
     }));
     await saveScheduleToDb(compactForStorage);
+    const nowIso = new Date().toISOString();
+    const now = new Date();
+    const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
     try {
       localStorage.removeItem(STORAGE_KEY);
-      localStorage.setItem(LAST_UPDATE_KEY, new Date().toISOString());
+      localStorage.setItem(LAST_UPDATE_KEY, nowIso);
+      localStorage.setItem(LAST_FETCH_DATE_KEY, todayStr);
     } catch (e) {}
   } catch (storageErr) {
     console.warn("Błąd zapisu planu do bazy:", storageErr);
   }
 
   return deduplicatedCleaned;
+};
+
+/**
+ * Pobieranie planu przez funkcję pośredniczącą (Netlify Function / Vite proxy) z podaniem numeru albumu i hasła
+ */
+export const syncScheduleWithCredentials = async (username, password) => {
+  const res = await fetch('/api/wu-sync', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username, password })
+  });
+
+  const data = await res.json().catch(() => null);
+  if (!res.ok || !data || !data.success) {
+    throw new Error(data?.error || `Błąd serwera (kod HTTP ${res.status})`);
+  }
+
+  if (!Array.isArray(data.result) || data.result.length === 0) {
+    throw new Error("Serwer uczelni nie zwrócił żadnych lekcji dla wybranego konta.");
+  }
+
+  return await processAndSaveSchedule(data.result);
 };
 
 // Filtrowanie planu pod profil studenta lub wykładowcy

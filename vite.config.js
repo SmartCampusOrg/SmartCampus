@@ -20,6 +20,35 @@ export default defineConfig({
     }
   },
   plugins: [
+    {
+      name: 'vite-plugin-wu-sync',
+      configureServer(server) {
+        server.middlewares.use('/api/wu-sync', (req, res) => {
+          if (req.method !== 'POST') {
+            res.statusCode = 405;
+            res.setHeader('Content-Type', 'application/json');
+            return res.end(JSON.stringify({ success: false, error: 'Metoda niedozwolona' }));
+          }
+
+          let bodyStr = '';
+          req.on('data', chunk => { bodyStr += chunk; });
+          req.on('end', async () => {
+            try {
+              const { username, password, ids } = JSON.parse(bodyStr || '{}');
+              const { authenticateAndFetchWu } = await import('./server/wuAuth.js');
+              const lessons = await authenticateAndFetchWu({ username, password, ids });
+              res.statusCode = 200;
+              res.setHeader('Content-Type', 'application/json');
+              res.end(JSON.stringify({ success: true, count: lessons.length, result: lessons }));
+            } catch (err) {
+              res.statusCode = 400;
+              res.setHeader('Content-Type', 'application/json');
+              res.end(JSON.stringify({ success: false, error: err.message || 'Błąd logowania do WU' }));
+            }
+          });
+        });
+      }
+    },
     react(), 
     viteCompression({ algorithm: 'brotliCompress' }),
     VitePWA({
