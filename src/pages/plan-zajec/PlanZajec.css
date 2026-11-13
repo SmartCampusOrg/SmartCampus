@@ -2108,6 +2108,128 @@
   transform: none;
 }
 
+.plan_sync_popover_btn_secondary {
+  height: 40px;
+  border-radius: 20px;
+  background-color: light-dark(rgba(24, 52, 71, 0.06), rgba(255, 255, 255, 0.08));
+  color: light-dark(#183447, #f1f5f9);
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.15s ease;
+  box-shadow: none;
+  user-select: none;
+}
+
+.plan_sync_popover_btn_secondary:hover:not(:disabled) {
+  background-color: light-dark(rgba(24, 52, 71, 0.12), rgba(255, 255, 255, 0.14));
+}
+
+.plan_sync_popover_btn_secondary:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.plan_sync_error_banner {
+  padding: 10px 12px;
+  border-radius: 14px;
+  background-color: light-dark(rgba(220, 38, 38, 0.06), rgba(239, 68, 68, 0.12));
+  color: light-dark(#dc2626, #f87171);
+  font-size: 11.5px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* MODAL LOGOWANIA DO WIRTUALNEJ UCZELNI */
+.plan_wu_modal_form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.plan_wu_password_wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.plan_event_input.plan_wu_password_input {
+  padding-right: 72px;
+}
+
+.plan_wu_password_toggle {
+  position: absolute;
+  right: 8px;
+  height: 30px;
+  padding: 0 10px;
+  border-radius: 9px;
+  border: none;
+  background-color: transparent;
+  color: #64748b;
+  font-family: 'Poppins', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.plan_wu_password_toggle:hover {
+  background-color: rgba(24, 52, 71, 0.07);
+  color: #183447;
+}
+
+[data-theme='dark'] .plan_wu_password_toggle {
+  color: #94a3b8;
+}
+
+[data-theme='dark'] .plan_wu_password_toggle:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #f1f5f9;
+}
+
+.plan_wu_modal_note {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.45;
+  color: #6d7d8c;
+  font-weight: 400;
+}
+
+[data-theme='dark'] .plan_wu_modal_note {
+  color: #94a3b8;
+}
+
+.plan_wu_status_banner {
+  padding: 11px 14px;
+  border-radius: 14px;
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.plan_wu_status_banner.error {
+  background-color: light-dark(#fef2f2, rgba(239, 68, 68, 0.12));
+  color: light-dark(#dc2626, #f87171);
+}
+
+.plan_wu_status_banner.success {
+  background-color: light-dark(#ecfdf5, rgba(16, 185, 129, 0.14));
+  color: light-dark(#059669, #34d399);
+}
+
+.plan_wu_submit_btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
 .plan_sync_popover_btn_danger {
   height: 40px;
   border-radius: 20px;

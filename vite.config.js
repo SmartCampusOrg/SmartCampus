@@ -47,6 +47,28 @@ export default defineConfig({
             }
           });
         });
+
+        server.middlewares.use('/api/feed', async (req, res) => {
+          if (req.method !== 'GET') {
+            res.statusCode = 405;
+            res.setHeader('Content-Type', 'application/json');
+            return res.end(JSON.stringify({ success: false, error: 'Metoda niedozwolona' }));
+          }
+
+          try {
+            const url = new URL(req.url, 'http://localhost');
+            const faculty = url.searchParams.get('faculty') || 'all';
+            const { fetchFacultiesFeed } = await import('./server/feedScraper.js');
+            const data = await fetchFacultiesFeed(faculty);
+            res.statusCode = 200;
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify({ success: true, ...data }));
+          } catch (err) {
+            res.statusCode = 500;
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify({ success: false, error: err.message || 'Błąd pobierania aktualności' }));
+          }
+        });
       }
     },
     react(), 

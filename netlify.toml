@@ -11,6 +11,11 @@
   status = 200
 
 [[redirects]]
+  from = "/api/feed"
+  to = "/.netlify/functions/feed"
+  status = 200
+
+[[redirects]]
   from = "/api/harmonogram/*"
   to = "https://wu.pansim.edu.pl/wsrest/rest/phz/harmonogram/:splat"
   status = 200
