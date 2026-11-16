@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext.jsx";
 import './LoginPage.css';
 import LogoFull from "../../components/Logo/LogoFull";
@@ -51,6 +51,11 @@ export function LoginPage() {
             ) : (
               <ContinueButton onClick={() => navigate(from, { replace: true })} />
             )}
+            <div className="LoginPage_legalLinks">
+              <Link to="/PolitykaPrywatnosci">Polityka prywatności</Link>
+              <span aria-hidden="true">•</span>
+              <Link to="/InformacjeOCookie">Pliki cookie</Link>
+            </div>
           </div>
         </div>
       </div>

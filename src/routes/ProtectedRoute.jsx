@@ -12,7 +12,7 @@ export function ProtectedRoute({ children }) {
   }
 
   if (!user) {
-    return <Navigate to="/LandingPage" state={{ from: location }} replace />;
+    return <Navigate to="/Start" state={{ from: location }} replace />;
   }
 
   return children;

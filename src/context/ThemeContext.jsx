@@ -2,6 +2,9 @@ import { createContext, useContext, useState, useEffect } from 'react';
 
 const ThemeContext = createContext();
 
+export const REDUCE_MOTION_KEY = 'smart_campus_reduce_motion';
+export const REDUCE_TRANSPARENCY_KEY = 'smart_campus_reduce_transparency';
+
 export const ThemeProvider = ({ children }) => {
   const [themeMode, setThemeMode] = useState(() => {
     const stored = localStorage.getItem('colorScheme');
@@ -28,6 +31,22 @@ export const ThemeProvider = ({ children }) => {
     return themeMode;
   });
 
+  const [reduceMotion, setReduceMotion] = useState(() => {
+    const enabled = localStorage.getItem(REDUCE_MOTION_KEY) === 'true';
+    if (enabled) {
+      document.documentElement.dataset.reduceMotion = 'true';
+    }
+    return enabled;
+  });
+
+  const [reduceTransparency, setReduceTransparency] = useState(() => {
+    const enabled = localStorage.getItem(REDUCE_TRANSPARENCY_KEY) === 'true';
+    if (enabled) {
+      document.documentElement.dataset.reduceTransparency = 'true';
+    }
+    return enabled;
+  });
+
   useEffect(() => {
     const updateTheme = () => {
       let activeTheme = themeMode;
@@ -41,7 +60,7 @@ export const ThemeProvider = ({ children }) => {
       if (['frutiger', 'autumn', 'christmas'].includes(activeTheme)) colorScheme = 'light';
       if (activeTheme === 'halloween') colorScheme = 'dark';
       root.style.setProperty('color-scheme', colorScheme);
-      root.dataset.theme = themeMode; // use raw themeMode for data-theme ('frutiger', 'system', 'light', 'dark')
+      root.dataset.theme = themeMode;
     };
 
     updateTheme();
@@ -60,6 +79,26 @@ export const ThemeProvider = ({ children }) => {
     }
   }, [themeMode]);
 
+  useEffect(() => {
+    const root = document.documentElement;
+    if (reduceMotion) {
+      root.dataset.reduceMotion = 'true';
+    } else {
+      delete root.dataset.reduceMotion;
+    }
+    localStorage.setItem(REDUCE_MOTION_KEY, String(reduceMotion));
+  }, [reduceMotion]);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    if (reduceTransparency) {
+      root.dataset.reduceTransparency = 'true';
+    } else {
+      delete root.dataset.reduceTransparency;
+    }
+    localStorage.setItem(REDUCE_TRANSPARENCY_KEY, String(reduceTransparency));
+  }, [reduceTransparency]);
+
   const toggleTheme = (idOrState, newState) => {
     if (typeof newState === 'boolean') {
       setThemeMode(newState ? 'dark' : 'light');
@@ -73,7 +112,18 @@ export const ThemeProvider = ({ children }) => {
   };
 
   return (
-    <ThemeContext.Provider value={{ theme: resolvedTheme, themeMode, setThemeMode, toggleTheme }}>
+    <ThemeContext.Provider
+      value={{
+        theme: resolvedTheme,
+        themeMode,
+        setThemeMode,
+        toggleTheme,
+        reduceMotion,
+        setReduceMotion,
+        reduceTransparency,
+        setReduceTransparency,
+      }}
+    >
       {children}
     </ThemeContext.Provider>
   );

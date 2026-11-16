@@ -77,6 +77,27 @@ body {
     font-weight: 500;
 }
 
+.LoginPage_legalLinks {
+    margin-top: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 13px;
+    color: light-dark(rgba(24, 52, 71, 0.72), rgba(255, 255, 255, 0.68));
+}
+
+.LoginPage_legalLinks a {
+    color: inherit;
+    text-decoration: underline;
+    font-weight: 500;
+    transition: opacity 0.2s ease;
+}
+
+.LoginPage_legalLinks a:hover {
+    opacity: 0.8;
+}
+
 @keyframes shakeAndFadeIn {
     0% {
         opacity: 0;

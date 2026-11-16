@@ -139,3 +139,44 @@ body {
 
 
 
+
+/* ==========================================================================
+   Wygląd i wydajność: Wyłącz animacje (data-reduce-motion)
+   ========================================================================== */
+:root[data-reduce-motion="true"] {
+  scroll-behavior: auto !important;
+}
+
+:root[data-reduce-motion="true"] *,
+:root[data-reduce-motion="true"] *::before,
+:root[data-reduce-motion="true"] *::after {
+  animation-duration: 0.001ms !important;
+  animation-delay: 0ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  transition-delay: 0ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* ==========================================================================
+   Wygląd i wydajność: Wyłącz rozmycie i przezroczystość (data-reduce-transparency)
+   ========================================================================== */
+:root[data-reduce-transparency="true"] *,
+:root[data-reduce-transparency="true"] *::before,
+:root[data-reduce-transparency="true"] *::after {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+:root[data-reduce-transparency="true"] .navbar,
+:root[data-reduce-transparency="true"] .navbar_userMenu,
+:root[data-reduce-transparency="true"] .mobile_navbar,
+:root[data-reduce-transparency="true"] .StartNavBar,
+:root[data-reduce-transparency="true"] .StartNavBar__mobileMenu,
+:root[data-reduce-transparency="true"] .custom-select-dropdown,
+:root[data-reduce-transparency="true"] .glass_panel,
+:root[data-reduce-transparency="true"] .settings_row,
+:root[data-reduce-transparency="true"] .settings_card {
+  background-color: light-dark(#FFFFFF, #1B2430) !important;
+  opacity: 1 !important;
+}

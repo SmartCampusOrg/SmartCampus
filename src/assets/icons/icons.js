@@ -1,5 +1,7 @@
 import {
   faUser,
+  faUserGroup,
+  faUsers,
   faSolarPanel,
   faCalendarDays,
   faMap,
@@ -30,6 +32,7 @@ import {
   faWorm,
   faChevronRight,
   faArrowLeft,
+  faArrowUp,
   faChalkboardUser,
   faBookOpen,
   faPenToSquare,
@@ -42,7 +45,9 @@ import {
   faTrash,
   faClock,
   faTableCells,
-  faListUl
+  faListUl,
+  faShieldHalved,
+  faCookieBite
 } from '@fortawesome/free-solid-svg-icons'
 
 import { faGoogle, faGithub } from '@fortawesome/free-brands-svg-icons'
@@ -57,6 +62,8 @@ export {
   faDumbbell,
   faXmark,
   faUser,
+  faUserGroup,
+  faUsers,
   faSolarPanel,
   faCalendarDays,
   faMap,
@@ -88,10 +95,13 @@ export {
   faWorm,
   faChevronRight,
   faArrowLeft,
+  faArrowUp,
   faUserGraduate,
   faPlus,
   faTrash,
   faClock,
   faTableCells,
-  faListUl
+  faListUl,
+  faShieldHalved,
+  faCookieBite
 }

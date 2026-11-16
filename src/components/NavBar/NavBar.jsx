@@ -1,6 +1,6 @@
 import { useState, useEffect, useLayoutEffect, useRef } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import { createPortal } from "react-dom";
 import ToggleSwitch from "@components/ToggleSwitch/ToggleSwitch.jsx";
 import { useTheme } from '@hooks/useTheme.js';
@@ -19,6 +19,18 @@ const NavMountListener = ({ onMount }) => {
   });
   return null;
 };
+
+function getFallbackAvatarDataUri(name = '') {
+  const initials = (name || 'SC')
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase() || '')
+    .join('') || 'SC';
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><rect width="120" height="120" fill="#183447"/><text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" fill="#ffffff" font-family="Space Grotesk, sans-serif" font-size="44" font-weight="600">${initials}</text></svg>`;
+  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+}
 
 function NavBar() {
   const { user, isAuthLoading, login, logout } = useAuth();
@@ -91,7 +103,7 @@ function NavBar() {
 
   const handleLogout = async () => {
     try {
-      navigate("/LandingPage", { replace: true });
+      navigate("/Start", { replace: true });
       await logout();
     } catch (error) {
       console.error("Błąd wylogowania:", error);
@@ -324,12 +336,12 @@ function NavBar() {
                   </div>
                   <img
                     className="navbar_userBar_profilePicture"
-                    src={user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || '')}&background=183447&color=fff`}
+                    src={user.photoURL || getFallbackAvatarDataUri(user.displayName)}
                     alt="Avatar"
                     referrerPolicy="no-referrer"
                     onError={(e) => {
                       e.target.onerror = null;
-                      e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || '')}&background=183447&color=fff`;
+                      e.target.src = getFallbackAvatarDataUri(user.displayName);
                     }}
                     style={{ objectFit: 'cover' }}
                   />
@@ -414,12 +426,12 @@ function NavBar() {
                       <section className="navbar_userMenu_userInfoSection">
                         <img
                           className="navbar_userMenu_userInfoSection_profilePicture"
-                          src={user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || '')}&background=183447&color=fff`}
+                          src={user.photoURL || getFallbackAvatarDataUri(user.displayName)}
                           alt="Avatar"
                           referrerPolicy="no-referrer"
                           onError={(e) => {
                             e.target.onerror = null;
-                            e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || '')}&background=183447&color=fff`;
+                            e.target.src = getFallbackAvatarDataUri(user.displayName);
                           }}
                           style={{ objectFit: 'cover' }}
                         />
@@ -438,7 +450,7 @@ function NavBar() {
                             />
                           </div>
                         </div>
-                        <Link to="/LandingPage" onClick={() => setIsMenuOpen(false)}>
+                        <Link to="/Start" onClick={() => setIsMenuOpen(false)}>
                           <button className="navbar_userMenu_button">Strona startowa Smart Campus</button>
                         </Link>
                         <a href="https://pansim.edu.pl/" target="_blank"><button className="navbar_userMenu_button">Strona Pansim</button></a>

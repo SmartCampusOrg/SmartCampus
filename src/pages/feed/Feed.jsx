@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import wieAvatar from '../landing-page/building.webp';
+import wieAvatar from '../start/building.webp';
 import wnozinsAvatar from '@/assets/img/wnm.webp';
 import wntsAvatar from '@/assets/img/wnt.jpg';
 import './Feed.css';

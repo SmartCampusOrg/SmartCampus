@@ -10,11 +10,16 @@
 .navbar_logo_icon {
     width: 50px;
     height: 57px;
+    background-color: #183447;
     background-color: light-dark(#183447, #ffffff);
     mask: url('../../assets/icons/SmartCampusLogo.svg') no-repeat center;
     -webkit-mask: url('../../assets/icons/SmartCampusLogo.svg') no-repeat center;
     mask-size: contain;
-    -wekit-mask-size: contain;
+    -webkit-mask-size: contain;
+}
+
+[data-theme="dark"] .navbar_logo_icon {
+    background-color: #ffffff;
 }
 
 .navbar_logo_wrapper {
@@ -29,6 +34,7 @@
 .navbar_logo_wrapper_topText {
     font-size: 16px;
     font-weight: 600;
+    color: #183447;
     color: light-dark(#183447, #ffffff);
     height: 20px;
 }
@@ -36,8 +42,14 @@
 .navbar_logo_wrapper_bottomText {
     font-size: 16px;
     font-weight: 400;
+    color: #183447;
     color: light-dark(#183447, #ffffff);
     height: 20px;
+}
+
+[data-theme="dark"] .navbar_logo_wrapper_topText,
+[data-theme="dark"] .navbar_logo_wrapper_bottomText {
+    color: #ffffff;
 }
 
 .navbar_logo_wrapper_topText.reverse,

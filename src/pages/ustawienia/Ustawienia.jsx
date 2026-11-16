@@ -25,14 +25,21 @@ import {
   kierunekDoWydzialu
 } from "@/services/scheduleService.js";
 import './ustawienia.css';
-import defaultBanner from '../landing-page/building.webp';
+import defaultBanner from '../start/building.webp';
 import wnmBanner from '@/assets/img/wnm.webp';
 import wntBanner from '@/assets/img/wnt.jpg';
 
 function Ustawienia() {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
-  const { themeMode, setThemeMode } = useTheme();
+  const {
+    themeMode,
+    setThemeMode,
+    reduceMotion,
+    setReduceMotion,
+    reduceTransparency,
+    setReduceTransparency
+  } = useTheme();
   const { 
     allLessons, 
     lastUpdateTime, 
@@ -367,6 +374,17 @@ function Ustawienia() {
 
   // Firebase domyślnie pobiera małe zdjęcie z Google (96x96). Podmieniamy ten parametr na wyższą jakość (400x400)
   const highResPhotoUrl = user?.photoURL ? user.photoURL.replace(/=s\d+-c/g, '=s400-c') : null;
+  const fallbackAvatarUri = useMemo(() => {
+    const initials = (user?.displayName || 'SC')
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((part) => part[0]?.toUpperCase() || '')
+      .join('') || 'SC';
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><rect width="120" height="120" fill="#183447"/><text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" fill="#ffffff" font-family="Space Grotesk, sans-serif" font-size="44" font-weight="600">${initials}</text></svg>`;
+    return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+  }, [user?.displayName]);
   
   // Wartości domyślne do formularza
   const defaultFirstName = user?.displayName?.split(' ')[0] || '';
@@ -375,7 +393,7 @@ function Ustawienia() {
   const handleLogout = async () => {
     try {
       await logout();
-      navigate('/'); // Po wylogowaniu przenosimy na Landing Page
+      navigate('/'); // Po wylogowaniu przenosimy na stronę Start
     } catch (error) {
       console.error('Błąd podczas wylogowywania:', error);
     }
@@ -413,12 +431,12 @@ function Ustawienia() {
                 referrerPolicy="no-referrer"
                 onError={(e) => {
                   e.target.onerror = null;
-                  e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.displayName || '')}&background=183447&color=fff&size=400`;
+                  e.target.src = fallbackAvatarUri;
                 }}
               />
             ) : (
               <img
-                src={`https://ui-avatars.com/api/?name=${encodeURIComponent(user?.displayName || '')}&background=183447&color=fff&size=400`}
+                src={fallbackAvatarUri}
                 alt="Awatar"
                 className='profilePicture'
               />
@@ -557,32 +575,66 @@ function Ustawienia() {
           </div>
         </div>
 
-        {/* Sekcja Motyw */}
+        {/* Sekcja Wygląd i wydajność */}
         <div className="settings_section">
-          <h3 className="section_title">Wygląd</h3>
-          <div className="settings_row">
-            <div className="settings_row_info">
-              <h4>Motyw aplikacji</h4>
-              <p>Wybierz tryb jasny, ciemny lub dostosuj do systemu.</p>
+          <h3 className="section_title">Wygląd i wydajność</h3>
+          <div className="settings_card plan_sync_settings_card">
+            <div className="settings_plan_toggle_row">
+              <div className="settings_row_info">
+                <h4>Motyw aplikacji</h4>
+                <p>Wybierz tryb jasny, ciemny lub dostosuj do systemu.</p>
+              </div>
+              <div className="theme_selector">
+                <CustomSelect 
+                  className="theme_select"
+                  value={themeMode || 'light'}
+                  onChange={setThemeMode}
+                  options={[
+                    { value: "light", label: "Jasny" },
+                    { value: "dark", label: "Ciemny" },
+                    { value: "system", label: "Systemowy" },
+                    ...(isExperimentalEnabled && expMoreThemes ? [
+                      { value: "frutiger", label: "Frutiger Aero" },
+                      { value: "halloween", label: "Halloween" },
+                      { value: "autumn", label: "Jesienny" },
+                      { value: "christmas", label: "Świąteczny" }
+                    ] : [])
+                  ]}
+                  placeholder="Wybierz motyw"
+                />
+              </div>
             </div>
-            <div className="theme_selector">
-              <CustomSelect 
-                className="theme_select"
-                value={themeMode || 'light'}
-                onChange={setThemeMode}
-                options={[
-                  { value: "light", label: "Jasny" },
-                  { value: "dark", label: "Ciemny" },
-                  { value: "system", label: "Systemowy" },
-                  ...(isExperimentalEnabled && expMoreThemes ? [
-                    { value: "frutiger", label: "Frutiger Aero" },
-                    { value: "halloween", label: "Halloween" },
-                    { value: "autumn", label: "Jesienny" },
-                    { value: "christmas", label: "Świąteczny" }
-                  ] : [])
-                ]}
-                placeholder="Wybierz motyw"
-              />
+
+            <div className="settings_plan_info_divider" />
+
+            <div className="settings_plan_toggle_row">
+              <div className="settings_row_info">
+                <h4>Wyłącz animacje</h4>
+                <p>Wyłącza przejścia oraz efekty ruchu w aplikacji. Zwiększa responsywność i komfort dla oczu.</p>
+              </div>
+              <div className="settings_plan_toggle_wrap">
+                <ToggleSwitch
+                  id="settingsReduceMotionToggle"
+                  defaultState={reduceMotion}
+                  onToggle={(_, nextState) => setReduceMotion(nextState)}
+                />
+              </div>
+            </div>
+
+            <div className="settings_plan_info_divider" />
+
+            <div className="settings_plan_toggle_row">
+              <div className="settings_row_info">
+                <h4>Wyłącz rozmycie i przezroczystość</h4>
+                <p>Zastępuje efekty szkła (blur) i półprzezroczyste tła jednolitymi kolorami. Poprawia czytelność i płynność.</p>
+              </div>
+              <div className="settings_plan_toggle_wrap">
+                <ToggleSwitch
+                  id="settingsReduceTransparencyToggle"
+                  defaultState={reduceTransparency}
+                  onToggle={(_, nextState) => setReduceTransparency(nextState)}
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -674,13 +726,31 @@ function Ustawienia() {
           <h3 className="section_title">Prywatność</h3>
           <div className="settings_row">
             <div className="settings_row_info">
-              <h4>Zgoda na pliki cookie</h4>
-              <p>Używane wyłącznie do działania witryny, nie zbieramy Twoich danych.</p>
+              <h4>Niezbędne dane sesji i pamięci lokalnej</h4>
+              <p>Wymagane do utrzymania sesji logowania, wybranego motywu i planu zajęć offline (bez reklam i śledzenia).</p>
             </div>
             <div 
               className={`toggle_switch ${cookiesAccepted ? 'active' : ''}`}
               onClick={() => setCookiesAccepted(!cookiesAccepted)}
             ></div>
+          </div>
+          <div className="settings_row" style={{ cursor: 'pointer', marginTop: '10px' }} onClick={() => navigate('/PolitykaPrywatnosci')}>
+            <div className="settings_row_info">
+              <h4>Polityka prywatności</h4>
+              <p>Sprawdź jakie dane przetwarzamy, jak chronimy konto Google i jakie przysługują Ci prawa RODO</p>
+            </div>
+            <button className="changelog_button" type="button" aria-label="Otwórz Politykę prywatności">
+              <FontAwesomeIcon icon={faChevronRight} />
+            </button>
+          </div>
+          <div className="settings_row" style={{ cursor: 'pointer', marginTop: '10px' }} onClick={() => navigate('/InformacjeOCookie')}>
+            <div className="settings_row_info">
+              <h4>Informacja o plikach cookie i pamięci przeglądarki</h4>
+              <p>Zobacz pełny wykaz wszystkich kluczy localStorage, IndexedDB i plików sesyjnych</p>
+            </div>
+            <button className="changelog_button" type="button" aria-label="Otwórz Informację o plikach cookie">
+              <FontAwesomeIcon icon={faChevronRight} />
+            </button>
           </div>
         </div>
 
@@ -866,7 +936,7 @@ function Ustawienia() {
               iconLeft={faWorm}
               text="Zgłoś błąd" 
               className="contact_link_btn bug_btn"
-              onClick={() => window.open("https://github.com/SmartCampusOrg/SmartCampus/issues/new", "_blank", "noopener,noreferrer")} 
+              onClick={() => navigate("/ZglosBlad", { viewTransition: true })} 
             />
           </div>
           

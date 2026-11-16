@@ -47,7 +47,7 @@
 
 .profilePictureAndBaner {
     background-color: light-dark(#e2e8f0, #183447);
-    background-image: url('../landing-page/building.webp');
+    background-image: url('../start/building.webp');
     background-size: cover;
     background-position: center;
     border-radius: 20px;

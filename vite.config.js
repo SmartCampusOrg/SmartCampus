@@ -69,6 +69,36 @@ export default defineConfig({
             res.end(JSON.stringify({ success: false, error: err.message || 'Błąd pobierania aktualności' }));
           }
         });
+
+        server.middlewares.use('/api/report-issue', (req, res) => {
+          if (req.method !== 'POST') {
+            res.statusCode = 405;
+            res.setHeader('Content-Type', 'application/json');
+            return res.end(JSON.stringify({ success: false, error: 'Metoda niedozwolona' }));
+          }
+
+          let bodyStr = '';
+          req.on('data', chunk => { bodyStr += chunk; });
+          req.on('end', async () => {
+            try {
+              const payload = JSON.parse(bodyStr || '{}');
+              const { createGithubIssue } = await import('./server/githubIssue.js');
+              const issue = await createGithubIssue(payload);
+              res.statusCode = 201;
+              res.setHeader('Content-Type', 'application/json');
+              res.end(JSON.stringify({ success: true, issue }));
+            } catch (err) {
+              res.statusCode = err.statusCode || 500;
+              res.setHeader('Content-Type', 'application/json');
+              res.end(JSON.stringify({
+                success: false,
+                error: err.message || 'Nie udało się utworzyć zgłoszenia na GitHubie.',
+                code: err.code || null,
+                fallbackUrl: err.fallbackUrl || null,
+              }));
+            }
+          });
+        });
       }
     },
     react(), 

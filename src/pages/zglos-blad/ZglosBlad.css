@@ -1,0 +1,428 @@
+/* ==========================================================================
+   Smart Campus – Zgłoś błąd lub sugestię (spójny ze stylem podstron prawnych)
+   ========================================================================== */
+
+:root {
+    --rep-bg: #E9EEF0;
+    --rep-surface: #FFFFFF;
+    --rep-input-bg: #F4F7F9;
+    --rep-navy: #183447;
+    --rep-text: #183447;
+    --rep-body: #243847;
+    --rep-muted: #5A6B78;
+    --rep-border: rgba(24, 52, 71, 0.14);
+}
+
+:root[data-theme="dark"] {
+    --rep-bg: #0F1E2B;
+    --rep-surface: #162B3D;
+    --rep-input-bg: #10202E;
+    --rep-navy: #183447;
+    --rep-text: #F1F5F9;
+    --rep-body: #CBD5E1;
+    --rep-muted: #94A3B8;
+    --rep-border: rgba(255, 255, 255, 0.14);
+}
+
+.ReportPage {
+    width: 100%;
+    min-height: 100dvh;
+    box-sizing: border-box;
+    background-color: var(--rep-bg);
+    color: var(--rep-body);
+    font-family: 'Poppins', sans-serif;
+    padding: calc(36px + env(safe-area-inset-top, 0px)) 24px calc(36px + env(safe-area-inset-bottom, 0px));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.ReportPage--public {
+    padding-top: calc(108px + env(safe-area-inset-top, 0px));
+}
+
+.ReportPage__container {
+    width: 100%;
+    max-width: 960px;
+    display: flex;
+    flex-direction: column;
+}
+
+.ReportPage__topMeta {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: clamp(24px, 3.5vw, 40px);
+}
+
+.ReportPage__titleGroup {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.ReportPage__icon {
+    font-size: clamp(2.4rem, 1.8rem + 2vw, 3.6rem);
+    color: var(--rep-text);
+    flex-shrink: 0;
+}
+
+.ReportPage__titleGroup h1 {
+    margin: 0;
+    font-size: clamp(1.5rem, 1.15rem + 1.4vw, 2.25rem);
+    font-weight: 700;
+    line-height: 1.18;
+    color: var(--rep-text);
+}
+
+.ReportPage__subtitle {
+    display: block;
+    margin-top: 2px;
+    font-size: clamp(0.95rem, 0.85rem + 0.4vw, 1.15rem);
+    font-weight: 500;
+    color: var(--rep-muted);
+}
+
+.ReportPage__rightMeta {
+    margin-left: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+}
+
+.ReportPage__backBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background-color: var(--rep-surface);
+    border: 1px solid var(--rep-border);
+    border-radius: 999px;
+    padding: 8px 18px;
+    font-family: inherit;
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: var(--rep-text);
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+}
+
+.ReportPage__backBtn:hover {
+    background-color: #183447;
+    color: #FFFFFF;
+    transform: translateY(-1px);
+}
+
+.ReportPage__updated {
+    text-align: right;
+    font-size: 0.82rem;
+    line-height: 1.45;
+    color: var(--rep-muted);
+}
+
+.ReportPage__updated strong {
+    display: block;
+    color: var(--rep-text);
+    font-weight: 600;
+}
+
+.ReportPage__intro {
+    max-width: 720px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: clamp(28px, 4vw, 40px);
+}
+
+.ReportPage__lead {
+    margin: 0;
+    font-size: clamp(1.05rem, 0.95rem + 0.4vw, 1.25rem);
+    font-weight: 700;
+    color: var(--rep-text);
+}
+
+.ReportPage__introText {
+    margin: 0;
+    font-size: 0.96rem;
+    line-height: 1.65;
+    color: var(--rep-body);
+}
+
+.ReportCard {
+    background-color: var(--rep-surface);
+    border: 1px solid var(--rep-border);
+    border-radius: 20px;
+    padding: clamp(22px, 3.5vw, 34px);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.ReportForm__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.ReportForm__field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.ReportForm__field label {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--rep-text);
+}
+
+.ReportForm__field input,
+.ReportForm__field textarea {
+    width: 100%;
+    box-sizing: border-box;
+    background-color: var(--rep-input-bg);
+    border: 1px solid var(--rep-border);
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-family: inherit;
+    font-size: 0.92rem;
+    color: var(--rep-text);
+    transition: border-color 0.2s ease;
+    resize: vertical;
+}
+
+.ReportForm__field input:focus,
+.ReportForm__field textarea:focus {
+    border-color: #183447;
+}
+
+[data-theme="dark"] .ReportForm__field input:focus,
+[data-theme="dark"] .ReportForm__field textarea:focus {
+    border-color: #7CC2F5;
+}
+
+.ReportForm__checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 0.84rem;
+    line-height: 1.5;
+    color: var(--rep-muted);
+    cursor: pointer;
+}
+
+.ReportForm__checkbox input {
+    margin-top: 3px;
+    accent-color: #183447;
+    cursor: pointer;
+}
+
+.ReportForm__error {
+    background-color: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #DC2626;
+    border-radius: 14px;
+    padding: 14px 18px;
+    font-size: 0.88rem;
+    line-height: 1.55;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+[data-theme="dark"] .ReportForm__error {
+    color: #FCA5A5;
+}
+
+.ReportForm__error p {
+    margin: 0;
+}
+
+.ReportForm__actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 4px;
+}
+
+.ReportPage__primaryBtn,
+.ReportPage__secondaryBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: 999px;
+    padding: 12px 24px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none !important;
+    transition: background-color 0.2s ease, transform 0.15s ease, opacity 0.2s ease;
+}
+
+.ReportPage__primaryBtn {
+    background-color: #183447;
+    color: #FFFFFF !important;
+    border: none;
+}
+
+.ReportPage__primaryBtn:hover:not(:disabled) {
+    background-color: #20445d;
+    transform: translateY(-1px);
+}
+
+.ReportPage__primaryBtn:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+.ReportPage__secondaryBtn {
+    background-color: rgba(24, 52, 71, 0.06);
+    color: var(--rep-text);
+    border: none;
+}
+
+.ReportPage__secondaryBtn:hover {
+    background-color: rgba(24, 52, 71, 0.11);
+}
+
+:root[data-theme="dark"] .ReportPage__secondaryBtn {
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+:root[data-theme="dark"] .ReportPage__secondaryBtn:hover {
+    background-color: rgba(255, 255, 255, 0.14);
+}
+
+.ReportCard--success {
+    align-items: flex-start;
+}
+
+.ReportCard--success h2 {
+    margin: 0;
+    font-size: 1.35rem;
+    color: var(--rep-text);
+}
+
+.ReportCard--success p {
+    margin: 0;
+    font-size: 0.94rem;
+    line-height: 1.6;
+}
+
+.ReportCard--success code {
+    background: var(--rep-input-bg);
+    border: 1px solid var(--rep-border);
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-weight: 700;
+}
+
+.ReportCard__successBadge {
+    background-color: rgba(34, 197, 94, 0.14);
+    color: #15803D;
+    border: 1px solid rgba(34, 197, 94, 0.35);
+    border-radius: 999px;
+    padding: 4px 12px;
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+[data-theme="dark"] .ReportCard__successBadge {
+    color: #86EFAC;
+}
+
+.ReportCard__successActions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 6px;
+}
+
+.ReportBottomCard {
+    margin-top: clamp(32px, 5vw, 48px);
+    background-color: #183447;
+    color: #FFFFFF;
+    border-radius: 20px;
+    padding: 22px 24px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.84rem;
+    line-height: 1.45;
+}
+
+.ReportBottomCard strong {
+    font-weight: 700;
+}
+
+.ReportBottomCard span {
+    opacity: 0.82;
+}
+
+.ReportBottomCard__backLink {
+    margin-top: 6px;
+    color: #FFFFFF !important;
+    font-weight: 600;
+    font-size: 0.84rem;
+    text-decoration: underline !important;
+}
+
+@media (max-width: 760px) {
+    .ReportPage {
+        overflow-x: clip;
+    }
+
+    .ReportPage__topMeta {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .ReportPage__rightMeta {
+        margin-left: 0;
+        align-items: flex-start;
+        width: 100%;
+    }
+
+    .ReportPage__updated {
+        text-align: left;
+    }
+}
+
+@media (max-width: 720px) {
+    .ReportForm__row {
+        grid-template-columns: 1fr;
+    }
+
+    .ReportForm__row > * {
+        min-width: 0;
+    }
+}
+
+@media (max-width: 600px) {
+    .ReportPage {
+        padding: calc(24px + env(safe-area-inset-top, 0px)) 16px calc(24px + env(safe-area-inset-bottom, 0px));
+    }
+
+    .ReportPage--public {
+        padding-top: calc(82px + env(safe-area-inset-top, 0px));
+    }
+
+    .ReportCard {
+        padding: 20px 16px;
+    }
+
+    .ReportForm__actions {
+        justify-content: stretch;
+    }
+
+    .ReportForm__actions .ReportPage__primaryBtn {
+        width: 100%;
+    }
+}
